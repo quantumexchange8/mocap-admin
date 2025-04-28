@@ -1,3 +1,60 @@
-@tailwind base;
+@layer tailwind-base, antd;
+
+@layer tailwind-base {
+  @tailwind base;
+}
 @tailwind components;
 @tailwind utilities;
+
+/* select */
+.ant-select-selector {
+    background-color: #FFFFFF;
+    padding: 12px 16px !important;
+    width: 200px !important;
+}
+
+.ant-select-single {
+    max-height: 46px !important;
+    height: auto !important;
+}
+
+.ant-select-selector .ant-select-selection-search-input {
+    max-height: 46px !important;
+    height: auto !important;
+}
+
+.ant-select-selection-wrap {
+    max-height: 20px !important;
+}
+
+.ant-select-single:not(.ant-select-customize-input) .ant-select-selector:after {
+    line-height: 20px !important;
+}
+.ant-select-single .ant-select-selector .ant-select-selection-item {
+    line-height: 20px !important;
+}
+
+.css-var-r0.ant-select-css-var {
+    --ant-select-active-outline-color: rgb(255 255 255 / 0%);
+}
+
+.ant-select-selection-search-input {
+    --tw-ring-color: transparent;
+}
+
+.ant-select-dropdown .ant-select-item-option-selected:not(.ant-select-item-option-disabled) .ant-select-item-option-state {
+    color: #030712;
+}
+/* select */
+
+/* Tag */
+.ant-tag.ant-tag-success {
+    color: #4CA30D;
+    background: #E4FBCC;
+
+}
+.ant-tag.ant-tag-warning {
+    color: #CA8A04;
+    background: #FEF9C3;
+}
+/* Tag */
