@@ -18,7 +18,7 @@ export default function AuthenticatedLayout({ header, children }) {
 
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth > 1024) { // md breakpoint (768px)
+            if (window.innerWidth > 768) {
                 setIsSidebarExpanded(true);
             } else {
                 setIsSidebarExpanded(false);
@@ -37,18 +37,13 @@ export default function AuthenticatedLayout({ header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <SideBar expanded={isSidebarExpanded} />
+            <SideBar expanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
             
-            <div className={`min-h-screen flex flex-col ${isSidebarExpanded ? 'md:ml-60' : 'translate-x-0 md:ml-[74px]'}`}>
+            <div className={`min-h-screen flex flex-col transition-all duration-300 ${isSidebarExpanded ? 'ml-[230px]' : 'translate-x-0'}`}>
                 <Navbar header={header} toggleSidebar={toggleSidebar} expanded={isSidebarExpanded}/>
-                {header && (
-                    <header className="bg-white shadow">
-                        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                            {header}
-                        </div>
-                    </header>
-                )}
-                <main>{children}</main>
+                <main className='w-full flex justify-center p-5 md:p-2'>
+                    {children}
+                </main>
             </div>
         </div>
     );

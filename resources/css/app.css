@@ -51,10 +51,21 @@
 .ant-tag.ant-tag-success {
     color: #4CA30D;
     background: #E4FBCC;
-
 }
 .ant-tag.ant-tag-warning {
     color: #CA8A04;
     background: #FEF9C3;
+}
+.ant-tag.ant-tag-danger {
+    color: #FF0000;
+    background: #FFDDDD;
+}
+.ant-tag.ant-tag-info {
+    color: #0BA5EC;
+    background: #E0F2FE;
+}
+.ant-tag.ant-tag-others {
+    color: #6B7280;
+    background: #F3F4F6;
 }
 /* Tag */

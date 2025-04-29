@@ -49,7 +49,13 @@ createInertiaApp({
                         },
                         Tag: {
                             defaultBg: '#F3F4F6',
-                            defaultColor: '#6B7280'
+                            defaultColor: '#6B7280',
+                            borderRadiusSM: '2px',
+                            fontFamily: 'Outfit, sans-serif',
+                        },
+                        Badge:{
+                            colorBorderBg: 'hidden',	
+                            colorError	: '#FF2323',
                         }
                     }
                 }}

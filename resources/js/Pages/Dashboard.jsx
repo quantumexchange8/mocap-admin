@@ -15,13 +15,7 @@ export default function Dashboard() {
     }
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Dashboard" />
 
             <div className="py-12">
@@ -35,8 +29,8 @@ export default function Dashboard() {
                             placeholder="Placeholder"
                             suffixIcon={<ChevronDown />}
                         />
-                        <Tag bordered={false} color="success" className='text-xs font-medium py-1 px-2 font-sans' >Placeholder</Tag>
-                        <Tag bordered={false} color="warning" className=' text-xs font-medium py-1 px-2 font-sans' >Placeholder</Tag>
+                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2' >Placeholder</Tag>
+                        <Tag bordered={false} color="warning" className='text-xs font-medium py-1 px-2' >Placeholder</Tag>
                         </div>
                     </div>
                 </div>
