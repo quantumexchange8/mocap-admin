@@ -15,9 +15,22 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        $this->call([
+            BankSeeder::class,
+            CountrySeeder::class,
+            StateSeeder::class,
+            QualificationSeeder::class,
+        ]);
+        
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'CT Admin',
+            'email' => 'ctadmin@currenttech.pro',
+            'username' => 'CT Admin',
+            'employee_id' => 'AID0001',
+            'title' => 'Admin',
+            'password' => 'Test1234.',
+            'role' => 'admin',
+            'status' => 'active'
         ]);
     }
 }

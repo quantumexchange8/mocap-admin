@@ -13,6 +13,10 @@
     width: 200px !important;
 }
 
+.ant-select-multiple .ant-select-selection-wrap {
+    align-self: center;
+}
+
 .ant-select-single {
     max-height: 46px !important;
     height: auto !important;
@@ -48,6 +52,9 @@
 /* select */
 
 /* Tag */
+.ant-tag.ant-tag-success.ant-tag-borderless {
+    margin: 0px;
+}
 .ant-tag.ant-tag-success {
     color: #4CA30D;
     background: #E4FBCC;

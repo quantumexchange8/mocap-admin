@@ -1,0 +1,41 @@
+[
+    {
+        "name": "SPM/O-Level",
+        "status": "active"
+    },
+    {
+        "name": "STPM/A-Level/UEC",
+        "status": "active"
+    },
+    {
+        "name": "Diploma",
+        "status": "active"
+    },{
+        "name": "Advanced Diploma",
+        "status": "active"
+    },
+    {
+        "name": "Foundation/Matriculation",
+        "status": "active"
+    },
+    {
+        "name": "Degree/Bachelor’s Degree",
+        "status": "active"
+    },
+    {
+        "name": "Master’s Degree",
+        "status": "active"
+    },
+    {
+        "name": "PhD / Doctorate",
+        "status": "active"
+    },
+    {
+        "name": "Certificate",
+        "status": "active"
+    },
+    {
+        "name": "Professional Qualifications (e.g., ACCA, CIMA)",
+        "status": "active"
+    }
+]

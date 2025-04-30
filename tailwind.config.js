@@ -12,6 +12,9 @@ export default {
 
     theme: {
         extend: {
+            backgroundImage: {
+                'onboarding': "url('/asset/onboarding.png')"
+            },
             fontFamily: {
                 sans: ['Outfit', ...defaultTheme.fontFamily.sans],
             },
@@ -95,6 +98,9 @@ export default {
                     'dark-blue': '#25388D',
                 }
             },
+            boxShadow: {
+                'toast': '0px 4px 20px 0px rgba(12, 17, 29, 0.08)'
+            }
         },
         fontSize: {
             'xxs': ['10px', {

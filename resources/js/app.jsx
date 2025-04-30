@@ -41,8 +41,6 @@ createInertiaApp({
                             optionFontSize: '14px',
                             optionLineHeight: '20px',
                             optionPadding: '8px 16px',
-                            optionSelectedBg: '#FFF',
-                            optionSelectedColor: '#030712',
                             optionSelectedFontWeight: '400',
                             selectorBg: '#FFF', // Tailwind gray-100
                             multipleItemHeight: '20px'
