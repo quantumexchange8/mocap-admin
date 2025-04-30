@@ -99,7 +99,8 @@ export default {
                 }
             },
             boxShadow: {
-                'toast': '0px 4px 20px 0px rgba(12, 17, 29, 0.08)'
+                'toast': '0px 4px 20px 0px rgba(12, 17, 29, 0.08)',
+                'dialog': '0px 12px 24px -4px rgba(12, 17, 29, 0.10)',
             }
         },
         fontSize: {

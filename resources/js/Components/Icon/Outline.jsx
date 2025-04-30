@@ -368,7 +368,7 @@ const BellBadge = () => {
 const LogoIcon = () => {
     return (
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <g clip-path="url(#clip0_2342_14201)">
+            <g clipPath="url(#clip0_2342_14201)">
             <rect width="32" height="32" rx="16" fill="#030712"/>
             <circle cx="16.003" cy="16.003" r="12.4444" fill="white"/>
             <path d="M7.27183 20.7637L18.2485 8.53674C18.3171 8.46032 18.4298 8.44145 18.5198 8.49091C18.5534 8.50938 18.5817 8.53643 18.6016 8.56922C18.6457 8.64199 18.6436 8.73377 18.5962 8.80447L11.5769 19.2724C11.5171 19.3616 11.5077 19.4754 11.5522 19.5732C11.6025 19.6837 11.7127 19.7547 11.8342 19.7547H22.0137L20.164 21.3355H7.52693C7.39904 21.3355 7.28179 21.2644 7.22278 21.1509C7.15691 21.0242 7.17645 20.87 7.27183 20.7637Z" fill="black"/>
@@ -422,6 +422,16 @@ const LangIcon = () => {
     );
 }
 
+const XIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4L12 12" stroke="#030712" stroke-linecap="round" stroke-linejoin="bevel"/>
+        </svg>
+    );
+}
+
+
+
 export {
     Dashboard,
     Request,
@@ -457,4 +467,5 @@ export {
     BellBadge,
     LogoIcon,
     LangIcon,
+    XIcon,
 };

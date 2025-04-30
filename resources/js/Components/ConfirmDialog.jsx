@@ -8,10 +8,10 @@ import {
 } from '@headlessui/react';
 import { XIcon } from './Icon/Outline';
 
-export default function Modal({
+export default function ConfirmDialog({
     children,
     show = false,
-    maxWidth = 'lg',
+    maxWidth = 'sm',
     closeable = true,
     onClose = () => {},
     title,
@@ -27,14 +27,10 @@ export default function Modal({
 
     const maxWidthClass = {
         sm: 'w-[400px]',
-        md: 'w-[600px]',
-        lg: 'w-[700px] lg:w-[800px]',
     }[maxWidth];
 
     const maxHeightClass = {
-        sm: 'max-h-[70vh]',
-        md: 'max-h-[80vh]',
-        lg: 'max-h-[90vh]',
+        sm: 'h-auto',
     }[maxWidth];
 
     return (
@@ -68,18 +64,7 @@ export default function Modal({
                     <DialogPanel
                         className={`flex flex-col transform overflow-hidden rounded shadow-dialog bg-white transition-all sm:mx-auto sm:w-full ${maxWidthClass} ${maxHeightClass}`}
                     >
-                        <DialogTitle className='w-full flex justify-between items-center py-4 px-6'>
-                            <div>{title}</div>
-                            <CloseButton onClick={close}>
-                                <XIcon />
-                            </CloseButton>
-                        </DialogTitle>
-                        <div className="flex-1 overflow-y-auto">
-                            {children}
-                        </div>
-                        <div className={`"w-full p-6 bg-white " ${showFooter}`}>
-                            {footer}
-                        </div>
+                        {children}
                     </DialogPanel>
                 </TransitionChild>
             </Dialog>
