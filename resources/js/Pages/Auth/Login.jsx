@@ -41,7 +41,7 @@ export default function Login({ canResetPassword }) {
                             <InputLabel htmlFor="employee_id" value="CTID" />
                             <TextInput
                                 id="employee_id"
-                                type="employee_id"
+                                type="text"
                                 name="employee_id"
                                 value={data.employee_id}
                                 className="block w-full"
@@ -89,7 +89,7 @@ export default function Login({ canResetPassword }) {
                             {canResetPassword && (
                                 <Link
                                     href={route('password.request')}
-                                    className="text-gray-950 text-sm font-semibold"
+                                    className=" text-gray-950 text-sm font-semibold"
                                 >
                                     Forgot your password?
                                 </Link>
