@@ -1,10 +1,16 @@
 import React from "react";
-import { Link, usePage } from '@inertiajs/react';
+import { Link, usePage, useForm } from '@inertiajs/react';
 import { ChevronDown, Dashboard, Request, Calendar, Announcement, Report, Employee, Attendance, SalaryProfile, PerformanceData, Department, ProjectFolder, Tickets, SalaryIncrement, Bonus, Gift, Ranking, PointSettings, Assets, PoolFund, ExternalMember, Authority, SmartData, Setting, Activity, VersionHistory, LogOut, LogoIcon, } from "./Icon/Outline";
 import { Tag, Badge } from "antd";
 
 export default function SideBar({expanded, toggleSidebar}) {
     const { url } = usePage();
+
+    const { post } = useForm({}); 
+    
+    const logout = () => {
+        post(route('logout'));
+    };
 
     return (
     <>
@@ -175,7 +181,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                             <VersionHistory color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Version History </div>
                         </div>
-                        <div className="flex items-center px-3 py-1.5 gap-3 self-stretch cursor-pointer hover:bg-gray-200">
+                        <div className="flex items-center px-3 py-1.5 gap-3 self-stretch cursor-pointer hover:bg-gray-200" onClick={() => {logout()}}>
                             <LogOut color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className="text-gray-950 text-sm"> Log Out </div>
                         </div>

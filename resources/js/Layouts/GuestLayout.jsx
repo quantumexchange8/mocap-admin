@@ -1,17 +1,25 @@
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
+import { MocapLogo, Onboarding2Logo } from '@/Components/Icon/Logo';
+import { Earth } from '@/Components/Icon/Outline';
 
 export default function GuestLayout({ children }) {
     return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
+        <div className="flex min-h-screen flex-col pb-5 justify-between items-center flex-shrink-0">
+            <div className="flex w-full px-5 py-2 justify-between items-center">
+                <div className="flex items-center gap-3">
+                    <div><Onboarding2Logo /></div>
+                    <div><MocapLogo /></div>
+                </div>
+                <div className='flex w-[38px] h-[38px] p-[9px] justify-center items-center flex-shrink-0'>
+                    <Earth/>    
+                </div>
             </div>
-
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
+            <div className='flex flex-col justify-center items-center gap-12 flex-[1_0_0]'>
                 {children}
+            </div>
+            <div className='text-gray-500 text-center text-xs'>
+                © 2024 Motion Capture Powered by Current Tech Industries
             </div>
         </div>
     );

@@ -41,11 +41,19 @@ class PasswordResetLinkController extends Controller
         );
 
         if ($status == Password::RESET_LINK_SENT) {
-            return back()->with('status', __($status));
+            return redirect()->route('password.check-email')
+            ->with('email', $request->email); 
         }
 
         throw ValidationException::withMessages([
             'email' => [trans($status)],
+        ]);
+    }
+
+    public function checkEmail()
+    {
+        return Inertia::render('Auth/CheckEmail', [
+            'email' => session('email'),
         ]);
     }
 }

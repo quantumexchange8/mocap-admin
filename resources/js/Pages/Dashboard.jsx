@@ -8,6 +8,7 @@ import { Select, Tag } from 'antd';
 import { useState } from 'react';
 
 export default function Dashboard() {
+    const [open, setOpen] = useState(false);
 
     const options = [
         { value: '1', label: 'Jack' },
@@ -76,6 +77,40 @@ export default function Dashboard() {
                         </div>
                     </div>
                 </div>
+                
+                {/* <div className="py-12">
+                    <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
+                            <div className="flex flex-row items-start p-6 gap-4">
+                            <Button 
+                                className= " "
+                                variant='secondary'
+                                size="sm"
+                                onClick={() => setOpen(true)}
+                                >
+                                Open Modal
+                            </Button>
+                            <Modal
+                                title="Modal responsive width"
+                                centered
+                                open={open}
+                                onOk={() => setOpen(false)}
+                                onCancel={() => setOpen(false)}
+                                maskClosable={false}	
+                                width={{
+                                    md: '90%',
+                                    
+                                }}
+                            >
+                                <p>some contents...</p>
+                                <p>some contents...</p>
+                                <p>some contents...</p>
+                            </Modal>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div> */}
             </div>
 
             <Modal

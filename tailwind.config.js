@@ -58,7 +58,7 @@ export default {
                     900: '#713f12',
                     950: '#422006',
                 },
-                error: {
+                danger: {
                     50: '#FFF0F0',
                     100: '#FFDDDD',
                     200: '#FFC0C0',

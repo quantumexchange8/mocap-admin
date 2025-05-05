@@ -22,39 +22,39 @@ export default ({
 
     switch (variant) {
         case 'secondary':
-            variantClasses = `bg-gray-100 border-gray-100 text-gray-950 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400`
+            variantClasses = `bg-gray-100 border-gray-100 text-gray-950 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'outlined':
-            variantClasses = `bg-white border-gray-300 text-gray-950 hover:bg-gray-50 disabled:bg-white disabled:text-gray-400`
+            variantClasses = `bg-white border border-gray-300 text-gray-950 shadow-sm hover:bg-gray-50 disabled:bg-white disabled:text-gray-400 rounded-sm`
             break
         case 'text':
-            variantClasses = `text-gray-950 hover:bg-gray-50 disabled:text-gray-400`
+            variantClasses = `text-gray-950 hover:bg-gray-50 disabled:text-gray-400 rounded-sm`
             break
         case 'success':
-            variantClasses = `bg-success-600 text-white hover:bg-success-700 disabled:bg-gray-100 disabled:text-gray-400`
+            variantClasses = `bg-success-600 text-white hover:bg-success-700 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'text-success':
-            variantClasses = `text-success-600 hover:bg-success-50 disabled:text-gray-400`
+            variantClasses = `text-success-600 hover:bg-success-50 disabled:text-gray-400 rounded-sm`
             break
         case 'danger':
-            variantClasses = `bg-error-700 text-white hover:bg-error-800 disabled:bg-gray-100 disabled:text-gray-400`
+            variantClasses = `bg-danger-700 text-white hover:bg-danger-800 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'outlined-danger':
-            variantClasses = `border-error-700 text-error-700 hover:bg-error-50 disabled:border-gray-300 disabled:text-gray-300`
+            variantClasses = `border-danger-700 text-danger-700 hover:bg-danger-50 disabled:border-gray-300 disabled:text-gray-300 rounded-sm`
             break
         case 'text-danger':
-            variantClasses = `text-error-700 hover:bg-error-50 disabled:text-gray-400`
+            variantClasses = `text-danger-700 hover:bg-danger-50 disabled:text-gray-400 rounded-sm`
             break
         default:
             variantClasses = `bg-gray-950 text-white text-sm hover:bg-gray-800 disabled:text-gray-400 disabled:bg-gray-600 rounded-sm`
     }
 
     const sizeClasses = `${
-        size == 'sm' ? (iconOnly ? 'p-4' : 'px-4 py-2 text-sm font-normal') : ''
+        size == 'sm' ? (iconOnly ? 'p-4' : 'px-4 py-2 text-sm font-normal w-full h-[38px]') : ''
     }${
-        size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal') : ''
+        size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal w-full h-[46px]') : ''
     }${
-        size == 'lg' ? (iconOnly ? 'p-4' : 'px-6 py-4 text-sm font-normal') : ''
+        size == 'lg' ? (iconOnly ? 'p-4' : 'px-6 py-4 text-sm font-normal w-full h-[54px]') : ''
     }`
 
     const roundedClasses = `${!squared && !pill ? 'rounded-sm' : ''} ${
