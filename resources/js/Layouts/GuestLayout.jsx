@@ -19,7 +19,7 @@ export default function GuestLayout({ children }) {
                 {children}
             </div>
             <div className='text-gray-500 text-center text-xs'>
-                © 2024 Motion Capture Powered by Current Tech Industries
+                © {new Date().getFullYear()} Motion Capture Powered by Current Tech Industries
             </div>
         </div>
     );

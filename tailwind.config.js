@@ -18,6 +18,9 @@ export default {
             fontFamily: {
                 sans: ['Outfit', ...defaultTheme.fontFamily.sans],
             },
+            ringColor: ({ theme }) => ({
+                none: 'transparent', // 添加一个none选项
+            }),
             colors: {
                 gray: {
                     50: '#F9FAFB',
@@ -58,7 +61,7 @@ export default {
                     900: '#713f12',
                     950: '#422006',
                 },
-                danger: {
+                error: {
                     50: '#FFF0F0',
                     100: '#FFDDDD',
                     200: '#FFC0C0',
@@ -134,4 +137,11 @@ export default {
     },
 
     plugins: [forms],
+    corePlugins: {
+        // preflight: false, // <== disable this!
+        ringColor: false, // 禁用 ring color 插件
+        ringWidth: false, // 禁用 ring width 插件
+        ringOpacity: false, // 禁用 ring opacity 插件
+        ringOffsetWidth: false, // 禁用 ring offset 插件
+    },
 };

@@ -6,6 +6,7 @@ import SideBar from '@/Components/Sidebar';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import Navbar from '@/Components/Navbar';
+import { CustomToaster } from '@/Components/CustomToaster';
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -36,12 +37,14 @@ export default function AuthenticatedLayout({ header, children }) {
     }, []);
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-white">
+            <CustomToaster />
+            
             <SideBar expanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
             
             <div className={`min-h-screen flex flex-col transition-all duration-300 ${isSidebarExpanded ? 'lg:ml-[230px]' : 'translate-x-0'}`}>
                 <Navbar header={header} toggleSidebar={toggleSidebar} expanded={isSidebarExpanded}/>
-                <main className='w-full flex justify-center p-5 md:p-2'>
+                <main className='w-full flex justify-center'>
                     <div className='max-w-[1440px] w-full '>
                         {children}
                     </div>

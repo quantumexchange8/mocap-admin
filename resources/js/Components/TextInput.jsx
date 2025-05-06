@@ -14,9 +14,9 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
             {...props}
             type={type}
             className={
-                `bg-white hover:bg-white disabled:bg-gray-100 border border-gray-300 hover:border-gray-400 focus:border-gray-950 w-full h-[46px] px-4 py-3 text-gray-950 text-sm rounded-sm
+                `bg-white hover:bg-white disabled:bg-gray-100 border hover:border-gray-400 focus:border-gray-950 py-3 px-4 text-gray-950 text-sm rounded-sm caret-gray-950
                 ${withIcon ? 'pl-11 pr-4' : ''}
-                ${hasError ? 'border border-danger-500 focus:ring-0 focus:outline-none' : 'focus:border-primary-50 focus:ring-[#EDF8FF] hover:border-gray-200 '}` +
+                ${hasError ? 'border border-error-500 focus:ring-0 focus:outline-none' : ' border-gray-300 '}` +
                 className
             }
             ref={input}

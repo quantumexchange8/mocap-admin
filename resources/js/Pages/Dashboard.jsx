@@ -58,22 +58,22 @@ export default function Dashboard() {
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                        <Select
-                            onChange={handleChange}
-                            options={options}
-                            mode="multiple"
-                            placeholder="Placeholder"
-                            suffixIcon={<ChevronDown />}
-                        />
-                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2' >Placeholder</Tag>
-                        <Tag bordered={false} color="warning" className='text-xs font-medium py-1 px-2' >Placeholder</Tag>
-                        
-                        <Button size='md' onClick={openModal} >Open Modal sm</Button>
-                        <Button size='md' onClick={openModal2} >Open Modal md</Button>
-                        <Button size='md' onClick={openModal3} >Open Modal lg</Button>
-                        <Button size='md' onClick={openModal4} >confirm dialog</Button>
+                    <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg ">
+                        <div className="p-6 text-gray-900 flex items-center gap-3">
+                            <Select
+                                onChange={handleChange}
+                                options={options}
+                                mode="multiple"
+                                placeholder="Placeholder"
+                                suffixIcon={<ChevronDown />}
+                            />
+                            <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2' >Placeholder</Tag>
+                            <Tag bordered={false} color="warning" className='text-xs font-medium py-1 px-2' >Placeholder</Tag>
+                            
+                            <Button size='md' onClick={openModal} >Open Modal sm</Button>
+                            <Button size='md' onClick={openModal2} >Open Modal md</Button>
+                            <Button size='md' onClick={openModal3} >Open Modal lg</Button>
+                            <Button size='md' onClick={openModal4} >confirm dialog</Button>
                         </div>
                     </div>
                 </div>

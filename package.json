@@ -9,6 +9,7 @@
         "@headlessui/react": "^2.0.0",
         "@inertiajs/react": "^2.0.0",
         "@tailwindcss/forms": "^0.5.3",
+        "@types/sortablejs": "^1.15.8",
         "@vitejs/plugin-react": "^4.2.0",
         "autoprefixer": "^10.4.12",
         "axios": "^1.6.4",
@@ -21,6 +22,10 @@
     },
     "dependencies": {
         "antd": "^5.24.8",
-        "framer-motion": "^12.9.2"
+        "framer-motion": "^12.9.2",
+        "react-hot-toast": "^2.5.2",
+        "react-quilljs": "^2.0.5",
+        "react-sortablejs": "^6.1.4",
+        "sortablejs": "^1.15.6"
     }
 }

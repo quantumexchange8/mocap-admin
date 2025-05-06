@@ -37,13 +37,13 @@ export default ({
             variantClasses = `text-success-600 hover:bg-success-50 disabled:text-gray-400 rounded-sm`
             break
         case 'danger':
-            variantClasses = `bg-danger-700 text-white hover:bg-danger-800 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
+            variantClasses = `bg-error-700 text-white hover:bg-error-800 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'outlined-danger':
-            variantClasses = `border-danger-700 text-danger-700 hover:bg-danger-50 disabled:border-gray-300 disabled:text-gray-300 rounded-sm`
+            variantClasses = `border-error-700 text-error-700 hover:bg-error-50 disabled:border-gray-300 disabled:text-gray-300 rounded-sm`
             break
         case 'text-danger':
-            variantClasses = `text-danger-700 hover:bg-danger-50 disabled:text-gray-400 rounded-sm`
+            variantClasses = `text-error-700 hover:bg-error-50 disabled:text-gray-400 rounded-sm`
             break
         default:
             variantClasses = `bg-gray-950 text-white text-sm hover:bg-gray-800 disabled:text-gray-400 disabled:bg-gray-600 rounded-sm`

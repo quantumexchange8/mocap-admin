@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('head_id');
+            $table->unsignedBigInteger('head_id')->nullable();
             $table->string('name');
             $table->string('color');
             $table->string('icon');
-            $table->longText('job_description');
-            $table->longText('job_regulation');
+            $table->longText('job_description')->nullable();
+            $table->longText('job_regulation')->nullable();
             $table->timestamps();
         });
     }

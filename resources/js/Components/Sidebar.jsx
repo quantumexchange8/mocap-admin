@@ -35,18 +35,20 @@ export default function SideBar({expanded, toggleSidebar}) {
             <div className="flex flex-col items-center px-3 py-5 gap-6 ">
                 {/* General */}
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> GENERAL </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> GENERAL </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
-                        <div className={`${url === '/dashboard' ?' bg-gray-950' :' cursor-pointer hover:bg-gray-200'} flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm`}>
-                            <Dashboard color='currentColor' className={`${url === '/dashboard' ? 'text-white' : 'text-gray-950'}`}/>
-                            <div className={`${url === '/dashboard' ? 'text-white text-sm' :'text-gray-950 text-sm'} max-w-[106px] w-full`}> Dashboard </div>
-                        </div>
+                        <Link href={route('dashboard')} className="flex flex-col items-center gap-1 self-stretch">
+                            <div className={`${url === '/dashboard' ?' bg-gray-950' :' cursor-pointer hover:bg-gray-200'} flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm`}>
+                                <Dashboard color='currentColor' className={`${url === '/dashboard' ? 'text-white' : 'text-gray-950'}`}/>
+                                <div className={`${url === '/dashboard' ? 'text-white text-sm' :'text-gray-950 text-sm'} max-w-[106px] w-full`}> Dashboard </div>
+                            </div>
+                        </Link>
                         <div className={`${url === '/' ?' bg-gray-950' :' cursor-pointer hover:bg-gray-200'} flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm`}>
                             <div className="w-4 h-4">
                                 <Request color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'} `}/>
                             </div>
                             <div className={`${url === '/' ? 'text-white ' :'text-gray-950 '} max-w-[106px] w-full text-sm`}> Requests </div>
-                            <Badge count={1} className="flex flex-col min-w-5 px-1 py-0.5 justify-center items-center"/> 
+                            <Badge count={1} className="flex flex-col min-w-5 justify-center items-center"/> 
                         </div>
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Calendar color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -64,7 +66,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                 </div>
                 {/* Request */}
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> EMPLOYEE </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> EMPLOYEE </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Employee color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -85,16 +87,16 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> DEPARTMENT </div>
-                    <div className="flex flex-col items-center gap-1 self-stretch">
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                            <Department color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
-                            <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Departments </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> DEPARTMENT </div>
+                    <Link href={route('department')} className="flex flex-col items-center gap-1 self-stretch">
+                        <div className={`${url === '/department' || url === '/create-department' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                            <Department color='currentColor' className={`${url === '/department' || url === '/create-department' ? 'text-white ' : 'text-gray-950'}`}/>
+                            <div className={`${url === '/department' || url === '/create-department' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Departments </div>
                         </div>
-                    </div>
+                    </Link>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> WORK </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> WORK </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                     <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                     <ProjectFolder color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -107,7 +109,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> BENEFITS </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> BENEFITS </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <SalaryIncrement color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -120,7 +122,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> REWARDS </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> REWARDS </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Gift color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -137,7 +139,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> COMPANY </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> COMPANY </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Assets color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -150,7 +152,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> CONFIGURATION </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> CONFIGURATION </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <ExternalMember color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
@@ -171,7 +173,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                     </div>
                 </div>
                 <div className="flex flex-col items-stretch self-stretch gap-2">
-                    <div className="sticky top-[55px] text-xxs text-gray-500 bg-gray-100"> SYSTEM </div>
+                    <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> SYSTEM </div>
                         <div className="flex flex-col items-center gap-1 self-stretch">
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Activity color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>

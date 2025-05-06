@@ -2,13 +2,14 @@ export default function InputLabel({
     value,
     className = '',
     children,
+    hasError,
     ...props
 }) {
     return (
         <label
             {...props}
             className={
-                `block text-sm font-normal text-gray-500 ` +
+                `block text-sm font-normal ${hasError ? 'text-error-500' : 'text-gray-700'} ` +
                 className
             }
         >

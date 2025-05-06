@@ -44,13 +44,13 @@ export default function Login({ canResetPassword }) {
                                 type="text"
                                 name="employee_id"
                                 value={data.employee_id}
-                                className="block w-full"
+                                className="w-full"
                                 placeholder="eg. CT00000"
                                 autoComplete="employee_id"
                                 isFocused={true}
                                 onChange={(e) => setData('employee_id', e.target.value)}
                             />
-                            <InputError message={errors.employee_id} className="mt-2" />
+                            <InputError message={errors.employee_id} />
                         </div>
                         <div className='flex flex-col gap-2 self-stretch'>
                             <InputLabel htmlFor="password" value="Password" />
@@ -60,7 +60,7 @@ export default function Login({ canResetPassword }) {
                                     type={showPassword ? 'text' : 'password'}
                                     name="password"
                                     value={data.password}
-                                    className="px-4 py-3 w-full"
+                                    className="w-full"
                                     placeholder="••••••••"
                                     autoComplete="current-password"
                                     onChange={(e) => setData('password', e.target.value)}
@@ -69,7 +69,7 @@ export default function Login({ canResetPassword }) {
                                     {showPassword ? <EyeOff /> : <EyeOn /> }
                                 </div>
                             </InputIconWrapper>
-                            <InputError message={errors.password} className="mt-2" />
+                            <InputError message={errors.password} />
                         </div>
                     </div>
                     <div className='flex justify-between items-center self-stretch'>
