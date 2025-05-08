@@ -43,14 +43,14 @@ class DepartmentController extends Controller
             'job_regulation' => $request->job_regulation ?? null,
         ]);
 
-        if (empty($request->position)) {
-            foreach ($request->position as $position) {
-                
-                if ($position['name']) {
+        if (!empty($request->position)) {
+            foreach ($request->position as $pos) {
+
+                if ($pos['name']) {
                     $departPosition = DepartmentPosition::create([
                         'department_id' => $department->id,
-                        'position_name' => $position['name'],
-                        'order_no' => $position['order_no'],
+                        'position_name' => $pos['name'],
+                        'order_no' => $pos['order_no'],
                     ]);
                 }
             }

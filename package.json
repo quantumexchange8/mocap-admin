@@ -22,9 +22,12 @@
     },
     "dependencies": {
         "antd": "^5.24.8",
+        "dayjs": "^1.11.13",
         "framer-motion": "^12.9.2",
+        "primereact": "^10.9.5",
         "react-hot-toast": "^2.5.2",
         "react-quilljs": "^2.0.5",
+        "react-signature-canvas": "^1.1.0-alpha.2",
         "react-sortablejs": "^6.1.4",
         "sortablejs": "^1.15.6"
     }

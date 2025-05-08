@@ -16,7 +16,7 @@ export default function Modal({
     onClose = () => {},
     title,
     footer,
-    showFooter,
+    showFooter = 'flex',
 }) {
     const close = () => {
         if (!closeable) {
@@ -77,7 +77,7 @@ export default function Modal({
                         <div className="flex-1 overflow-y-auto">
                             {children}
                         </div>
-                        <div className={`"w-full p-6 bg-white " ${showFooter}`}>
+                        <div className={` w-full p-6 bg-white ${showFooter}`}>
                             {footer}
                         </div>
                     </DialogPanel>

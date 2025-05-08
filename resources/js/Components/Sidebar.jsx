@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, usePage, useForm } from '@inertiajs/react';
-import { ChevronDown, Dashboard, Request, Calendar, Announcement, Report, Employee, Attendance, SalaryProfile, PerformanceData, Department, ProjectFolder, Tickets, SalaryIncrement, Bonus, Gift, Ranking, PointSettings, Assets, PoolFund, ExternalMember, Authority, SmartData, Setting, Activity, VersionHistory, LogOut, LogoIcon, } from "./Icon/Outline";
+import { ChevronDown, Dashboard, Request, CalendarIcon, Announcement, Report, Employee, Attendance, SalaryProfile, PerformanceData, Department, ProjectFolder, Tickets, SalaryIncrement, Bonus, Gift, Ranking, PointSettings, Assets, PoolFund, ExternalMember, Authority, SmartData, Setting, Activity, VersionHistory, LogOut, LogoIcon, } from "./Icon/Outline";
 import { Tag, Badge } from "antd";
 
 export default function SideBar({expanded, toggleSidebar}) {
@@ -51,7 +51,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                             <Badge count={1} className="flex flex-col min-w-5 justify-center items-center"/> 
                         </div>
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                            <Calendar color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
+                            <CalendarIcon color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Calendar </div>
                         </div>
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>

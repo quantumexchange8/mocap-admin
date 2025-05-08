@@ -14,4 +14,9 @@ class DepartmentPosition extends Model
         'position_name',
         'order_no',
     ];
+
+    public function department(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
 }

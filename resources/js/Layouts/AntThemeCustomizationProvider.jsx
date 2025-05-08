@@ -43,6 +43,9 @@ function AntThemeCustomizationProvider({ children }) {
                     Badge:{
                         colorBorderBg: 'hidden',	
                         colorError	: '#FF2323',
+                    },
+                    DatePicker: {
+                        cellHoverBg: '#F3F4F6'
                     }
                 }
             }}

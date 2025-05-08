@@ -21,7 +21,7 @@ export default function Dashboard() {
     const [isOpen4, setIsOpen4] = useState(false);
 
     const handleChange = (value) => {
-        console.log(value);
+        
     }
 
     const openModal = () => {

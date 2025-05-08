@@ -15,6 +15,24 @@ Route::get('/', function() {
 
 Route::get('/job-application', [JobApplicationController::class, 'jobApplication'])->name('job-application');
 Route::get('/employee-application', [EmployeeController::class, 'employeeApplication'])->name('employee-application');
+Route::post('/store-employee', [EmployeeController::class, 'storeEmployee'])->name('store-employee');
+Route::post('/check-signature', [EmployeeController::class, 'checkSignature'])->name('check-signature');
+
+
+
+
+/**
+ * ==============================
+ *           Global Usage
+ * ==============================
+*/
+Route::get('/getPhoneCode', [GlobalController::class, 'phoneCode'])->name('getPhoneCode');
+Route::get('/getNationality', [GlobalController::class, 'getNationality'])->name('getNationality');
+Route::get('/getState', [GlobalController::class, 'getState'])->name('getState');
+Route::get('/getBank', [GlobalController::class, 'getBank'])->name('getBank');
+Route::get('/getDepartment', [GlobalController::class, 'getDepartment'])->name('getDepartment');
+Route::get('/getDepartmentposition', [GlobalController::class, 'getDepartmentposition'])->name('getDepartmentposition');
+Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getAllAdmin');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -35,6 +53,7 @@ Route::middleware('auth')->group(function () {
      * ==============================
     */
     Route::get('/getUserListing', [GlobalController::class, 'getUserListing'])->name('getUserListing');
+    
 
     /**
      * ==============================

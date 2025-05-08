@@ -50,11 +50,11 @@ export default ({
     }
 
     const sizeClasses = `${
-        size == 'sm' ? (iconOnly ? 'p-4' : 'px-4 py-2 text-sm font-normal w-full h-[38px]') : ''
+        size == 'sm' ? (iconOnly ? 'p-2.5' : 'px-4 py-2 text-sm font-normal h-[38px]') : ''
     }${
-        size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal w-full h-[46px]') : ''
+        size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal h-[46px]') : ''
     }${
-        size == 'lg' ? (iconOnly ? 'p-4' : 'px-6 py-4 text-sm font-normal w-full h-[54px]') : ''
+        size == 'lg' ? (iconOnly ? 'p-4' : 'px-6 py-4 text-sm font-normal h-[54px]') : ''
     }`
 
     const roundedClasses = `${!squared && !pill ? 'rounded-sm' : ''} ${
