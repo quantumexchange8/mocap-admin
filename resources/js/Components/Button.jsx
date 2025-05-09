@@ -50,7 +50,7 @@ export default ({
     }
 
     const sizeClasses = `${
-        size == 'sm' ? (iconOnly ? 'p-2.5' : 'px-4 py-2 text-sm font-normal h-[38px]') : ''
+        size == 'sm' ? (iconOnly ? 'p-4' : 'px-4 py-2 text-sm font-normal h-[38px]') : ''
     }${
         size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal h-[46px]') : ''
     }${

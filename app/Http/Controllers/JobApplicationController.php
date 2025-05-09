@@ -10,7 +10,6 @@ class JobApplicationController extends Controller
     //
     public function jobApplication()
     {
-
-        return Inertia::render('JobApplication');
+        return Inertia::render('JobApplication/JobApplication');
     }
 }

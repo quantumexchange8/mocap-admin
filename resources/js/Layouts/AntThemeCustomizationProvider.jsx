@@ -15,10 +15,13 @@ function AntThemeCustomizationProvider({ children }) {
                 },
                 components: {
                     Select: {
+                        controlHeight: '46px',
+                        padding: '8px 16px',
                         controlPaddingHorizontal: 16, // 水平内边距
                         paddingContentHorizontal: 16, // 内容水平内边距
                         colorBorder: '#D1D5DB', // Tailwind gray-200
                         colorPrimaryHover: '#9CA3AF', // Tailwind blue-500
+                        colorTextPlaceholder: '#6B7280',
                         activeBorderColor: '#030712',
                         optionSelectedBg: '#030712', // Tailwind blue-50
                         optionSelectedColor: '#FFF', // Tailwind blue-600
@@ -32,7 +35,7 @@ function AntThemeCustomizationProvider({ children }) {
                         optionSelectedFontWeight: '400',
                         selectorBg: '#FFF', // Tailwind gray-100
                         multipleItemHeight: '20px',
-                        activeOutlineColor: 'rgb(0 0 0 / 0%)'
+                        activeOutlineColor: 'rgb(0 0 0 / 0%)',
                     },
                     Tag: {
                         defaultBg: '#F3F4F6',
@@ -41,12 +44,26 @@ function AntThemeCustomizationProvider({ children }) {
                         fontFamily: 'Outfit, sans-serif',
                     },
                     Badge:{
-                        colorBorderBg: 'hidden',	
+                        colorBorderBg: 'none',	
                         colorError	: '#FF2323',
                     },
-                    DatePicker: {
-                        cellHoverBg: '#F3F4F6'
-                    }
+                    Table:{
+                        headerBg: 'white',
+                        headerColor: '#030712',
+                        headerSplitColor: 'none',
+                        borderColor: 'none',
+                        cellPaddingBlock: 0,
+                        cellPaddingInline: 0,
+                    },
+                    Radio:{
+                        radioSize: 20,
+                    },
+                    Popconfirm:{
+                        colorText: '#374151',
+                    },
+                    Steps:{
+                        padding: '8px',
+                    },
                 }
             }}
         >

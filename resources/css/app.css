@@ -457,3 +457,48 @@ select:focus,
   .p-dropdown .p-dropdown-label.p-placeholder {
     color: #6B7280;
   }
+/* Step */
+.ant-steps-item-icon {
+    width: 42px !important;
+    height: 42px !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 50px !important;
+    background: white !important;
+    padding: 12px;
+    margin: 0% !important;
+}
+
+.ant-steps-icon{
+    color: #030712 !important;
+}
+
+.ant-steps .ant-steps-item-process .ant-steps-item-icon{
+    background: #030712 !important;
+}
+
+.ant-steps .ant-steps-item-process .ant-steps-item-icon .ant-steps-icon{
+    color: white !important;
+}
+
+.ant-steps .ant-steps-item-title::after {
+    background: #E5E7EB !important;
+    height: 2px !important;
+}
+
+/* Step */
+.ant-table-wrapper .ant-table .ant-table-cell {
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    padding-inline: 6px !important;
+}
+/* Step */
+
+/* Popconfirm */
+.ant-popover-inner {
+    padding: 16px !important;
+}
+.ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
+    margin: 0 !important;
+}
+
+/* Popconfirm */
