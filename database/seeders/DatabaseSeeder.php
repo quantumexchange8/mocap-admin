@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             StateSeeder::class,
             QualificationSeeder::class,
+            NationalitySeeder::class,
+            RunningNumber::class,
         ]);
         
         User::factory()->create([

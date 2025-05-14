@@ -44,7 +44,7 @@ export default function DeclarationInfo({ data, setData, sigCanvas }) {
                             <SignatureCanvas
                                 ref={sigCanvas}
                                 penColor="black"
-                                canvasProps={{ className: 'border border-gray-300 rounded w-full h-48' }}
+                                canvasProps={{ className: 'border border-gray-300 rounded w-full h-80' }}
                             />
 
                             <div className="absolute top-2 right-2 z-10">

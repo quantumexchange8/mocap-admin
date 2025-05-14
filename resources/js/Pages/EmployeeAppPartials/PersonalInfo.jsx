@@ -1,13 +1,15 @@
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import { DatePicker, Radio, Select } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Dropdown } from 'primereact/dropdown';
 import dayjs from "dayjs";
 import { Calendar } from 'primereact/calendar';
 import { CalendarIcon, ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
+import InputError from "@/Components/InputError";
+import { classNames } from "primereact/utils";
         
-export default function PersonalInfo({ data, setData }) {
+export default function PersonalInfo({ data, setData, errors }) {
 
     const races = [
         {name: 'Malay'},
@@ -29,8 +31,20 @@ export default function PersonalInfo({ data, setData }) {
         {name: 'Islamic Account'},
     ];
 
+    const maritalType = [
+        {name: 'Single'},
+        {name: 'Married'},
+        {name: 'Divorced'},
+        {name: 'Widowed'},
+    ];
 
-    const [getNationlity, setGetNationality] = useState([]);
+
+    const fullNameRef = useRef(null);
+    const usernameRef = useRef(null);
+    const identityNoRef = useRef(null);
+
+    const [getNationality, setGetNationality] = useState([]);
+    const [filterNationalityState, setFilterNationalityState] = useState([]);
     const [getPhoneCode, setGetPhoneCode] = useState([]);
     const [getStates, setGetStates] = useState([]);
     const [getBank, setGetBank] = useState([]);
@@ -103,6 +117,29 @@ export default function PersonalInfo({ data, setData }) {
         fetchBank();
     }, []);
 
+    useEffect(() => {
+        if (errors.full_name && fullNameRef.current) {
+            fullNameRef.current.focus();
+        } else if (errors.username && usernameRef.current) {
+            usernameRef.current.focus();
+        } else if (errors.nationality && nationalityRef.current?.focus) {
+            nationalityRef.current.focus(); // might require .getInputElement() if using some UI libs
+        } else if (errors.identity_no && identityNoRef.current) {
+            identityNoRef.current.focus();
+        }
+    }, [errors]);
+
+    useEffect(() => {
+        if (data.nationality && getNationality.length > 0) {
+            const selected = getNationality.find(n => n.name === data.nationality);
+            if (selected && selected.states) {
+                setFilterNationalityState(selected.states);
+            } else {
+                setFilterNationalityState([]);
+            }
+        }
+    }, [data.nationality, getNationality]);
+
     const today = new Date();
     const tenYearsAgo = new Date();
     tenYearsAgo.setFullYear(today.getFullYear() - 10);
@@ -127,6 +164,7 @@ export default function PersonalInfo({ data, setData }) {
                             <span className="text-error-600">*</span>
                         </div>} />
                         <TextInput 
+                            ref={fullNameRef}
                             id="full_name"
                             type="text"
                             name="full_name"
@@ -136,7 +174,9 @@ export default function PersonalInfo({ data, setData }) {
                             autoComplete="full_name"
                             isFocused={true}
                             onChange={(e) => setData('full_name', e.target.value)}
+                            hasError={!!errors.full_name}
                         />
+                        <InputError message={errors.full_name}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="username" value={<div className="flex gap-1">
@@ -152,7 +192,9 @@ export default function PersonalInfo({ data, setData }) {
                             placeholder="Your name as it will appear in the app"
                             autoComplete="username"
                             onChange={(e) => setData('username', e.target.value)}
+                            hasError={!!errors.username}
                         />
+                        <InputError message={errors.username}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="nationality" value={<div className="flex gap-1">
@@ -162,7 +204,7 @@ export default function PersonalInfo({ data, setData }) {
                         <Dropdown 
                             value={data.nationality} 
                             onChange={(e) => setData('nationality', e.value)} 
-                            options={getNationlity.map((item) => ({
+                            options={getNationality.map((item) => ({
                                 label: item.name,
                                 value: item.name,
                             }))}
@@ -183,6 +225,7 @@ export default function PersonalInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.nationality}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="identity_no" value={<div className="flex gap-1">
@@ -198,7 +241,9 @@ export default function PersonalInfo({ data, setData }) {
                             placeholder="901223145678 / A12345678"
                             autoComplete="identity_no"
                             onChange={(e) => setData('identity_no', e.target.value)}
+                            hasError={!!errors.identity_no}
                         />
+                        <InputError message={errors.identity_no}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="gender" value={<div className="flex gap-1">
@@ -214,6 +259,7 @@ export default function PersonalInfo({ data, setData }) {
                             ]}
                             className="py-3"
                         />
+                        <InputError message={errors.gender}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="dob" value={<div className="flex gap-1">
@@ -229,6 +275,7 @@ export default function PersonalInfo({ data, setData }) {
                                 maxDate={tenYearsAgo} // Restricts to dates 10+ years ago
                                 viewDate={defaultViewDate}
                                 placeholder="dd/mm/yyyy"
+                                invalid={!!errors.dob}
                                 pt={{
                                     input: {
                                         className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -276,6 +323,7 @@ export default function PersonalInfo({ data, setData }) {
                                 
                             </div>
                         </div>
+                        <InputError message={errors.dob}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="race" value={<div className="flex gap-1">
@@ -285,10 +333,14 @@ export default function PersonalInfo({ data, setData }) {
                         <Dropdown 
                             value={data.race} 
                             onChange={(e) => setData('race', e.value)} 
-                            options={races}
-                            optionLabel="name"
+                            options={races.map((item) => ({
+                                label: item.name,
+                                value: item.name,
+                            }))}
+                            optionLabel="label"
                             placeholder="Select "
                             className="w-full text-sm"
+                            invalid={!!errors.race}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -301,6 +353,7 @@ export default function PersonalInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.race}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="religion" value={<div className="flex gap-1">
@@ -310,10 +363,14 @@ export default function PersonalInfo({ data, setData }) {
                         <Dropdown 
                             value={data.religion} 
                             onChange={(e) => setData('religion', e.value)} 
-                            options={religions}
-                            optionLabel="name"
+                            options={religions.map((item) => ({
+                                label: item.name,
+                                value: item.name,
+                            }))}
+                            optionLabel="label"
                             placeholder="Select "
                             className="w-full text-sm"
+                            invalid={!!errors.religion}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -326,7 +383,71 @@ export default function PersonalInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.religion}  />
                     </div>
+
+                    <div className="flex flex-col gap-2">
+                        <InputLabel htmlFor="place_of_birth" value={<div className="flex gap-1">
+                            <span>Place of Birth </span>
+                            <span className="text-error-600">*</span>
+                        </div>} />
+                        <Dropdown 
+                            value={data.place_of_birth} 
+                            onChange={(e) => setData('place_of_birth', e.value)} 
+                            options={filterNationalityState.map((item) => ({
+                                label: item.name,
+                                value: item.name,
+                            }))}
+                            optionLabel="label"
+                            placeholder="Select "
+                            className="w-full text-sm"
+                            invalid={!!errors.place_of_birth}
+                            pt={{
+                                root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                item: ({ context }) => ({
+                                    className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                        context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                    }`
+                                }),
+                                filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                filterContainer: { className: 'p-2'}
+                            }}
+                        />
+                        <InputError message={errors.place_of_birth}  />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <InputLabel htmlFor="marital_status" value={<div className="flex gap-1">
+                            <span>Marital Status </span>
+                            <span className="text-error-600">*</span>
+                        </div>} />
+                        <Dropdown 
+                            value={data.marital_status} 
+                            onChange={(e) => setData('marital_status', e.value)} 
+                            options={maritalType.map((item) => ({
+                                label: item.name,
+                                value: item.name,
+                            }))}
+                            optionLabel="label"
+                            placeholder="Select "
+                            className="w-full text-sm"
+                            invalid={!!errors.marital_status}
+                            pt={{
+                                root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                item: ({ context }) => ({
+                                    className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                        context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                    }`
+                                }),
+                                filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                filterContainer: { className: 'p-2'}
+                            }}
+                        />
+                        <InputError message={errors.marital_status}  />
+                    </div>
+                    
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="phone_no" value={<div className="flex gap-1">
                             <span>Phone Number </span>
@@ -365,8 +486,10 @@ export default function PersonalInfo({ data, setData }) {
                                 placeholder="Phone Number"
                                 autoComplete="phone_no"
                                 onChange={(e) => setData('phone_no', e.target.value)}
+                                hasError={!!errors.phone_no}
                             />
                         </div>
+                        <InputError message={errors.phone_no}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="email" value={<div className="flex gap-1">
@@ -382,7 +505,9 @@ export default function PersonalInfo({ data, setData }) {
                             placeholder="you@example.com"
                             autoComplete="email"
                             onChange={(e) => setData('email', e.target.value)}
+                            hasError={!!errors.email}
                         />
+                        <InputError message={errors.email}  />
                     </div>
                     <div className="col-span-2  flex flex-col gap-2">
                         <InputLabel htmlFor="address" value={<div className="flex gap-1">
@@ -398,10 +523,17 @@ export default function PersonalInfo({ data, setData }) {
                             placeholder="House no./unit no., building name, street name/district, etc."
                             autoComplete="address"
                             onChange={(e) => setData('address', e.target.value)}
+                            hasError={!!errors.address}
                         />
-                        <div className="text-gray-500 text-xs">
-                            Enter your full address, including street name and unit number.
-                        </div>
+                        {
+                            !!errors.address ? (
+                                <InputError message={errors.address}  />
+                            ) : (
+                                <div className="text-gray-500 text-xs">
+                                    Enter your full address, including street name and unit number.
+                                </div>
+                            )
+                        }
                     </div>
                     <div className="col-span-2 grid grid-cols-3 gap-5">
                         <div className="flex flex-col gap-2">
@@ -411,14 +543,16 @@ export default function PersonalInfo({ data, setData }) {
                             </div>} />
                             <TextInput 
                                 id="postcode"
-                                type="text"
+                                type="number"
                                 name="postcode"
                                 value={data.postcode}
                                 className="w-full"
                                 placeholder="e.g. 50000"
                                 autoComplete="postcode"
                                 onChange={(e) => setData('postcode', e.target.value)}
+                                hasError={!!errors.postcode}
                             />
+                            <InputError message={errors.postcode}  />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel htmlFor="city" value={<div className="flex gap-1">
@@ -434,7 +568,9 @@ export default function PersonalInfo({ data, setData }) {
                                 placeholder="e.g. Kuala Lumpur"
                                 autoComplete="city"
                                 onChange={(e) => setData('city', e.target.value)}
+                                hasError={!!errors.city}
                             />
+                            <InputError message={errors.city}  />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel htmlFor="state" value={<div className="flex gap-1">
@@ -444,10 +580,14 @@ export default function PersonalInfo({ data, setData }) {
                             <Dropdown 
                                 value={data.state} 
                                 onChange={(e) => setData('state', e.value)} 
-                                options={getStates}
-                                optionLabel="name"
+                                options={getStates.map((item) => ({
+                                    label: item.name,
+                                    value: item.name,
+                                }))}
+                                optionLabel="label"
                                 placeholder="Select "
                                 className="w-full text-sm"
+                                invalid={!!errors.state}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -460,6 +600,7 @@ export default function PersonalInfo({ data, setData }) {
                                     filterContainer: { className: 'p-2'}
                                 }}
                             />
+                            <InputError message={errors.state}  />
                         </div>
                     </div>
                 </div>
@@ -480,10 +621,14 @@ export default function PersonalInfo({ data, setData }) {
                         <Dropdown 
                             value={data.bank_name} 
                             onChange={(e) => setData('bank_name', e.value)} 
-                            options={getBank}
-                            optionLabel="name"
+                            options={getBank.map((item) => ({
+                                label: item.name,
+                                value: item.name
+                            }))}
+                            optionLabel="label"
                             placeholder="Select "
                             className="w-full text-sm"
+                            invalid={!!errors.bank_name}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -496,6 +641,7 @@ export default function PersonalInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.bank_name}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="acc_type" value={<div className="flex gap-1">
@@ -505,10 +651,14 @@ export default function PersonalInfo({ data, setData }) {
                         <Dropdown 
                             value={data.acc_type} 
                             onChange={(e) => setData('acc_type', e.value)} 
-                            options={accType}
-                            optionLabel="name"
+                            options={accType.map((item) => ({
+                                label: item.name,
+                                value: item.name,
+                            }))}
+                            optionLabel="label"
                             placeholder="Select "
                             className="w-full text-sm"
+                            invalid={!!errors.acc_type}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -521,6 +671,7 @@ export default function PersonalInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.acc_type}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="acc_no" value={<div className="flex gap-1">
@@ -529,13 +680,15 @@ export default function PersonalInfo({ data, setData }) {
                         </div>} />
                         <TextInput 
                             id="acc_no"
-                            type="text"
+                            type="number"
                             name="acc_no"
                             value={data.acc_no}
                             className="w-full"
                             autoComplete="acc_no"
                             onChange={(e) => setData('acc_no', e.target.value)}
+                            hasError={!!errors.acc_no}
                         />
+                        <InputError message={errors.acc_no}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="income_tax_no" value={<div className="flex gap-1">
@@ -550,7 +703,9 @@ export default function PersonalInfo({ data, setData }) {
                             className="w-full"
                             autoComplete="income_tax_no"
                             onChange={(e) => setData('income_tax_no', e.target.value)}
+                            hasError={!!errors.income_tax_no}
                         />
+                        <InputError message={errors.income_tax_no}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="epf_no" value={<div className="flex gap-1">
@@ -565,7 +720,9 @@ export default function PersonalInfo({ data, setData }) {
                             className="w-full"
                             autoComplete="epf_no"
                             onChange={(e) => setData('epf_no', e.target.value)}
+                            hasError={!!errors.epf_no}
                         />
+                        <InputError message={errors.epf_no}  />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="socso_no" value={<div className="flex gap-1">
@@ -578,9 +735,10 @@ export default function PersonalInfo({ data, setData }) {
                             name="socso_no"
                             value={data.socso_no}
                             className="w-full"
-                            autoComplete="socso_no"
                             onChange={(e) => setData('socso_no', e.target.value)}
+                            hasError={!!errors.socso_no}
                         />
+                        <InputError message={errors.socso_no}  />
                     </div>
                 </div>
             </div>

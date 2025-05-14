@@ -21,12 +21,12 @@ return new class extends Migration
             $table->string('medical_remark')->nullable();
             $table->string('medication_type');
             $table->string('medication_remark')->nullable();
-            $table->string('pregnant_type');
+            $table->string('pregnant_type')->nullable();
             $table->string('pregnant_remark')->nullable();
-            $table->date('pregnant_delivery_date');
-            $table->string('pregnancy_medication_type');
+            $table->date('pregnant_delivery_date')->nullable();
+            $table->string('pregnancy_medication_type')->nullable();
             $table->string('pregnancy_medication_remark')->nullable();
-            $table->string('gynaecological_type');
+            $table->string('gynaecological_type')->nullable();
             $table->string('gynaecological_remark')->nullable();
             $table->timestamps();
         });

@@ -181,8 +181,15 @@ select:focus,
     border-radius: 2px;
     color: #030712;
     font-size: 14px;
+    line-height: 20px;
+    padding: 12px 16px;
 }
-
+.p-calendar.p-invalid.p-component > .p-inputtext {
+    border-color: #FF2323;
+}
+.p-dropdown.p-invalid.p-component {
+    border-color: #FF2323;
+}
 .p-calendar .p-inputtext:hover {
     border-color: #9CA3AF;
 }
@@ -306,8 +313,8 @@ select:focus,
     border-color: transparent;
   }
   .p-datepicker table td.p-datepicker-today > span.p-highlight {
-    color: #3B82F6;
-    background: #EFF6FF;
+    color: #030712;
+    background: #E5E7EB;
   }
   .p-datepicker .p-datepicker-buttonbar {
     padding: 1rem 0;
@@ -499,6 +506,26 @@ select:focus,
 }
 .ant-popconfirm .ant-popconfirm-message .ant-popconfirm-description {
     margin: 0 !important;
+}
+
+.ant-popconfirm .ant-popconfirm-message {
+  margin-bottom: 0;
+}
+
+.ant-popconfirm-inner-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ant-popover-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ant-popover .ant-popover-title {
+  margin-bottom: 0;
 }
 
 /* Popconfirm */

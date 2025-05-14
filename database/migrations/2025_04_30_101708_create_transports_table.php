@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('transports', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('own_transport');
+            $table->json('own_transport');
             $table->json('license_id');
-            $table->string('work_transportation');
+            $table->json('work_transportation');
             $table->double('approximate_distance');
             $table->integer('approximate_hours');
             $table->integer('approximate_minutes');

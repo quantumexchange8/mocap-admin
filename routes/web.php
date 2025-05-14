@@ -14,12 +14,6 @@ Route::get('/', function() {
 });
 
 Route::get('/job-application', [JobApplicationController::class, 'jobApplication'])->name('job-application');
-Route::get('/employee-application', [EmployeeController::class, 'employeeApplication'])->name('employee-application');
-Route::post('/store-employee', [EmployeeController::class, 'storeEmployee'])->name('store-employee');
-Route::post('/check-signature', [EmployeeController::class, 'checkSignature'])->name('check-signature');
-
-
-
 
 /**
  * ==============================
@@ -43,6 +37,26 @@ Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getA
 //     ]);
 // });
 
+
+/**
+ * ==============================
+ *     Employee Application
+ * ==============================
+*/
+Route::get('/employee-application', [EmployeeController::class, 'employeeApplication'])->name('employee-application');
+// validation
+Route::post('/personal-validation', [EmployeeController::class, 'personalValidaiton'])->name('personal-validation');
+Route::post('/emergency-validation', [EmployeeController::class, 'emergencyValidaiton'])->name('emergency-validation');
+Route::post('/transportation-validation', [EmployeeController::class, 'transportationValidaiton'])->name('transportation-validation');
+Route::post('/medical-validation', [EmployeeController::class, 'medicalValidaiton'])->name('medical-validation');
+Route::post('/beneficiary-validation', [EmployeeController::class, 'beneficiaryValidaiton'])->name('beneficiary-validation');
+Route::post('/additional-validation', [EmployeeController::class, 'additionalValidaiton'])->name('additional-validation');
+Route::post('/check-signature', [EmployeeController::class, 'checkSignature'])->name('check-signature');
+Route::post('/employee-information-validation', [EmployeeController::class, 'employeeInfoValidation'])->name('employee-information-validation');
+
+// store
+Route::post('/store-employee', [EmployeeController::class, 'storeEmployee'])->name('store-employee');
+Route::get('/employee-success', [EmployeeController::class, 'employeeSuccess'])->name('employee-success');
 
 
 Route::middleware('auth')->group(function () {

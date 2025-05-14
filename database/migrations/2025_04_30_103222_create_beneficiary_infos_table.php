@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('beneficiary_infos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->string('full_name');
             $table->string('relationship');
             $table->string('indentity_no');
             $table->string('dial_code');

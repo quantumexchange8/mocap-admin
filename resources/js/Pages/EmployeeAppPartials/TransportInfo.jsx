@@ -2,8 +2,9 @@ import React from "react";
 import { Checkbox } from 'antd';
 import InputLabel from "@/Components/InputLabel";
 import { InputNumber } from 'primereact/inputnumber';
+import InputError from "@/Components/InputError";
         
-export default function TransportInfo({ data, setData }) {
+export default function TransportInfo({ data, setData, errors }) {
 
     const transports  = ['None', 'Bicycle', 'Motorcycle', 'Car'];
     const licenses  = [
@@ -74,6 +75,7 @@ export default function TransportInfo({ data, setData }) {
                                 className="gap-x-8 gap-y-5 text-sm text-gray-950"
                             />
                         </div>
+                        <InputError message={errors.own_transport} />  
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="license_id" value={<div className="flex gap-1">
@@ -88,6 +90,7 @@ export default function TransportInfo({ data, setData }) {
                                 className="gap-x-8 gap-y-5 text-sm text-gray-950"
                             />
                         </div>
+                        <InputError message={errors.license_id} />  
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="work_transport" value={<div className="flex gap-1">
@@ -102,6 +105,7 @@ export default function TransportInfo({ data, setData }) {
                                 className="gap-x-8 gap-y-5 text-sm text-gray-950"
                             />
                         </div>
+                        <InputError message={errors.work_transportation} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="work_transport" value={<div className="flex gap-1">
@@ -117,6 +121,7 @@ export default function TransportInfo({ data, setData }) {
                             minFractionDigits={1}
                             maxFractionDigits={2}
                         />
+                        <InputError message={errors.approximate_distance} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="work_transport" value={<div className="flex gap-1">
@@ -124,22 +129,28 @@ export default function TransportInfo({ data, setData }) {
                             <span className="text-error-600">*</span>
                         </div>} />
                         <div className="flex items-center gap-5 w-full">
-                            <InputNumber 
-                                inputId="hours"
-                                value={data.approximate_hours || 0} 
-                                onValueChange={(e) => setData('approximate_hours', e.value)} 
-                                suffix=" hour(s)" 
-                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                max={24}
-                            />
-                            <InputNumber 
-                                inputId="minutes"
-                                value={data.approximate_minutes || 0.0} 
-                                onValueChange={(e) => setData('approximate_minutes', e.value)} 
-                                suffix=" minutes(s)" 
-                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                max={59}
-                            />
+                            <div className="flex flex-col gap-2 w-full ">
+                                <InputNumber 
+                                    inputId="hours"
+                                    value={data.approximate_hours || 0} 
+                                    onValueChange={(e) => setData('approximate_hours', e.value)} 
+                                    suffix=" hour(s)" 
+                                    className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                    max={24}
+                                />
+                                <InputError message={errors.approximate_hours} />
+                            </div>
+                            <div className="flex flex-col gap-2 w-full">
+                                <InputNumber 
+                                    inputId="minutes"
+                                    value={data.approximate_minutes || 0.0} 
+                                    onValueChange={(e) => setData('approximate_minutes', e.value)} 
+                                    suffix=" minute(s)" 
+                                    className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                    max={59}
+                                />
+                                <InputError message={errors.approximate_minutes} />
+                            </div>
                         </div>
                     </div>
                 </div>

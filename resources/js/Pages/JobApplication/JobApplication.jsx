@@ -104,13 +104,15 @@ export default function JobApplication() {
                     cancelText="Cancel"
                     placement="topRight"
                     >
-                        <Button 
-                            size="lg"
-                            variant="text"
-                            className="flex px-6 py-4 justify-center items-center gap-2"
-                        >
-                            Clear Form
-                    </Button>
+                        <span>
+                            <Button 
+                                size="lg"
+                                variant="text"
+                                className="flex px-6 py-4 justify-center items-center gap-2"
+                            >
+                                Clear Form
+                            </Button>
+                        </span>
                 </Popconfirm>
                 
                 <div className="flex items-center gap-5">

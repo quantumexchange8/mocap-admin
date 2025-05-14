@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, usePage, useForm } from '@inertiajs/react';
 import { ChevronDown, Dashboard, Request, CalendarIcon, Announcement, Report, Employee, Attendance, SalaryProfile, PerformanceData, Department, ProjectFolder, Tickets, SalaryIncrement, Bonus, Gift, Ranking, PointSettings, Assets, PoolFund, ExternalMember, Authority, SmartData, Setting, Activity, VersionHistory, LogOut, LogoIcon, } from "./Icon/Outline";
 import { Tag, Badge } from "antd";
+import ConfirmDialog from "./ConfirmDialog";
+import Button from "./Button";
 
 export default function SideBar({expanded, toggleSidebar}) {
+
+    const [isOpen, setIsOpen] = useState(false);
     const { url } = usePage();
 
     const { post } = useForm({}); 
     
+    const confirmLogout = () => {
+        setIsOpen(true);
+    }
+
+    const rejectLogout = () => {
+        setIsOpen(false);
+    }
+
     const logout = () => {
         post(route('logout'));
     };
@@ -183,7 +195,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                             <VersionHistory color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Version History </div>
                         </div>
-                        <div className="flex items-center px-3 py-1.5 gap-3 self-stretch cursor-pointer hover:bg-gray-200" onClick={() => {logout()}}>
+                        <div className="flex items-center px-3 py-1.5 gap-3 self-stretch cursor-pointer hover:bg-gray-200" onClick={confirmLogout}>
                             <LogOut color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className="text-gray-950 text-sm"> Log Out </div>
                         </div>
@@ -191,6 +203,20 @@ export default function SideBar({expanded, toggleSidebar}) {
                 </div>
             </div>
         </aside>
+
+        <ConfirmDialog
+            show={isOpen}
+        >
+            <div className="p-6 flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                    <div className="text-lg font-bold text-gray-950 text-center">Confirm Logout?</div>
+                </div>
+                <div className="flex justify-center gap-4">
+                    <Button variant="outlined" size="sm" onClick={rejectLogout}>Cancel</Button>
+                    <Button size="sm" onClick={logout}>Confirm</Button>
+                </div>
+            </div>
+        </ConfirmDialog>
     </>
     )
 }

@@ -2,8 +2,9 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import React, { useEffect, useState } from "react";
 import { Dropdown } from 'primereact/dropdown';
+import InputError from "@/Components/InputError";
 
-export default function UrgentInfo({ data, setData }) {
+export default function UrgentInfo({ data, setData, errors }) {
 
     const relationships = [
         {name: 'Father'},
@@ -66,7 +67,9 @@ export default function UrgentInfo({ data, setData }) {
                             autoComplete="emerge1_fullname"
                             isFocused={true}
                             onChange={(e) => setData('emerge1_fullname', e.target.value)}
+                            hasError={!!errors.emerge1_fullname}
                         />
+                        <InputError message={errors.emerge1_fullname} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="relation1" value={<div className="flex gap-1">
@@ -80,6 +83,7 @@ export default function UrgentInfo({ data, setData }) {
                             optionLabel="name"
                             placeholder="Select a Country"
                             className="w-full text-sm"
+                            invalid={!!errors.relation1}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -92,6 +96,7 @@ export default function UrgentInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.relation1} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="emerge1_phone_no" value={<div className="flex gap-1">
@@ -131,8 +136,10 @@ export default function UrgentInfo({ data, setData }) {
                                 placeholder="Phone Number"
                                 autoComplete="emerge1_phone_no"
                                 onChange={(e) => setData('emerge1_phone_no', e.target.value)}
+                                hasError={!!errors.emerge1_phone_no}
                             />
                         </div>
+                        <InputError message={errors.emerge1_phone_no} />
                     </div>
                 </div>
                 <div className="p-5 grid grid-cols-2 gap-5">
@@ -154,7 +161,9 @@ export default function UrgentInfo({ data, setData }) {
                             autoComplete="emerge2_fullname"
                             isFocused={true}
                             onChange={(e) => setData('emerge2_fullname', e.target.value)}
+                            hasError={!!errors.emerge2_fullname}
                         />
+                        <InputError message={errors.emerge2_fullname} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="relation2" value={<div className="flex gap-1">
@@ -168,6 +177,7 @@ export default function UrgentInfo({ data, setData }) {
                             optionLabel="name"
                             placeholder="Select a Country"
                             className="w-full text-sm"
+                            invalid={!!errors.relation2}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -180,6 +190,7 @@ export default function UrgentInfo({ data, setData }) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.relation2} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="emerge2_phone_no" value={<div className="flex gap-1">
@@ -198,6 +209,7 @@ export default function UrgentInfo({ data, setData }) {
                                 placeholder="Select "
                                 className="w-full max-w-[100px] text-sm"
                                 loading={isLoading}
+                                invalid={!!errors.emerge1_dialcode}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -219,8 +231,10 @@ export default function UrgentInfo({ data, setData }) {
                                 placeholder="Phone Number"
                                 autoComplete="emerge2_phone_no"
                                 onChange={(e) => setData('emerge2_phone_no', e.target.value)}
+                                hasError={!!errors.emerge2_phone_no}
                             />
                         </div>
+                        <InputError message={errors.emerge2_phone_no} />
                     </div>
                 </div>
             </div>

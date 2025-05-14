@@ -6,10 +6,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasMedia
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -18,9 +20,33 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
+        'employee_id',
+        'title',
         'email',
         'password',
-        'employee_id',
+        'dial_code',
+        'phone_no',
+        'gender',
+        'identity_no',
+        'address',
+        'postcode',
+        'city',
+        'state',
+        'nationality',
+        'dob',
+        'race',
+        'religion',
+        'place_of_birth',
+        'maritial_status',
+        'position',
+        'role',
+        'employee_type',
+        'department_id',
+        'employee_date',
+        'employee_end_date',
+        'handle_by',
+        'status',
     ];
 
     /**

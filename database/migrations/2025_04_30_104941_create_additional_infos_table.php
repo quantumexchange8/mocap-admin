@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('additional_infos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('investigate_type');
             $table->string('investigate_remark')->nullable();
             $table->string('convicted_type');

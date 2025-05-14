@@ -1,3 +1,4 @@
+import { EmployeeApplicationIlls, JobApplicationIlls, LoginIlls } from "@/Components/Icon/Illustration";
 import { MocapLogo, Onboarding2Logo, OnboardingLogo } from "@/Components/Icon/Logo";
 import { LangIcon } from "@/Components/Icon/Outline";
 import { Link } from "@inertiajs/react";
@@ -41,7 +42,7 @@ export default function Onboarding() {
                                 <div><Onboarding2Logo /></div>
                                 <div><MocapLogo /></div>
                             </div>
-                            <div className="p-[9px]">
+                            <div className="p-[9px] hover:bg-gray-50 rounded-full cursor-pointer">
                                 <LangIcon />
                             </div>
                         </div>
@@ -59,7 +60,8 @@ export default function Onboarding() {
                                         >
                                             <div className="text-gray-950 text-sm font-bold">Job Application Form</div>
                                             <div className="text-gray-500 text-xs">Invite candidates to fill out their details before the interview. Simplify your hiring process!</div>
-                                            <img src="/asset/job_application.png" alt="job-application" className="absolute right-1 bottom-0" />
+                                            
+                                            <JobApplicationIlls className='absolute right-1 bottom-0' />
                                         </div>
                                     </Link>
                                     {/* Employee Application Form */}
@@ -69,7 +71,7 @@ export default function Onboarding() {
                                         >
                                             <div className="text-gray-950 text-sm font-bold">Employee Information Form</div>
                                             <div className="text-gray-500 text-xs">Add new employees to the system and keep their profiles up to date.</div>
-                                            <img src="/asset/employee_application.png" alt="employee-application" className="absolute right-0 bottom-0" />
+                                            <EmployeeApplicationIlls className="absolute right-0 bottom-0" />
                                         </div>
                                     </Link>
                                     {/* Back office login */}
@@ -80,7 +82,7 @@ export default function Onboarding() {
                                             <div className="text-white text-sm font-bold">Back-Office Login</div>
                                             <div className="text-gray-300 text-xs">Access your tools and manage everything in your back-office dashboard.</div>
                                             <div className="w-[480px] h-[480px] rounded-full bg-white absolute -left-10 top-24 z-10"></div>
-                                            <img src="/asset/login.png" alt="login-application" className="absolute right-10 bottom-0 z-20" />
+                                            <LoginIlls className="absolute right-10 bottom-0 z-20" />
                                         </div>
                                     </Link>
                                 </div>

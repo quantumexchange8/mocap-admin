@@ -4,8 +4,9 @@ import InputLabel from "@/Components/InputLabel";
 import { InputNumber } from 'primereact/inputnumber';
 import TextInput from "@/Components/TextInput";
 import { Dropdown } from 'primereact/dropdown';
+import InputError from "@/Components/InputError";
 
-export default function BeneficiaryInfo({ data, setData}) {
+export default function BeneficiaryInfo({ data, setData, errors}) {
 
     const relationships = [
         {name: 'Father'},
@@ -91,7 +92,9 @@ export default function BeneficiaryInfo({ data, setData}) {
                             autoComplete="beneficiary_fullname"
                             isFocused={true}
                             onChange={(e) => setData('beneficiary_fullname', e.target.value)}
+                            hasError={!!errors.beneficiary_fullname}
                         />
+                        <InputError message={errors.beneficiary_fullname} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="beneficiary_relation" value={<div className="flex gap-1">
@@ -105,6 +108,7 @@ export default function BeneficiaryInfo({ data, setData}) {
                             optionLabel="name"
                             placeholder="Select"
                             className="w-full text-sm"
+                            invalid={!!errors.beneficiary_relation}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -117,6 +121,7 @@ export default function BeneficiaryInfo({ data, setData}) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.beneficiary_relation} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="beneficiary_identity" value={<div className="flex gap-1">
@@ -133,7 +138,9 @@ export default function BeneficiaryInfo({ data, setData}) {
                             autoComplete="beneficiary_identity"
                             isFocused={true}
                             onChange={(e) => setData('beneficiary_identity', e.target.value)}
+                            hasError={!!errors.beneficiary_identity}
                         />
+                        <InputError message={errors.beneficiary_identity} />
                     </div>
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="beneficiary_dialcode" value={<div className="flex gap-1">
@@ -152,6 +159,7 @@ export default function BeneficiaryInfo({ data, setData}) {
                                 placeholder="Select "
                                 className="w-full max-w-[100px] text-sm"
                                 loading={isLoading}
+                                invalid={!!errors.beneficiary_dialcode}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -173,8 +181,10 @@ export default function BeneficiaryInfo({ data, setData}) {
                                 placeholder="Phone Number"
                                 autoComplete="beneficiary_phoneNo"
                                 onChange={(e) => setData('beneficiary_phoneNo', e.target.value)}
+                                hasError={!!errors.beneficiary_phoneNo}
                             />
                         </div>
+                        <InputError message={errors.beneficiary_phoneNo} />
                     </div>
                     <div className="col-span-2 flex flex-col gap-2">
                         <InputLabel htmlFor="beneficiary_dialcode" value={<div className="flex gap-1">
@@ -187,6 +197,7 @@ export default function BeneficiaryInfo({ data, setData}) {
                             onChange={handleChange}
                             className="gap-x-8 gap-y-5 text-sm text-gray-950 py-3"
                         />
+                        <InputError message={errors.personal_insurance} />
                     </div>
                 </div>
             </div>

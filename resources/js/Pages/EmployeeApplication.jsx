@@ -17,6 +17,8 @@ import InputLabel from "@/Components/InputLabel";
 import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import ConfirmDialog from "@/Components/ConfirmDialog";
+import InputError from "@/Components/InputError";
+import { Popover } from "antd";
 
 export default function EmployeeApplication() {
 
@@ -39,6 +41,8 @@ export default function EmployeeApplication() {
     const [getPosition, setGetPosition] = useState([]);
     const [getAdmin, setGetAdmin] = useState([]);
     const [confirmationDialog, setConfirmationDialog] = useState(false);
+    const [completedSteps, setCompletedSteps] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const fetchDepartment = async  () => {
         setIsLoading(true);
@@ -101,6 +105,8 @@ export default function EmployeeApplication() {
         dob: null,
         race: '',
         religion: '',
+        place_of_birth: '',
+        marital_status: '',
         dial_code: '+60',
         phone_no: '',
         email: '',
@@ -110,6 +116,7 @@ export default function EmployeeApplication() {
         state: '',
 
         // bank
+        bank_name: '',
         acc_type: '',
         acc_no: '',
         income_tax_no: '',
@@ -128,7 +135,7 @@ export default function EmployeeApplication() {
         emerge2_phone_no: '',
 
         // transport
-        own_transport: '',
+        own_transport: null,
         license_id: '',
         work_transportation: '',
         approximate_distance: '',
@@ -186,22 +193,87 @@ export default function EmployeeApplication() {
     }); 
 
     const steps = [
-        { icon: <JobApplicationIcon1 />, component: <PersonalInfo data={data} setData={setData} /> },
-        { icon: <UrgentInfoIcon />, component: <UrgentInfo data={data} setData={setData} /> },
-        { icon: <JobApplicationIcon6 />, component: <TransportInfo data={data} setData={setData} /> },
-        { icon: <Stethoscope />, component: <MedicalInfo data={data} setData={setData} /> },
-        { icon: <UserShieldIcon />, component: <BeneficiaryInfo data={data} setData={setData} /> },
-        { icon: <JobApplicationIcon7 />, component: <AdditionalInfo data={data} setData={setData} /> },
-        { icon: <JobApplicationIcon8 />, component: <DeclarationInfo data={data} setData={setData} sigCanvas={sigCanvas} /> }
+        { icon: <JobApplicationIcon1 />, component: <PersonalInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <UrgentInfoIcon />, component: <UrgentInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <JobApplicationIcon6 />, component: <TransportInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <Stethoscope />, component: <MedicalInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <UserShieldIcon />, component: <BeneficiaryInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <JobApplicationIcon7 />, component: <AdditionalInfo data={data} setData={setData} errors={errors} /> },
+        { icon: <JobApplicationIcon8 />, component: <DeclarationInfo data={data} setData={setData} errors={errors} sigCanvas={sigCanvas} /> }
     ];
 
     const navigate = (newStep) => {
-        setDirection(newStep > step ? 'forward' : 'backward');
-        setStep(newStep);
+
+        if (step === 6) {
+            console.log('1')
+            setCompletedSteps(true);
+            setDirection(newStep > step ? 'forward' : 'backward');
+            setStep(newStep);
+        } else if (completedSteps) {
+            console.log('2')
+            setDirection(newStep > step ? 'forward' : 'backward');
+            setStep(newStep);
+        }
     };
 
-    const nextStep = () => navigate(step + 1);
-    const prevStep = () => navigate(step - 1);
+    const prevStep = () => setStep(step - 1);
+
+    const nextStep = () => {
+        if (step === 0) {
+            post('/personal-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+        if (step === 1) {
+            post('/emergency-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+        if (step === 2) {
+            post('/transportation-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+        if (step === 3) {
+            post('/medical-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+        if (step === 4) {
+            post('/beneficiary-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+        if (step === 5) {
+            post('/additional-validation', {
+                preserveScroll: true,
+                onSuccess: () => {
+                    setDirection(step + 1 > step ? 'forward' : 'backward');
+                    setStep(step + 1);
+                }
+            });
+        }
+    }
 
     const clearForm = () => {
         // 清空表单逻辑
@@ -277,8 +349,6 @@ export default function EmployeeApplication() {
         setData('submitted_by', 'CT Admin');
     }
 
-    
-
     const clearDate = () => {
         setData('date_of_employment', null);
     }
@@ -304,8 +374,15 @@ export default function EmployeeApplication() {
     }));
       
     const confirmationEmployee = () => {
-        setConfirmationDialog(true);
+
+        post('/employee-information-validation', {
+            preserveScroll: true,
+            onSuccess: () => {
+                setConfirmationDialog(true);
+            }
+        });
     }
+
     const rejectConfirmEmployee = () => {
         setConfirmationDialog(false);
     }
@@ -318,19 +395,123 @@ export default function EmployeeApplication() {
             preserveScroll: true,
             onSuccess: () => {
                 setIsLoading(false);
+                window.location.href = `/employee-success`
             }
         });
+    }
+
+    const redictHome = () => {
+        window.location.href = `/`;
+    }
+
+    const handleOpenClear = (newOpen) => {
+        setOpen(newOpen);
+    }
+
+    const handleCloseClear = () => {
+        setOpen(false);
+    }
+
+    const handleClear = () => {
+        if (step === 0) {
+            // personal
+            setData('full_name', '');
+            setData('username', '');
+            setData('nationality', 'Malaysian');
+            setData('identity_no', '');
+            setData('gender', '');
+            setData('dob', null);
+            setData('race', '');
+            setData('religion', '');
+            setData('phone_no', '');
+            setData('email', '');
+            setData('address', '');
+            setData('postcode', '');
+            setData('city', '');
+            setData('state', '');
+
+            // bank
+            setData('bank_name', '');
+            setData('acc_type', '');
+            setData('acc_no', '');
+            setData('income_tax_no', '');
+            setData('epf_no', '');
+            setData('socso_no', '');
+        }
+
+        if (step === 1) {
+            setData('emerge1_fullname', '')
+            setData('relation1', '')
+            setData('emerge1_dialcode', '+60')
+            setData('emerge1_phone_no', '')
+            setData('emerge2_fullname', '')
+            setData('relation2', '')
+            setData('emerge2_dialcode', '+60')
+            setData('emerge2_phone_no', '')
+        }
+
+        if (step === 2) {
+            setData('own_transport', null)
+            setData('license_id', '')
+            setData('work_transportation', '+60')
+            setData('approximate_distance', '')
+            setData('approximate_hours', '')
+            setData('approximate_minutes', '')
+        }
+
+        if (step === 3) {
+            setData('blood_type', 'A+')
+            setData('allergic_type', 'No')
+            setData('allergic_remark', '')
+            setData('medical_type', 'No')
+            setData('medical_remark', '')
+            setData('medication_type', 'No')
+            setData('medication_remark', '')
+            setData('pregnant_type', 'No')
+            setData('pregnant_remark', '')
+            setData('pregnant_delivery_date', null)
+            setData('pregnancy_medication_type', 'No')
+            setData('pregnancy_medication_remark', '')
+            setData('gynaecological_type', 'No')
+            setData('gynaecological_remark', '')
+        }
+
+        if (step === 4) {
+            setData('beneficiary_fullname', '')
+            setData('beneficiary_relation', '')
+            setData('beneficiary_identity', '')
+            setData('beneficiary_dialcode', '+60')
+            setData('beneficiary_phoneNo', '')
+            setData('personal_insurance', '')
+        }
+
+        if (step === 5) {
+            setData('investigate_type', 'No')
+            setData('investigate_remark', '')
+            setData('convicted_type', 'No')
+            setData('convicted_remark', '')
+            setData('bankrupt_type', 'No')
+            setData('bankrupt_remark', '')
+            setData('suspended_type', 'No')
+            setData('suspended_remark', '')
+            setData('directorship_type', 'No')
+            setData('directorship_remark', '')
+            setData('relative_type', 'No')
+            setData('relative_remark', '')
+        }
+
+        setOpen(false);
     }
 
     return (
         <div className="w-full flex flex-col min-h-screen">
             {/* 顶部导航 */}
             <div className="sticky top-0 w-full flex justify-between items-center py-2 px-5 bg-white z-30 border-b border-gray-200">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={redictHome}>
                     <div><Onboarding2Logo /></div>
                     <div><MocapLogo /></div>
                 </div>
-                <div className="p-[9px]">
+                <div className="p-[9px] hover:bg-gray-50 rounded-full cursor-pointer">
                     <LangIcon />
                 </div>
             </div>
@@ -398,7 +579,22 @@ export default function EmployeeApplication() {
             {/* Footer */}
             <div className="sticky bottom-0 p-5 bg-white flex justify-between items-center w-full border-t border-gray-200">
                 <div>
-                    <Button variant="text" size="lg">Clear Form</Button>
+                <Popover
+                    content={
+                        <div className="flex items-center gap-2 justify-end">
+                            <Button variant="outlined" size="sm" onClick={handleCloseClear}>Cancel</Button>
+                            <Button variant="danger" size="sm" onClick={handleClear}>Clear</Button>
+                        </div>
+                    }
+                    title="Are you sure you want to clear?"
+                    open={open}
+                    onOpenChange={handleOpenClear}
+                    trigger="click"
+                >
+                    <span>
+                        <Button variant="text" size="lg">Clear Form</Button>
+                    </span>
+                </Popover>
                 </div>
                 <div className="flex items-center gap-4">
                     {
@@ -420,6 +616,7 @@ export default function EmployeeApplication() {
                                 size="lg" 
                                 className="flex items-center gap-2" 
                                 onClick={updateSignature}
+                                disabled={processing}
                             >
                                 Submit
                             </Button>
@@ -428,6 +625,7 @@ export default function EmployeeApplication() {
                                 size="lg" 
                                 className="flex items-center gap-2" 
                                 onClick={nextStep}
+                                disabled={processing}
                             >
                                 <span>
                                     {step === steps.length - 1 ? 'Submit' : 'Next'}
@@ -470,6 +668,7 @@ export default function EmployeeApplication() {
                                 placeholder="Select" 
                                 loading={isLoading}
                                 className="w-full text-sm"
+                                invalid={!!errors.employment_type}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -482,6 +681,7 @@ export default function EmployeeApplication() {
                                     filterContainer: { className: 'p-2'}
                                 }}
                             />
+                            <InputError message={errors.employment_type} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel value='Department' />
@@ -493,6 +693,7 @@ export default function EmployeeApplication() {
                                 placeholder="Select" 
                                 loading={isLoading}
                                 className="w-full text-sm"
+                                invalid={!!errors.department_type}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -505,6 +706,7 @@ export default function EmployeeApplication() {
                                     filterContainer: { className: 'p-2'}
                                 }}
                             />
+                            <InputError message={errors.department_type} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel value='Position' />
@@ -517,6 +719,7 @@ export default function EmployeeApplication() {
                                 placeholder="Select" 
                                 loading={isLoading}
                                 className="w-full text-sm"
+                                invalid={!!errors.position_type}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm px-1 py-3' }, // dropdown list
@@ -532,6 +735,7 @@ export default function EmployeeApplication() {
                                     filterContainer: { className: 'p-2'}
                                 }}
                             />
+                            <InputError message={errors.position_type} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel value='Date of Employment' />
@@ -542,6 +746,7 @@ export default function EmployeeApplication() {
                                     className="w-full text-sm"
                                     viewDate={defaultViewDate}
                                     placeholder="dd/mm/yyyy"
+                                    invalid={!!errors.date_of_employment}
                                     pt={{
                                         input: {
                                             className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -589,6 +794,7 @@ export default function EmployeeApplication() {
                                     
                                 </div>
                             </div>
+                            <InputError message={errors.date_of_employment} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <InputLabel value={
@@ -665,12 +871,13 @@ export default function EmployeeApplication() {
                                 onChange={(e) => setData('submitted_by', e.value)} 
                                 options={getAdmin.map((item) => ({
                                     label: item.username,
-                                    value: item.username,
+                                    value: item.id,
                                 }))}
                                 optionLabel="label"
                                 placeholder="Select"
                                 loading={isLoading}
                                 className="w-full text-sm"
+                                invalid={!!errors.submitted_by}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -683,6 +890,7 @@ export default function EmployeeApplication() {
                                     filterContainer: { className: 'p-2'}
                                 }}
                             />   
+                            <InputError message={errors.submitted_by} />
                         </div>
                     </div>
                 </div>

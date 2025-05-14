@@ -24,7 +24,7 @@ class GlobalController extends Controller
     public function getNationality()
     {
 
-        $nationalities = Nationality::get();
+        $nationalities = Nationality::with(['states:countryId,name'])->get();
 
         return response()->json($nationalities);
     }
