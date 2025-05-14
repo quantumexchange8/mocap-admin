@@ -202,15 +202,37 @@ export default function EmployeeApplication() {
         { icon: <JobApplicationIcon8 />, component: <DeclarationInfo data={data} setData={setData} errors={errors} sigCanvas={sigCanvas} /> }
     ];
 
-    const navigate = (newStep) => {
+    const validateStep = (stepToValidate, callback) => {
+        const routes = [
+            '/personal-validation',
+            '/emergency-validation',
+            '/transportation-validation',
+            '/medical-validation',
+            '/beneficiary-validation',
+            '/additional-validation'
+        ];
+    
+        if (stepToValidate < routes.length) {
+            post(routes[stepToValidate], {
+                preserveScroll: true,
+                onSuccess: () => {
+                    callback(); // continue navigation after success
+                }
+            });
+        } else {
+            callback(); // No validation needed
+        }
+    };
 
-        if (step === 6) {
-            console.log('1')
-            setCompletedSteps(true);
-            setDirection(newStep > step ? 'forward' : 'backward');
-            setStep(newStep);
-        } else if (completedSteps) {
-            console.log('2')
+    const navigate = (newStep) => {
+        if (completedSteps) {
+            // Must validate current step before moving to another
+            validateStep(step, () => {
+                setDirection(newStep > step ? 'forward' : 'backward');
+                setStep(newStep);
+            });
+        } else if (newStep <= step + 1) {
+            // Allow moving forward step-by-step normally
             setDirection(newStep > step ? 'forward' : 'backward');
             setStep(newStep);
         }
@@ -219,61 +241,16 @@ export default function EmployeeApplication() {
     const prevStep = () => setStep(step - 1);
 
     const nextStep = () => {
-        if (step === 0) {
-            post('/personal-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-        if (step === 1) {
-            post('/emergency-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-        if (step === 2) {
-            post('/transportation-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-        if (step === 3) {
-            post('/medical-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-        if (step === 4) {
-            post('/beneficiary-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-        if (step === 5) {
-            post('/additional-validation', {
-                preserveScroll: true,
-                onSuccess: () => {
-                    setDirection(step + 1 > step ? 'forward' : 'backward');
-                    setStep(step + 1);
-                }
-            });
-        }
-    }
+        validateStep(step, () => {
+            setDirection('forward');
+            const next = step + 1;
+            setStep(next);
+    
+            if (next === 6) {
+                setCompletedSteps(true);
+            }
+        });
+    };
 
     const clearForm = () => {
         // 清空表单逻辑
@@ -526,7 +503,11 @@ export default function EmployeeApplication() {
                                 steps.map((item, index) => (
                                     <React.Fragment key={index}>
                                         <motion.div
-                                            onClick={() => navigate(index)}
+                                            onClick={() => {
+                                                if (completedSteps) {
+                                                    navigate(index);
+                                                }
+                                            }}
                                             initial={false}
                                             animate={{
                                                 scale: step === index ? 1.1 : 1,
