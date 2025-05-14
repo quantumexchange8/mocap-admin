@@ -350,7 +350,7 @@ class EmployeeController extends Controller
             'employee_date' => Carbon::parse($request->date_of_employment)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
             'employee_end_date' => Carbon::parse($request->intern_end_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
             'handle_by' => $request->submitted_by,
-            'status' => 'active'
+            'status' => 'invited'
         ]);
 
         $banks = EmployeeBank::create([
@@ -432,9 +432,9 @@ class EmployeeController extends Controller
             'relative_remark' => $request->relative_remark ?? null,
         ]);
 
-        // if ($request->hasFile('digital_signature')) {
-        //     $user->addMedia($request->digital_signature)->toMediaCollection('user_signature');
-        // }
+        if ($request->hasFile('digital_signature')) {
+            $user->addMedia($request->digital_signature)->toMediaCollection('user_signature');
+        }
 
         // add mail function
         Mail::to($user->email)->queue(new EmployeeAccount($user, $generateRandomPw));
