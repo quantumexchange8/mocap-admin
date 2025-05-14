@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmployeeAccount;
 use App\Models\AdditionalInfo;
 use App\Models\BeneficiaryInfo;
 use App\Models\EmergencyInfo;
@@ -431,12 +432,12 @@ class EmployeeController extends Controller
             'relative_remark' => $request->relative_remark ?? null,
         ]);
 
-        if ($request->hasFile('digital_signature')) {
-            $user->addMedia($request->digital_signature)->toMediaCollection('user_signature');
-        }
+        // if ($request->hasFile('digital_signature')) {
+        //     $user->addMedia($request->digital_signature)->toMediaCollection('user_signature');
+        // }
 
         // add mail function
-        // Mail::to($request->email)->queue(new OrderShipped($order));
+        Mail::to($user->email)->queue(new EmployeeAccount($user, $generateRandomPw));
 
         return redirect()->back();
     }
