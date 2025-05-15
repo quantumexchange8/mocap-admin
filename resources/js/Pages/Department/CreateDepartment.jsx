@@ -3,7 +3,7 @@ import { ChevronDown, DeleteIcon, Department, DepartmentIcon1, DepartmentIcon10,
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import { ColorPicker, Select } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DownOutlined } from '@ant-design/icons';
@@ -12,12 +12,16 @@ import { ReactSortable } from "react-sortablejs";
 import Editor from "@/Components/Editor";
 import InputError from "@/Components/InputError";
 import toast from "react-hot-toast";
+import ConfirmDialog from "@/Components/ConfirmDialog";
+import { UnsavedIllus } from "@/Components/Icon/Illustration";
 
 export default function CreateDepartment() {
 
     const [colorOpen, setColorOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [getUser, setGetUser] = useState([]);
+    const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
+    const [nextUrl, setNextUrl] = useState(null);
 
     const fetchUser = async () => {
         setIsLoading(true);
@@ -37,7 +41,7 @@ export default function CreateDepartment() {
         fetchUser();
     }, []);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, isDirty, reset } = useForm({
         name: '',
         icon: null,
         color: '#000000',
@@ -48,6 +52,29 @@ export default function CreateDepartment() {
         job_description: '',
         job_regulation: '',
     });
+
+    useEffect(() => {
+        const handler = (event) => {
+            if (isDirty) {
+                event.preventDefault(); // Prevent navigation
+                setNextUrl(event.detail.visit.url); // Store the destination
+                setConfirmLeaveOpen(true); // Show custom dialog
+            }
+        };
+
+        const unlisten = router.on('before', handler);
+        return () => unlisten();
+    }, [isDirty]);
+
+    const confirmLeave = () => {
+        setConfirmLeaveOpen(false);
+        window.location.href = `${nextUrl.pathname}`
+    };
+
+    const cancelLeave = () => {
+        setConfirmLeaveOpen(false);
+        setNextUrl(null); // Clear nextUrl
+    };
 
     // Icon
     const defaultIcons = [
@@ -235,7 +262,7 @@ export default function CreateDepartment() {
                                         <div
                                             key={id}
                                             className={`p-2.5 border rounded cursor-pointer hover:border-gray-950 ${
-                                                data.icon === id ? 'border-gray-500' : 'border-gray-300'
+                                                data.icon === id ? 'border-gray-950' : 'border-gray-300'
                                             }`}
                                             onClick={() => setData('icon', id)}
                                         >
@@ -366,6 +393,26 @@ export default function CreateDepartment() {
                 </div>
             </div>
         </div>
+
+        <ConfirmDialog show={confirmLeaveOpen}>
+            <div className='flex flex-col gap-8 p-6'>
+                <div className="flex flex-col items-center gap-3">
+                    <div>
+                        <UnsavedIllus />
+                    </div>
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="text-gray-950 text-lg font-bold">Unsaved Changes</div>
+                        <div className="text-gray-700 text-sm text-center">
+                            Entered information will be lost if you leave this page. Would you like to stay and continue?
+                        </div>
+                    </div>
+                </div>
+                <div className='flex items-center gap-4 justify-center'>
+                    <div><Button size='sm' variant='outlined' onClick={confirmLeave}>Leave Page</Button></div>
+                    <div><Button size='sm' onClick={cancelLeave}>Stay on Page</Button></div>
+                </div>
+            </div>
+        </ConfirmDialog>
 
         </AuthenticatedLayout>
     )

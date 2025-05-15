@@ -81,7 +81,7 @@ export default function UrgentInfo({ data, setData, errors }) {
                             onChange={(e) => setData('relation1', e.value)} 
                             options={relationships}
                             optionLabel="name"
-                            placeholder="Select a Country"
+                            placeholder="Select a relation"
                             className="w-full text-sm"
                             invalid={!!errors.relation1}
                             pt={{
@@ -175,7 +175,7 @@ export default function UrgentInfo({ data, setData, errors }) {
                             onChange={(e) => setData('relation2', e.value)} 
                             options={relationships}
                             optionLabel="name"
-                            placeholder="Select a Country"
+                            placeholder="Select a relation"
                             className="w-full text-sm"
                             invalid={!!errors.relation2}
                             pt={{

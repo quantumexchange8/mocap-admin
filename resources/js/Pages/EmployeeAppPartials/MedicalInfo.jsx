@@ -182,6 +182,7 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     className="text-sm"
                                     placeholder="dd/mm/yyyy"
                                     invalid={!!errors.pregnant_delivery_date}
+                                    disabled={data.pregnant_type === 'No' || data.gender === 'male'}
                                     pt={{
                                         input: {
                                             className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'

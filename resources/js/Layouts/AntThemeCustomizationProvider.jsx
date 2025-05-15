@@ -48,12 +48,12 @@ function AntThemeCustomizationProvider({ children }) {
                         colorError	: '#FF2323',
                     },
                     Table:{
-                        headerBg: 'white',
+                        headerBg: '#F3F4F6',
                         headerColor: '#030712',
-                        headerSplitColor: 'none',
-                        borderColor: 'none',
-                        cellPaddingBlock: 0,
-                        cellPaddingInline: 0,
+                        // headerSplitColor: 'none',
+                        // borderColor: 'none',
+                        // cellPaddingBlock: 0,
+                        // cellPaddingInline: 0,
                     },
                     Radio:{
                         radioSize: 20,
@@ -64,6 +64,9 @@ function AntThemeCustomizationProvider({ children }) {
                     Steps:{
                         padding: '8px',
                     },
+                    Tabs: {
+                        cardBg: '#F3F4F6'
+                    }
                 }
             }}
         >

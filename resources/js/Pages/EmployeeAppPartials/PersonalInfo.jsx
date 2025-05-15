@@ -209,7 +209,7 @@ export default function PersonalInfo({ data, setData, errors }) {
                                 value: item.name,
                             }))}
                             optionLabel="label"
-                            placeholder="Select a Country" 
+                            placeholder="Select a Nationality" 
                             loading={isLoading}
                             filter
                             className="w-full text-sm"

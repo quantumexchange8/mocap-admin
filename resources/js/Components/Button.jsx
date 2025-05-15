@@ -25,7 +25,7 @@ export default ({
             variantClasses = `bg-gray-100 border-gray-100 text-gray-950 hover:bg-gray-200 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'outlined':
-            variantClasses = `bg-white border border-gray-300 text-gray-950 shadow-sm hover:bg-gray-50 disabled:bg-white disabled:text-gray-400 rounded-sm`
+            variantClasses = `bg-white border border-gray-300 text-gray-950 shadow-smShadow hover:bg-gray-50 disabled:bg-white disabled:text-gray-400 rounded-sm`
             break
         case 'text':
             variantClasses = `text-gray-950 hover:bg-gray-50 disabled:text-gray-400 rounded-sm`
@@ -50,7 +50,7 @@ export default ({
     }
 
     const sizeClasses = `${
-        size == 'sm' ? (iconOnly ? 'p-4' : 'px-4 py-2 text-sm font-normal h-[38px]') : ''
+        size == 'sm' ? (iconOnly ? 'w-[38px] h-[38px] flex justify-center' : 'px-4 py-2 text-sm font-normal h-[38px]') : ''
     }${
         size == 'md' ? (iconOnly ? 'p-4' : 'px-4 py-3 text-sm font-normal h-[46px]') : ''
     }${

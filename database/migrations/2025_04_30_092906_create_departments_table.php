@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('icon');
             $table->longText('job_description')->nullable();
             $table->longText('job_regulation')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

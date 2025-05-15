@@ -50,6 +50,11 @@
     color: #030712;
 } */
 
+.ant-select-dropdown .ant-select-item-option {
+  align-items: center;
+  height: auto !important;
+}
+
 .antd-select-custom {
     width: 100%;
     max-height: 48px;
@@ -493,11 +498,11 @@ select:focus,
 }
 
 /* Step */
-.ant-table-wrapper .ant-table .ant-table-cell {
+/* .ant-table-wrapper .ant-table .ant-table-cell {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
     padding-inline: 6px !important;
-}
+} */
 /* Step */
 
 /* Popconfirm */
@@ -529,3 +534,49 @@ select:focus,
 }
 
 /* Popconfirm */
+
+/* Tab */
+
+.ant-segmented {
+  padding: 4px;
+  background: #F3F4F6;
+}
+
+.ant-segmented .ant-segmented-item-label {
+  padding: 4px 8px;
+}
+
+.ant-segmented .ant-segmented-item {
+  color: #6B7280;
+}
+
+.ant-segmented .ant-segmented-item-selected {
+  color: #030712;
+}
+
+/* Tab */
+
+/* Table */
+
+.ant-table-wrapper .ant-table-thead >tr>th, .ant-table-wrapper .ant-table-thead >tr>td {
+  padding: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Outfit';
+  line-height: 16px;
+}
+
+.ant-table-wrapper .ant-table-tbody >tr >th, .ant-table-wrapper .ant-table-tbody >tr >td {
+  padding: 12px;
+}
+
+/* Table */
+
+/* tooltip */
+
+.ant-tooltip .ant-tooltip-inner {
+  font-size: 12px;
+  font-family: 'Outfit';
+}
+
+/* tooltip */
