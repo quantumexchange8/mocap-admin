@@ -88,6 +88,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/employee-listing', [AuthEmployeeController::class, 'employeeListing'])->name('employee-listing');
     Route::get('/getEmployeeListing', [AuthEmployeeController::class, 'getEmployeeListing'])->name('getEmployeeListing');
     Route::get('/employee-details/{id}', [AuthEmployeeController::class, 'employeeDetails'])->name('employee-details');
+    Route::post('/update-employee-details', [AuthEmployeeController::class, 'updateEmployeeDetails'])->name('update-employee-details');
+    Route::post('/suspend-employee', [AuthEmployeeController::class, 'suspendEmployee'])->name('suspend-employee');
+    Route::post('/restore-employee', [AuthEmployeeController::class, 'restoreEmployee'])->name('restore-employee');
+    Route::post('/reset-employee-pw', [AuthEmployeeController::class, 'resetEmployeePw'])->name('reset-employee-pw');
     
     /**
      * ==============================

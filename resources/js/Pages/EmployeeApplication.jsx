@@ -28,7 +28,7 @@ export default function EmployeeApplication() {
         {name: 'Permanent'},
     ]
 
-    const [step, setStep] = useState(0);
+    const [step, setStep] = useState(6);
     const [direction, setDirection] = useState('forward');
     const sigCanvas = useRef(null);
     const intervalRef = useRef(null);

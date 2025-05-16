@@ -112,12 +112,12 @@ export default function EmployeeListing() {
                                         <div>
                                             {
                                                 viewType === 'list' && (
-                                                    <EmployeeListView getEmployeeListing={getEmployeeListing} isLoading={isLoading} />
+                                                    <EmployeeListView getEmployeeListing={getEmployeeListing} fetchEmployee={fetchEmployee} isLoading={isLoading} />
                                                 )
                                             }
                                             {
                                                 viewType === 'grid' && (
-                                                    <EmployeeGridView getEmployeeListing={getEmployeeListing} isLoading={isLoading} />
+                                                    <EmployeeGridView getEmployeeListing={getEmployeeListing} fetchEmployee={fetchEmployee} isLoading={isLoading} />
                                                 )
                                             }
                                         </div>
