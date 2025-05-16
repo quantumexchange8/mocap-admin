@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthEmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\GlobalController;
@@ -78,6 +79,16 @@ Route::middleware('auth')->group(function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
 
+
+    /**
+     * ==============================
+     *           Employee Listing
+     * ==============================
+    */
+    Route::get('/employee-listing', [AuthEmployeeController::class, 'employeeListing'])->name('employee-listing');
+    Route::get('/getEmployeeListing', [AuthEmployeeController::class, 'getEmployeeListing'])->name('getEmployeeListing');
+    Route::get('/employee-details/{id}', [AuthEmployeeController::class, 'employeeDetails'])->name('employee-details');
+    
     /**
      * ==============================
      *           Department
@@ -90,6 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/store-department', [DepartmentController::class, 'storeDepartment'])->name('store-department');
     Route::post('/validate-department', [DepartmentController::class, 'validateDepartment'])->name('validate-department');
     Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
+    Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
     
     /**
      * ==============================

@@ -11,6 +11,7 @@ import { ReactSortable } from "react-sortablejs";
 import Editor from "@/Components/Editor";
 import ConfirmDialog from "@/Components/ConfirmDialog";
 import { UnsavedIllus } from "@/Components/Icon/Illustration";
+import toast from "react-hot-toast";
 
 export default function EditDepartment({ department }) {
 
@@ -19,6 +20,7 @@ export default function EditDepartment({ department }) {
     const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
     const [nextUrl, setNextUrl] = useState(null);
     const [getUser, setGetUser] = useState([]);
+    const isSubmittingRef = useRef(false);
 
     const fetchUser = async () => {
         setIsLoading(true);
@@ -40,6 +42,7 @@ export default function EditDepartment({ department }) {
 
 
     const { data, setData, post, processing, errors, reset, isDirty } = useForm({
+        id: department.id || '',
         name: department.name || '',
         icon: department.icon || null,
         color: department.color || '#000000',
@@ -57,13 +60,13 @@ export default function EditDepartment({ department }) {
 
     useEffect(() => {
         const handler = (event) => {
-            if (isDirty) {
-                event.preventDefault(); // Prevent navigation
-                setNextUrl(event.detail.visit.url); // Store the destination
-                setConfirmLeaveOpen(true); // Show custom dialog
+            if (isDirty && !isSubmittingRef.current) {
+                event.preventDefault();
+                setNextUrl(event.detail.visit.url);
+                setConfirmLeaveOpen(true);
             }
         };
-
+    
         const unlisten = router.on('before', handler);
         return () => unlisten();
     }, [isDirty]);
@@ -71,11 +74,6 @@ export default function EditDepartment({ department }) {
     const confirmLeave = () => {
         setConfirmLeaveOpen(false);
         window.location.href = `${nextUrl.pathname}`
-    };
-
-    const cancelLeave = () => {
-        setConfirmLeaveOpen(false);
-        setNextUrl(null); // Clear nextUrl
     };
 
     const handleColorChange = (color) => {
@@ -154,17 +152,24 @@ export default function EditDepartment({ department }) {
     const submit = (e) => {
         e.preventDefault();
         setIsLoading(true);
+        isSubmittingRef.current = true;
 
         post('/update-department', {
             preserveScroll: true,
             onSuccess: () => {
+                setConfirmLeaveOpen(false);
                 setIsLoading(false);
+                isSubmittingRef.current = false;
                 reset();
                 toast.success('Succesfully Created Department.', {
                     title: 'Succesfully Created Department.',
                     duration: 3000,
                     variant: 'variant1',
                 });
+            },
+            onError: () => {
+                isSubmittingRef.current = false;
+                setIsLoading(false);
             }
         });
     }

@@ -134,6 +134,10 @@ select:focus,
     color: #6B7280;
     background: #F3F4F6;
 }
+.ant-tag.ant-tag-purple {
+  color: #884DFF;
+  background: #884dff26;
+}
 /* Tag */
 
 /* Color picker */
@@ -568,6 +572,16 @@ select:focus,
 
 .ant-table-wrapper .ant-table-tbody >tr >th, .ant-table-wrapper .ant-table-tbody >tr >td {
   padding: 12px;
+  color: #030712;
+  
+}
+
+.ant-table-wrapper .ant-table-thead th.ant-table-column-sort {
+  color: #FFF;
+}
+
+.ant-table-wrapper .ant-table-column-sorter {
+  display: none;
 }
 
 /* Table */

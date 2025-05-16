@@ -93,4 +93,55 @@ class DepartmentController extends Controller
 
         return redirect()->back();
     }
+
+    public function updateDepartment(Request $request)
+    {
+
+        // dd($request->all());
+
+        $department = Department::find($request->id);
+
+        $department->update([
+            'name' => $request->name,
+            'color' => $request->color,
+            'icon' => $request->icon,
+            'head_id' => $request->head_department,
+            'job_description' => $request->job_description,
+            'job_regulation' => $request->job_regulation,
+        ]);
+
+        // Step 2: Sync department positions
+        $positionData = $request->position;
+
+        // Get existing DB IDs for this department
+        $existingIds = $department->position()->pluck('id')->toArray();
+
+        $submittedIds = [];
+
+        foreach ($positionData as $position) {
+            // Check if it's an existing DB record (integer ID)
+            if (is_numeric($position['id']) && in_array($position['id'], $existingIds)) {
+                // Update existing
+                DepartmentPosition::where('id', $position['id'])->update([
+                    'position_name' => $position['name'],
+                    'order_no' => $position['order_no'],
+                ]);
+                $submittedIds[] = $position['id'];
+            } else {
+                // Create new
+                $newPosition = new DepartmentPosition([
+                    'position_name' => $position['name'],
+                    'order_no' => $position['order_no'],
+                ]);
+                $department->position()->save($newPosition);
+                $submittedIds[] = $newPosition->id;
+            }
+        }
+
+        // Step 3: Delete positions not in request
+        $toDelete = array_diff($existingIds, $submittedIds);
+        DepartmentPosition::whereIn('id', $toDelete)->delete();
+
+        return redirect()->back();
+    }
 }

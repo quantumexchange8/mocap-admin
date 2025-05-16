@@ -1,24 +1,20 @@
-import Button from "@/Components/Button";
-import { DepartmentIllus } from "@/Components/Icon/Illustration";
-import { GridViewIcon, ListViewIcon, PlusIcon, SearchIcon, XIcon } from "@/Components/Icon/Outline";
-import SearchInput from "@/Components/SearchInput";
-import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, Link } from "@inertiajs/react";
-import { Segmented, Skeleton } from "antd";
-import axios from "axios";
+import { Head } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
-import ListViewTable from "./Partials/ListViewTable";
-import GridViewTable from "./Partials/GridViewTable";
 import { AnimatePresence, motion } from "framer-motion";
+import { DepartmentIllus } from "@/Components/Icon/Illustration";
+import { Segmented } from "antd";
+import { GridViewIcon, ListViewIcon, XIcon, SearchIcon } from "@/Components/Icon/Outline";
+import SearchInput from "@/Components/SearchInput";
+import EmployeeListView from "./Partials/EmployeeListView";
+import EmployeeGridView from "./Partials/EmployeeGridView";
 
+export default function EmployeeListing() {
 
-export default function Department() {
-
-    const [getDepartment, setGetDepartment] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [searchFilter, setSearchFilter] = useState('');
+    const [getEmployeeListing, setGetEmployeeListing] = useState([]);
     const [viewType, setViewType] = useState('list');
+    const [searchFilter, setSearchFilter] = useState('');
 
     const tabOptions = [
         {
@@ -31,13 +27,13 @@ export default function Department() {
         },
     ];
 
-    const fetchDepartment = async () => {
+    const fetchEmployee = async () => {
         setIsLoading(true);
         try {
             
-            const response = await axios.get('/getDepartmentListing');
+            const response = await axios.get('/getEmployeeListing');
 
-            setGetDepartment(response.data);
+            setGetEmployeeListing(response.data);
 
         } catch (error) {
             console.error('error', error);
@@ -47,21 +43,18 @@ export default function Department() {
     }
 
     useEffect(() => {
-        fetchDepartment();
+        fetchEmployee();
     }, []);
-
-    const filteredDepartments = getDepartment.filter((department) =>
-        department.name.toLowerCase().includes(searchFilter.toLowerCase())
-    );
 
     const clearFilter = () => {
         setSearchFilter('');
     }
 
     return (
-        <AuthenticatedLayout header="Departments">
-
-            <Head title="Departments" />
+        <AuthenticatedLayout
+            header="Employee Listing"
+        >
+            <Head title="Employee Listing" />
 
             <AnimatePresence mode="wait">
                 {
@@ -84,8 +77,7 @@ export default function Department() {
                             transition={{ duration: 0.3 }}
                         >
                             {
-                                getDepartment.length > 0 ? (
-                                    // your department list
+                                getEmployeeListing.length > 0 ? (
                                     <div className="flex flex-col gap-5 p-5">
                                         <div className="flex justify-between">
                                             <div>
@@ -113,42 +105,31 @@ export default function Department() {
                                                     />
                                                 </div>
                                                 <div>
-                                                    <Link href={route('create-department')}>
-                                                        <Button className="flex items-center gap-2" size="sm">
-                                                            <PlusIcon />
-                                                            <span>New Department</span>
-                                                        </Button>
-                                                    </Link>
+                                                    
                                                 </div>
                                             </div>
                                         </div>
                                         <div>
                                             {
                                                 viewType === 'list' && (
-                                                    <ListViewTable getDepartment={filteredDepartments} isLoading={isLoading} />
+                                                    <EmployeeListView getEmployeeListing={getEmployeeListing} isLoading={isLoading} />
                                                 )
                                             }
                                             {
                                                 viewType === 'grid' && (
-                                                    <GridViewTable getDepartment={filteredDepartments} isLoading={isLoading} />
+                                                    <EmployeeGridView getEmployeeListing={getEmployeeListing} isLoading={isLoading} />
                                                 )
                                             }
                                         </div>
                                     </div>
                                 ) : (
-                                    // fallback for no data
                                     <div className="py-10 px-[200px] min-h-[90vh] flex flex-col items-center justify-center gap-3">
                                         <div>
                                             <DepartmentIllus />
                                         </div>
                                         <div className="flex flex-col items-center gap-2">
-                                            <div className="text-gray-950 text-base font-bold">Oops! No Departments Here Yet</div>
-                                            <div className="text-gray-700 text-sm">Seems like no departments have been added yet. Add a new department to see them listed here.</div>
-                                        </div>
-                                        <div>
-                                            <Link href={route('create-department')}>
-                                                <Button size="sm" >Add Department</Button>
-                                            </Link>
+                                            <div className="text-gray-950 text-base font-bold">Oops! No Employee Here Yet</div>
+                                            <div className="text-gray-700 text-sm">Seems like no employee have been added yet. Add a new employee to see them listed here.</div>
                                         </div>
                                     </div>
                                 )
@@ -157,7 +138,10 @@ export default function Department() {
                     )
                 }
             </AnimatePresence>
-            
+            <div className="flex flex-col">
+                
+            </div>
+
         </AuthenticatedLayout>
     )
 }

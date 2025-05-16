@@ -80,19 +80,21 @@ export default function SideBar({expanded, toggleSidebar}) {
                 <div className="flex flex-col items-stretch self-stretch gap-2">
                     <div className="sticky top-[54px] text-xxs text-gray-500 bg-gray-100"> EMPLOYEE </div>
                     <div className="flex flex-col items-center gap-1 self-stretch">
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                            <Employee color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
-                            <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Employee Listing </div>
-                        </div>
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                        <Link href={route('employee-listing')} className="flex flex-col items-center gap-1 self-stretch">
+                            <div className={`${url === '/employee-listing' ? 'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                                <Employee color='currentColor' className={`${url === '/employee-listing' ? 'text-white' : 'text-gray-950'}`}/>
+                                <div className={`${url === '/employee-listing' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Employee Listing </div>
+                            </div>
+                        </Link>
+                        <div className={`${url === '/' ? 'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Attendance color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Attendance </div>
                         </div>
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                        <div className={`${url === '/' ? 'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <SalaryProfile color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Payslips </div>
                         </div>
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                        <div className={`${url === '/' ? 'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <PerformanceData color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Performance Data </div>
                         </div>

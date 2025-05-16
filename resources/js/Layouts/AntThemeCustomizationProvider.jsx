@@ -54,6 +54,8 @@ function AntThemeCustomizationProvider({ children }) {
                         // borderColor: 'none',
                         // cellPaddingBlock: 0,
                         // cellPaddingInline: 0,
+                        headerSortHoverBg: '#E5E7EB',
+                        headerSortActiveBg: '#030712'
                     },
                     Radio:{
                         radioSize: 20,

@@ -71,4 +71,25 @@ class User extends Authenticatable implements HasMedia
             'password' => 'hashed',
         ];
     }
+
+    public function employeebank()
+    {
+        return $this->hasOne(EmployeeBank::class, 'user_id', 'id');
+    }
+    public function emergencyinfo()
+    {
+        return $this->hasMany(EmergencyInfo::class, 'user_id', 'id');
+    }
+    public function transportinfo()
+    {
+        return $this->hasOne(Transport::class, 'user_id', 'id');
+    }
+    public function beneficiaryinfo()
+    {
+        return $this->hasOne(BeneficiaryInfo::class, 'user_id', 'id');
+    }
+    public function department()
+    {
+        return $this->hasOne(Department::class, 'id', 'department_id');
+    }
 }

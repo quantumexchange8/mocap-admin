@@ -22,6 +22,7 @@ export default function CreateDepartment() {
     const [getUser, setGetUser] = useState([]);
     const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
     const [nextUrl, setNextUrl] = useState(null);
+    const isSubmittingRef = useRef(false);
 
     const fetchUser = async () => {
         setIsLoading(true);
@@ -55,13 +56,13 @@ export default function CreateDepartment() {
 
     useEffect(() => {
         const handler = (event) => {
-            if (isDirty) {
-                event.preventDefault(); // Prevent navigation
-                setNextUrl(event.detail.visit.url); // Store the destination
-                setConfirmLeaveOpen(true); // Show custom dialog
+            if (isDirty && !isSubmittingRef.current) {
+                event.preventDefault();
+                setNextUrl(event.detail.visit.url);
+                setConfirmLeaveOpen(true);
             }
         };
-
+    
         const unlisten = router.on('before', handler);
         return () => unlisten();
     }, [isDirty]);
@@ -157,10 +158,12 @@ export default function CreateDepartment() {
     const submit = (e) => {
         e.preventDefault();
         setIsLoading(true);
+        isSubmittingRef.current = true;
 
         post('/store-department', {
             preserveScroll: true,
             onSuccess: () => {
+                setConfirmLeaveOpen(false);
                 setIsLoading(false);
                 reset();
                 toast.success('Succesfully Created Department.', {
@@ -173,9 +176,10 @@ export default function CreateDepartment() {
                 }, 1500); // 1.5 second
             },
             onError: () => {
+                isSubmittingRef.current = false;
                 setIsLoading(false);
-                toast.error('Succesfully Created Department.', {
-                    title: 'Succesfully Created Department.',
+                toast.error('Error Creating Department.', {
+                    title: 'Error Creating Department.',
                     duration: 3000,
                     variant: 'variant1',
                 });
