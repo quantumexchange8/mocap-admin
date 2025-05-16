@@ -9,12 +9,12 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DownOutlined } from '@ant-design/icons';
 import axios from "axios";
 import { ReactSortable } from "react-sortablejs";
-import Editor from "@/Components/Editor";
 import InputError from "@/Components/InputError";
 import toast from "react-hot-toast";
 import ConfirmDialog from "@/Components/ConfirmDialog";
 import { UnsavedIllus } from "@/Components/Icon/Illustration";
-
+import { Editor } from 'primereact/editor';
+        
 export default function CreateDepartment() {
 
     const [colorOpen, setColorOpen] = useState(false);
@@ -186,6 +186,30 @@ export default function CreateDepartment() {
             }
         })
     }
+
+    const renderHeader  = () =>{
+        return (
+            <>
+                <span className="ql-formats">
+                    <button className="ql-bold" />
+                    <button className="ql-italic" />
+                    <button className="ql-underline" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-list" value="ordered" />
+                    <button className="ql-list" value="bullet" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-align" value="" />
+                    <button className="ql-align" value="center" />
+                    <button className="ql-align" value="right" />
+                </span>
+            </>
+        )
+        
+    }
+
+    const header = renderHeader();
 
     return (
         <AuthenticatedLayout
@@ -374,9 +398,10 @@ export default function CreateDepartment() {
                         } />
                         <div>
                             <Editor 
-                                ref={quillRef}
-                                value={data.job_description}
-                                onChange={handleDescriptionChange}
+                                value={data.job_description} 
+                                onTextChange={(e) => setData('job_description', e.htmlValue)} 
+                                style={{ height: '280px' }} 
+                                headerTemplate={header}
                             />
                         </div>
                     </div>
@@ -388,9 +413,10 @@ export default function CreateDepartment() {
                         } />
                         <div>
                             <Editor 
-                                ref={quillRef2}
-                                value={data.job_regulation}
-                                onChange={handleRegulationChange}
+                                value={data.job_regulation} 
+                                onTextChange={(e) => setData('job_regulation', e.htmlValue)} 
+                                style={{ height: '280px' }} 
+                                headerTemplate={header}
                             />
                         </div>
                     </div>

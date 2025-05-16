@@ -446,6 +446,90 @@ select:focus,
     }
   }
 
+  /* prime editor */
+  .ql-formats .ql-bold.ql-active,
+  .ql-formats .ql-italic.ql-active,
+  .ql-formats .ql-underline.ql-active,
+  .ql-formats .ql-list.ql-active,
+  .ql-formats .ql-align.ql-active {
+      color: #030712 !important;
+  }
+
+  .ql-formats .ql-bold,
+  .ql-formats .ql-italic,
+  .ql-formats .ql-underline,
+  .ql-formats .ql-list,
+  .ql-formats .ql-align {
+    color: #6B7280 !important;
+}
+.ql-snow.ql-toolbar button, .ql-snow .ql-toolbar button {
+  color: #6B7280 !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke, 
+.ql-snow .ql-toolbar button:hover .ql-stroke, 
+.ql-snow.ql-toolbar button:focus .ql-stroke, 
+.ql-snow .ql-toolbar button:focus .ql-stroke, 
+.ql-snow.ql-toolbar .ql-stroke, 
+.ql-snow .ql-toolbar .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-label .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-label .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, 
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, 
+.ql-snow .ql-toolbar button:focus .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-label .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-label .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  color: #6B7280 !important;
+  stroke: #6B7280 !important;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke, 
+.ql-snow .ql-toolbar button:hover .ql-stroke, 
+.ql-snow.ql-toolbar button:focus .ql-stroke, 
+.ql-snow .ql-toolbar button:focus .ql-stroke, 
+.ql-snow.ql-toolbar button.ql-active .ql-stroke, 
+.ql-snow .ql-toolbar button.ql-active .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke, 
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke, 
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke, 
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter, .ql-snow.ql-toolbar button:focus .ql-stroke-miter, 
+.ql-snow .ql-toolbar button:focus .ql-stroke-miter, 
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter, 
+.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter, 
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter, 
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  color: #030712 !important;
+  stroke: #030712 !important;
+}
+
+  /* prime editor */
+
   /* checkbox */
 
   .ant-checkbox .ant-checkbox-inner {
@@ -573,7 +657,7 @@ select:focus,
 .ant-table-wrapper .ant-table-tbody >tr >th, .ant-table-wrapper .ant-table-tbody >tr >td {
   padding: 12px;
   color: #030712;
-  
+
 }
 
 .ant-table-wrapper .ant-table-thead th.ant-table-column-sort {
