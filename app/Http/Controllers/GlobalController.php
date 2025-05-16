@@ -7,6 +7,7 @@ use App\Models\Country;
 use App\Models\Department;
 use App\Models\DepartmentPosition;
 use App\Models\Nationality;
+use App\Models\Qualification;
 use App\Models\State;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -87,4 +88,14 @@ class GlobalController extends Controller
 
         return response()->json($admins);
     }
+
+    public function getQualification()
+    {
+
+        $qualifications = Qualification::get();
+
+        return response()->json($qualifications);
+    }
+
+    
 }

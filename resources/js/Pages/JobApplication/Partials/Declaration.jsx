@@ -1,6 +1,10 @@
-import React from "react"
+import Button from "@/Components/Button";
+import { ReloadIcon } from "@/Components/Icon/Outline";
+import InputLabel from "@/Components/InputLabel";
+import React, { useRef } from "react";
+import SignatureCanvas from "react-signature-canvas";
 
-export default function Form4() {
+export default function Declaration({data, setData, sigCanvas}) {
     return(
         <div className="flex w-full px-0 flex-col items-center gap-5">
             <div className="flex w-[728px] flex-col items-center border border-gray-200 rounded-sm">
@@ -8,7 +12,7 @@ export default function Form4() {
                     <div className="self-stretch text-gray-950 font-semibold">Declaration</div>
                     <div className="self-stretch text-gray-500 text-sm">Please review your information before submitting.</div>
                 </div>
-                <div className="flex p-5 flex-col items-start gap-8 self-stretch">
+                <div className="flex flex-col gap-8 p-5 ">
                     <div className="self-stretch text-gray-700 text-sm">
                     <p>I affirm that all Personal Data provided by me, along with the certificates and supporting documents
                     mentioned in this form, are accurate, current, and complete. I acknowledge that any intentional
@@ -27,17 +31,38 @@ export default function Form4() {
                     application for employment, internship, or scholarship, as well as for the necessary administrative functions
                     associated with these opportunities.</p>
                     </div>
-                
-                    <div className="flex flex-col items-start gap-2 self-stretch">
-                        <div className="flex gap-1">
-                            <div className="text-gray-700 text-sm">Applicant’s Signature</div><div className="text-sm text-error-600">*</div>
+    
+                    <div className="flex flex-col gap-2">
+                        <InputLabel htmlFor="signature" value={<div className="flex gap-1">
+                            <span>Applicant's Signature</span>
+                            <span className="text-error-600">*</span>
+                        </div>} />
+
+                        <div className="relative">
+                            <SignatureCanvas
+                                ref={sigCanvas}
+                                penColor="black"
+                                canvasProps={{ className: 'border border-gray-300 rounded w-full h-80' }}
+                            />
+
+                            <div className="absolute top-2 right-2 z-10">
+                                <Button
+                                    type="button"
+                                    variant="outlined"
+                                    size="sm"
+                                    className="flex items-center justify-center"
+                                    onClick={() => sigCanvas.current.clear()}
+                                    iconOnly
+                                >
+                                    <ReloadIcon />
+                                </Button>
+                            </div>
                         </div>
-                        <div> Sign
-                        </div>
+
                         <div className="text-gray-950 text-xs">
-                            Date:{new Date().toLocaleDateString()}
+                            Date: {new Date().toLocaleDateString('en-GB')}
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div> 
                       

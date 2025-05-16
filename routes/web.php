@@ -14,8 +14,6 @@ Route::get('/', function() {
     return Inertia::render('Onboarding');
 });
 
-Route::get('/job-application', [JobApplicationController::class, 'jobApplication'])->name('job-application');
-
 /**
  * ==============================
  *           Global Usage
@@ -28,6 +26,7 @@ Route::get('/getBank', [GlobalController::class, 'getBank'])->name('getBank');
 Route::get('/getDepartment', [GlobalController::class, 'getDepartment'])->name('getDepartment');
 Route::get('/getDepartmentposition', [GlobalController::class, 'getDepartmentposition'])->name('getDepartmentposition');
 Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getAllAdmin');
+Route::get('/getQualification', [GlobalController::class, 'getQualification'])->name('getQualification');
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -38,6 +37,24 @@ Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getA
 //     ]);
 // });
 
+/**
+ * ==============================
+ *     Job Application
+ * ==============================
+*/
+Route::get('/job-application', [JobApplicationController::class, 'jobApplication'])->name('job-application');
+// validation
+Route::post('/job-personal-validation', [JobApplicationController::class, 'personalValidation'])->name('job-personal-validation');
+Route::post('/job-education-validation', [JobApplicationController::class, 'educationValidation'])->name('job-education-validation');
+Route::post('/job-work-validation', [JobApplicationController::class, 'workValidation'])->name('job-work-validation');
+Route::post('/job-reference-validation', [JobApplicationController::class, 'referenceValidation'])->name('job-reference-validation');
+Route::post('/job-language-validation', [JobApplicationController::class, 'languageValidation'])->name('job-language-validation');
+Route::post('/job-transportation-validation', [JobApplicationController::class, 'transportationValidation'])->name('job-transportation-validation');
+Route::post('/job-additional-validation', [JobApplicationController::class, 'additionalValidation'])->name('job-additional-validation');
+Route::post('/job-check-signature', [JobApplicationController::class, 'checkSignature'])->name('job-check-signature');
+//store
+Route::post('/store-application', [JobApplicationController::class, 'storeApplication'])->name('store-application');
+Route::get('/application-success', [JobApplicationController::class, 'applicationSuccess'])->name('application-success');
 
 /**
  * ==============================

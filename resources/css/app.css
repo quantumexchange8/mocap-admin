@@ -182,7 +182,8 @@ select:focus,
 /* prime calendar */
 
 .p-disabled, .p-component:disabled {
-    color: #9CA3AF !important;
+    color: #6B7280 !important;
+    background-color: #F3F4F6 !important;
 }
 
 .p-calendar .p-inputtext {
@@ -557,6 +558,10 @@ select:focus,
   .p-dropdown .p-dropdown-label.p-placeholder {
     color: #6B7280;
   }
+
+  .p-dropdown .p-dropdown-trigger-icon {
+    color: #9CA3AF;
+  }
 /* Step */
 .ant-steps-item-icon {
     width: 42px !important;
@@ -581,7 +586,7 @@ select:focus,
 }
 
 .ant-steps .ant-steps-item-title::after {
-    background: #E5E7EB !important;
+    /* background: #E5E7EB !important; */
     height: 2px !important;
 }
 
