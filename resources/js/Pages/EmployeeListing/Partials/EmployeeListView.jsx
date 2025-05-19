@@ -11,6 +11,7 @@ import ConfirmDialog from "@/Components/ConfirmDialog";
 import { Radio } from "antd";
 import TextInput from "@/Components/TextInput";
 import InputIconWrapper from "@/Components/InputIconWrapper";
+import DeleteEmployee from "./DeleteEmployee";
 
 export default function EmployeeListView({ getEmployeeListing, fetchEmployee, isLoading}) {
 
@@ -26,6 +27,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
     const [pwResetedDialog, setPwResetedDialog ] = useState(false);
     const [newRespPw , setNewRespPw ] = useState('');
     const [tooltipText, setTooltipText] = useState(null);
+    const [isDeleteEmployeeOpen, setIsDeleteEmployeeOpen ] = useState(false);
 
     const requirements = {
         length: inputPw.length >= 8,
@@ -41,6 +43,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
         gap: 16,
     }
 
+    // employee details
     const openEmploymentDetails = (data) => {
         setEmploymentDetails(data);
         setIsOpenEmploymentDetail(true);
@@ -51,6 +54,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
         setEmploymentDetails(null);
     }
 
+    // restore account
     const openRestoreDialog = (data) => {
         setEmploymentDetails(data);
         setIsRestoreDialogOpen(true);
@@ -60,6 +64,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
         setEmploymentDetails(null);
     }
 
+    // suspend account
     const openSuspendDialog = (data) => {
         setEmploymentDetails(data);
         setIsSuspendDialogOpen(true);
@@ -70,6 +75,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
         setEmploymentDetails(null);
     }
 
+    // reset pw
     const openResetPwDialog = (data) => {
         setEmploymentDetails(data);
         setIsResetPwOpen(true);
@@ -77,6 +83,17 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
     }
     const closeResetPwDialog = () => {
         setIsResetPwOpen(false);
+        setEmploymentDetails(null);
+    }
+
+    // delete employee
+    const openDeleteEmployee = (data) => {
+        setEmploymentDetails(data);
+        setIsDeleteEmployeeOpen(true)
+    }
+
+    const closeDeleteEmployee = () => {
+        setIsDeleteEmployeeOpen(false);
         setEmploymentDetails(null);
     }
 
@@ -225,9 +242,9 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
                     {
                         key: '3',
                         label: (
-                            <span>
+                            <div onClick={() => openDeleteEmployee(record)}>
                                 Delete
-                            </span>
+                            </div>
                         ),
                     },
                     {
@@ -245,7 +262,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
                         onClick={(e) => e.stopPropagation()}
                     >
                         <Dropdown menu={{ items }} placement="bottomRight" arrow>
-                            <div>
+                            <div onClick={(e) => e.preventDefault()}>
                                 <Button iconOnly variant="text" size="sm">
                                     <DotVerticalIcon />
                                 </Button>
@@ -563,6 +580,11 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
                                 </div>
                             </div>
                         </Modal>
+                        {
+                            isDeleteEmployeeOpen && (
+                                <DeleteEmployee fetchEmployee={fetchEmployee} employmentDetails={employmentDetails} isDeleteEmployeeOpen={isDeleteEmployeeOpen} setIsDeleteEmployeeOpen={setIsDeleteEmployeeOpen} closeDeleteEmployee={closeDeleteEmployee}  />
+                            )
+                        }
                     </>
                 )
             }

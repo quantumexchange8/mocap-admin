@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DeletedEmployee;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Validated;
@@ -136,5 +137,57 @@ class AuthEmployeeController extends Controller
         return response()->json([
             'message' => 'Employee not found'
         ], 401);
+    }
+
+    public function deleteEmployee(Request $request)
+    {
+        if ($request->reason_deletion) {
+            if ($request->reason_deletion !== 'duplicate_entry') {
+                $validated = $request->validate([
+                    'reason_deletion' => 'required|string|max:255',
+                    'reason_leaving' => 'required|string|max:255',
+                    'misconduct_remark' => 'required_if:misconduct_type,Yes',
+                    'criminal_remark' => 'required_if:criminal_type,Yes',
+                    'illegal_remark' => 'required_if:illegal_type,Yes',
+                    'disclosed_remark' => 'required_if:disclosed_type,Yes',
+                    'encouraged_remark' => 'required_if:encouraged_type,Yes',
+                    'overall_rating' => 'required'
+                ]);
+            }
+        } else {
+            $validated = $request->validate([
+                'reason_deletion' => 'required|string|max:255',
+            ]);
+        }
+
+        $user = User::find($request->id);
+
+        $user->update([
+            'status' => 'deleted',
+        ]);
+
+        $deleteEmployee = DeletedEmployee::create([
+            'user_id' => $user->id,
+            'reason_deletion' => $request->reason_deletion,
+            'reason_leaving' => $request->reason_leaving ?? null,
+            'misconduct_type' => $request->misconduct_type ?? null,
+            'misconduct_remark' => $request->misconduct_remark ?? null,
+            'criminal_type' => $request->criminal_type ?? null,
+            'criminal_remark' => $request->criminal_remark ?? null,
+            'illegal_type' => $request->illegal_type ?? null,
+            'illegal_remark' => $request->illegal_remark ?? null,
+            'disclosed_type' => $request->disclosed_type ?? null,
+            'disclosed_remark' => $request->disclosed_remark ?? null,
+            'encouraged_type' => $request->encouraged_type ?? null,
+            'encouraged_remark' => $request->encouraged_remark ?? null,
+            'negative_attidude' => $request->negative_attidude ?? null,
+            'positive_attidude' => $request->positive_attidude ?? null,
+            'overall_rating' => $request->overall_rating ?? null,
+            'overall_remark' => $request->remarks ?? null,
+        ]);
+
+
+
+        return redirect()->back();
     }
 }

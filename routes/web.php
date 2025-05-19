@@ -109,6 +109,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/suspend-employee', [AuthEmployeeController::class, 'suspendEmployee'])->name('suspend-employee');
     Route::post('/restore-employee', [AuthEmployeeController::class, 'restoreEmployee'])->name('restore-employee');
     Route::post('/reset-employee-pw', [AuthEmployeeController::class, 'resetEmployeePw'])->name('reset-employee-pw');
+    Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
     
     /**
      * ==============================
