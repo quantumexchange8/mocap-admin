@@ -40,7 +40,7 @@ export default ({
             variantClasses = `bg-error-700 text-white hover:bg-error-800 disabled:bg-gray-100 disabled:text-gray-400 rounded-sm`
             break
         case 'outlined-danger':
-            variantClasses = `border-error-700 text-error-700 hover:bg-error-50 disabled:border-gray-300 disabled:text-gray-300 rounded-sm`
+            variantClasses = ` border border-error-700 text-error-700 hover:bg-error-50 disabled:border-gray-300 disabled:text-gray-300 rounded-sm`
             break
         case 'text-danger':
             variantClasses = `text-error-700 hover:bg-error-50 disabled:text-gray-400 rounded-sm`

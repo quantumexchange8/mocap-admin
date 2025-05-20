@@ -84,7 +84,7 @@ class GlobalController extends Controller
     public function getAllAdmin()
     {
 
-        $admins = User::where('role', 'admin')->get();
+        $admins = User::whereIn('role', ['admin', 'superadmin'])->get();
 
         return response()->json($admins);
     }

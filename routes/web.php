@@ -111,6 +111,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/reset-employee-pw', [AuthEmployeeController::class, 'resetEmployeePw'])->name('reset-employee-pw');
     Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
     
+    Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
+
     /**
      * ==============================
      *           Department
