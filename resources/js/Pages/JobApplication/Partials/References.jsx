@@ -146,7 +146,9 @@ export default function Language({data, setData, errors}) {
                             className="w-full"
                             autoComplete="refer2_name"
                             onChange={(e) => setData('refer2_name', e.target.value)}
+                            hasError={!!errors.refer2_name}
                         />
+                        <InputError message={errors.refer2_name}  />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -160,7 +162,9 @@ export default function Language({data, setData, errors}) {
                             className="w-full"
                             autoComplete="relation2"
                             onChange={(e) => setData('relation2', e.target.value)}
+                            hasError={!!errors.relation2}
                         />
+                        <InputError message={errors.relation2}  />
                     </div>
                     <div className="flex flex-col min-w-[300px] max-w-[334px] items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -199,8 +203,10 @@ export default function Language({data, setData, errors}) {
                                 placeholder="Phone Number"
                                 autoComplete="refer2_phoneno"
                                 onChange={(e) => setData('refer2_phoneno', e.target.value)}
+                                hasError={!!errors.refer2_phoneno}                            
                             />
-                        </div>   
+                        </div>
+                        <InputError message={errors.refer2_phoneno}  />   
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -215,13 +221,15 @@ export default function Language({data, setData, errors}) {
                             placeholder="you@example.com"
                             autoComplete="refer2_email"
                             onChange={(e) => setData('refer2_email', e.target.value)}
+                            hasError={!!errors.refer2_email}
                         />
+                        <InputError message={errors.refer2_email}  />
                     </div>
                 </form>
 
                 {/* Reference 3 */}
                 <form className="flex p-5 items-start content-start gap-5 self-stretch flex-wrap">
-                    <div className="min-w-[500px] flex-[1_0_0] text-gray-950 font-semibold">Reference 2</div>
+                    <div className="min-w-[500px] flex-[1_0_0] text-gray-950 font-semibold">Reference 3</div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
                             <InputLabel htmlFor="refer3_name" value="Full Name"/>
@@ -234,7 +242,9 @@ export default function Language({data, setData, errors}) {
                             className="w-full"
                             autoComplete="refer3_name"
                             onChange={(e) => setData('refer3_name', e.target.value)}
+                            hasError={!!errors.refer3_name}
                         />
+                        <InputError message={errors.refer3_name}  />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -248,7 +258,9 @@ export default function Language({data, setData, errors}) {
                             className="w-full"
                             autoComplete="relation3"
                             onChange={(e) => setData('relation3', e.target.value)}
+                            hasError={!!errors.relation3}
                         />
+                        <InputError message={errors.relation3}  />
                     </div>
                     <div className="flex flex-col min-w-[300px] max-w-[334px] items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -287,8 +299,10 @@ export default function Language({data, setData, errors}) {
                                 placeholder="Phone Number"
                                 autoComplete="refer3_phoneno"
                                 onChange={(e) => setData('refer3_phoneno', e.target.value)}
+                                hasError={!!errors.refer3_phoneno}
                             />
-                        </div>   
+                        </div>
+                        <InputError message={errors.refer3_phoneno}  />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -303,7 +317,9 @@ export default function Language({data, setData, errors}) {
                             placeholder="you@example.com"
                             autoComplete="refer3_email"
                             onChange={(e) => setData('refer3_email', e.target.value)}
+                            hasError={!!errors.refer3_email}
                         />
+                        <InputError message={errors.refer3_email}  />
                     </div>
                 </form>
             </div>

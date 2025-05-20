@@ -194,6 +194,7 @@ export default function Education({data, setData, errors}) {
                                 view="month" 
                                 dateFormat="mm/yy"
                                 readOnlyInput
+                                invalid={!!errors.edu2_start}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -207,6 +208,7 @@ export default function Education({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.edu2_start} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -221,6 +223,7 @@ export default function Education({data, setData, errors}) {
                                 view="month" 
                                 dateFormat="mm/yy"
                                 readOnlyInput
+                                invalid={!!errors.edu2_end}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -234,6 +237,7 @@ export default function Education({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.edu2_end} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -247,7 +251,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder=" "
                             onChange={(e) => setData('edu2_school', e.target.value)}
+                            hasError={!!errors.edu2_school}
                         />
+                        <InputError message={errors.edu2_school} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -261,7 +267,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder=" "
                             onChange={(e) => setData('edu2_address', e.target.value)}
+                            hasError={!!errors.edu2_address}
                         />
+                        <InputError message={errors.edu2_address} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -279,6 +287,7 @@ export default function Education({data, setData, errors}) {
                             loading={isLoading}
                             filter
                             className="w-full text-sm"
+                            invalid={!!errors.edu2_qualification}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -291,6 +300,7 @@ export default function Education({data, setData, errors}) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.edu2_qualification} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -304,7 +314,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder="e.g. Bachelor of Computer Science (Hons)"
                             onChange={(e) => setData('edu2_course', e.target.value)}
+                            hasError={!!errors.edu2_course}
                         />
+                        <InputError message={errors.edu2_course} />
                     </div>
                 </form>
                 {/* Education 3 */}
@@ -323,6 +335,7 @@ export default function Education({data, setData, errors}) {
                                 view="month" 
                                 dateFormat="mm/yy"
                                 readOnlyInput
+                                invalid={!!errors.edu3_start}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -336,6 +349,7 @@ export default function Education({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.edu3_start} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -350,6 +364,7 @@ export default function Education({data, setData, errors}) {
                                 view="month" 
                                 dateFormat="mm/yy"
                                 readOnlyInput
+                                invalid={!!errors.edu3_end}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -363,6 +378,7 @@ export default function Education({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.edu3_end} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -376,7 +392,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder=" "
                             onChange={(e) => setData('edu3_school', e.target.value)}
+                            hasError={!!errors.edu3_school}
                         />
+                        <InputError message={errors.edu3_school} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -390,7 +408,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder=" "
                             onChange={(e) => setData('edu3_address', e.target.value)}
+                            hasError={!!errors.edu3_address}
                         />
+                        <InputError message={errors.edu3_address} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -408,6 +428,7 @@ export default function Education({data, setData, errors}) {
                             loading={isLoading}
                             filter
                             className="w-full text-sm"
+                            invalid={!!errors.edu3_qualification}
                             pt={{
                                 root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                 panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -420,6 +441,7 @@ export default function Education({data, setData, errors}) {
                                 filterContainer: { className: 'p-2'}
                             }}
                         />
+                        <InputError message={errors.edu3_qualification} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
@@ -433,7 +455,9 @@ export default function Education({data, setData, errors}) {
                             className="w-full"
                             placeholder="e.g. Bachelor of Computer Science (Hons)"
                             onChange={(e) => setData('edu3_course', e.target.value)}
+                            hasError={!!errors.edu3_course}
                         />
+                        <InputError message={errors.edu3_course} />
                     </div>
                 </form>
             </div>

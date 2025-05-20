@@ -22,6 +22,7 @@ export default function JobApplication() {
     const [sign, setSign] = useState(null);
     const [direction, setDirection] = useState('forward');
     const [completedSteps, setCompletedSteps] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const {data, setData, post, processing, errors, reset } = useForm ({
         //personal
@@ -81,7 +82,7 @@ export default function JobApplication() {
         job2_company: '',
         job2_address: '',
         job2_supervisor: '',
-        job2_dailcode: '+60',
+        job2_dailcode: '',
         job2_phonecode: '',
         job2_reason: '',
         job2_startsalary: '',
@@ -91,7 +92,7 @@ export default function JobApplication() {
         job3_company: '',
         job3_address: '',
         job3_supervisor: '',
-        job3_dailcode: '+60',
+        job3_dailcode: '',
         job3_phonecode: '',
         job3_reason: '',
         job3_startsalary: '',
@@ -105,12 +106,12 @@ export default function JobApplication() {
         refer1_email: '',
         refer2_name: '',
         relation2: '',
-        refer2_dailcode: '+60',
+        refer2_dailcode: '',
         refer2_phoneno: '',
         refer2_email: '',
         refer3_name: '',
         relation3: '',
-        refer3_dailcode: '+60',
+        refer3_dailcode: '',
         refer3_phoneno: '',
         refer3_email: '',
 
@@ -130,7 +131,7 @@ export default function JobApplication() {
         other_listen: '',
 
         // transport
-        transport: null,
+        transport: '',
         approximate_distance: '',
         approximate_hours: '',
         approximate_minutes: '',
@@ -151,7 +152,7 @@ export default function JobApplication() {
         relative_remark: '',
         health_type: 'No',
         health_remark: '',
-        find_job_type: null,
+        find_job_type: '',
         find_job_remark: '',
 
         // declaration
@@ -254,7 +255,10 @@ export default function JobApplication() {
         message.error('Cancel');
     };
 
-    const updateSignature = async () => {
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Check and upload signature if present
         if (sigCanvas.current && !sigCanvas.current.isEmpty()) {
             const dataUrl = sigCanvas.current.toDataURL("image/png");
             const blob = dataURLtoBlob(dataUrl);
@@ -269,16 +273,26 @@ export default function JobApplication() {
                     headers: {
                         "Content-Type": "multipart/form-data"
                     }
-                })
+                });
 
-                if (response.status === 200) {
-                    setIsOpen(true);
+                if (response.status !== 200) {
+                    // Handle signature check failure (optional)
+                    return;
                 }
-
             } catch (error) {
-                console.error('error', error)
+                console.error('error', error);
+                return;
             }
         }
+
+        // Submit the form
+        post('/store-application', {
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsLoading(false);
+                window.location.href = `/application-success`;
+            }
+        });
     };
 
     useEffect(() => {
@@ -418,7 +432,7 @@ export default function JobApplication() {
                         size='lg' 
                         variant="primary"
                         className="flex px-6 py-4 justify-center items-center gap-2"
-                        onClick={updateSignature}
+                        onClick={handleSubmit}
                     >
                         Submit
                     </Button>

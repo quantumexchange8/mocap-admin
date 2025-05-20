@@ -277,7 +277,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job2_title"
                             onChange={(e) => setData('job2_title', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job2_title}
                         />
+                        <InputError message={errors.job2_title} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_period" value="Period" />
@@ -291,6 +293,12 @@ export default function WorkInfo({data, setData, errors}) {
                                 dateFormat="dd/mm/yy"
                                 readOnlyInput
                                 disabled={disabled}
+                                invalid={!!errors.job2_period}
+                                pt={{
+                                    input: {
+                                        className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                    },
+                                }}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -304,6 +312,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.job2_period} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_company" value="Company Name" />
@@ -316,7 +325,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job2_company"
                             onChange={(e) => setData('job2_company', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job2_company}
                         />
+                        <InputError message={errors.job2_company} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_address" value="Address/City/State" />
@@ -329,7 +340,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job2_address"
                             onChange={(e) => setData('job2_address', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job2_address}
                         />
+                        <InputError message={errors.job2_address} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_supervisor" value="Supervisor Name" />
@@ -342,7 +355,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job2_supervisor"
                             onChange={(e) => setData('job2_supervisor', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job2_supervisor}
                         />
+                        <InputError message={errors.job2_supervisor} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_phonecode" value="Phone Number" />
@@ -381,8 +396,10 @@ export default function WorkInfo({data, setData, errors}) {
                                 autoComplete="job2_phonecode"
                                 onChange={(e) => setData('job2_phonecode', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job2_phonecode}
                             />
                         </div>
+                        <InputError message={errors.job2_phonecode} />
                     </div>
                     <div className="flex min-w-[500px] flex-col items-start gap-2 flex-[1_0_0]">                        
                         <InputLabel htmlFor="job2_reason" value="Reason for Leaving" />
@@ -396,8 +413,11 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job2_reason"
                             onChange={(e) => setData('job2_reason', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job2_reason}
                         />
+                        <InputError message={errors.job2_reason} />
                     </div>
+
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_startsalary" value="Starting Salary" />
                         <div className="relative flex items-center gap-3 self-stretch">
@@ -412,8 +432,10 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="0.00"
                                 onChange={(e) => setData('job2_startsalary', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job2_startsalary}
                             />
                         </div>
+                        <InputError message={errors.job2_startsalary} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_endsalary" value="Ending Salary" />
@@ -429,14 +451,16 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="0.00"
                                 onChange={(e) => setData('job2_endsalary', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job2_endsalary}
                             />
                         </div>
+                        <InputError message={errors.job2_endsalary} />
                     </div>
                 </form>
 
                 {/* Experience 3 */}
                 <form className="flex p-5 items-start content-start gap-5 self-stretch flex-wrap">
-                    <div className="min-w-[500px] flex-[1_0_0] text-gray-950 font-semibold">Experience 2</div>
+                    <div className="min-w-[500px] flex-[1_0_0] text-gray-950 font-semibold">Experience 3</div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_title" value="Job Title" />
                         <TextInput 
@@ -448,7 +472,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job3_title"
                             onChange={(e) => setData('job3_title', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job3_title}
                         />
+                        <InputError message={errors.job3_title} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_period" value="Period" />
@@ -462,6 +488,12 @@ export default function WorkInfo({data, setData, errors}) {
                                 dateFormat="dd/mm/yy"
                                 readOnlyInput
                                 disabled={disabled}
+                                invalid={!!errors.job3_period}
+                                pt={{
+                                    input: {
+                                        className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                    },
+                                }}
                             />
                             <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                                 {
@@ -475,6 +507,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 }
                             </div>
                         </div>
+                        <InputError message={errors.job3_period} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_company" value="Company Name" />
@@ -487,7 +520,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job3_company"
                             onChange={(e) => setData('job3_company', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job3_company}
                         />
+                        <InputError message={errors.job3_company} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_address" value="Address/City/State" />
@@ -500,7 +535,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job3_address"
                             onChange={(e) => setData('job3_address', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job3_address}
                         />
+                        <InputError message={errors.job3_address} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_supervisor" value="Supervisor Name" />
@@ -513,7 +550,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job3_supervisor"
                             onChange={(e) => setData('job3_supervisor', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job3_supervisor}
                         />
+                        <InputError message={errors.job3_supervisor} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_phonecode" value="Phone Number" />
@@ -552,8 +591,10 @@ export default function WorkInfo({data, setData, errors}) {
                                 autoComplete="job3_phonecode"
                                 onChange={(e) => setData('job3_phonecode', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job3_phonecode}
                             />
                         </div>
+                        <InputError message={errors.job3_phonecode} />
                     </div>
                     <div className="flex min-w-[500px] flex-col items-start gap-2 flex-[1_0_0]">                        
                         <InputLabel htmlFor="job3_reason" value="Reason for Leaving" />
@@ -567,7 +608,9 @@ export default function WorkInfo({data, setData, errors}) {
                             autoComplete="job3_reason"
                             onChange={(e) => setData('job3_reason', e.target.value)}
                             disabled={disabled}
+                            hasError={!!errors.job3_reason}
                         />
+                        <InputError message={errors.job3_reason} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_startsalary" value="Starting Salary" />
@@ -583,8 +626,10 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="0.00"
                                 onChange={(e) => setData('job3_startsalary', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job3_startsalary}
                             />
                         </div>
+                        <InputError message={errors.job3_startsalary} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_endsalary" value="Ending Salary" />
@@ -600,8 +645,10 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="0.00"
                                 onChange={(e) => setData('job3_endsalary', e.target.value)}
                                 disabled={disabled}
+                                hasError={!!errors.job3_endsalary}
                             />
                         </div>
+                        <InputError message={errors.job3_endsalary} />
                     </div>
                 </form>
             </div>
