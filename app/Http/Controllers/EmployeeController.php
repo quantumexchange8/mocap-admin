@@ -437,7 +437,7 @@ class EmployeeController extends Controller
         }
 
         // add mail function
-        Mail::to($user->email)->queue(new EmployeeAccount($user, $generateRandomPw));
+        // Mail::to($user->email)->queue(new EmployeeAccount($user, $generateRandomPw));
 
         return redirect()->back();
     }

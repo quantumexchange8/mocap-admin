@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             'employee_id' => 'AID0001',
             'title' => 'Admin',
             'password' => 'Test1234.',
-            'role' => 'admin',
+            'role' => 'superadmin',
             'status' => 'active'
         ]);
     }

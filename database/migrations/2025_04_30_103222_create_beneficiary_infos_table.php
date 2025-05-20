@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('relationship');
             $table->string('indentity_no');
             $table->string('dial_code');
-            $table->integer('phone_no');
+            $table->string('phone_no');
             $table->json('insurance_id');
             $table->timestamps();
         });

@@ -4,11 +4,23 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/Components/Button";
 import { BirthdayIcon, DateJoinedIcon, EditIcon, EmailIcon, Employee, HomeIcon, PhoneIcon, TagActiveIcon, TagInvitedIcon, TagSuspendedIcon } from "@/Components/Icon/Outline";
-import { Tag } from "antd";
+import { Image, Tag } from "antd";
+import Modal from "@/Components/Modal";
+import InputLabel from "@/Components/InputLabel";
+import TextInput from "@/Components/TextInput";
+import ProfileInfo from "./EmployeeInfo/ProfileInfo";
 
 export default function EmployeeDetails({user_details}) {
 
     const [isLoading, setIsLoading] = useState(false);
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+    const openProfileInfo = () => {
+        setIsProfileOpen(true);
+    }
+    const closeProfileInfo = () => {
+        setIsProfileOpen(false);
+    }
 
     return (
         <AuthenticatedLayout
@@ -32,7 +44,13 @@ export default function EmployeeDetails({user_details}) {
 
                 <div className="flex shadow-smShadow">
                     <div className="max-w-60 min-w-60 w-full h-60 ">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX-6Wi3i1iTyPXaKenHPXvyc89PNv5-nHBYw&s" alt="profile_image" />
+                        <Image 
+                            width={240}
+                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX-6Wi3i1iTyPXaKenHPXvyc89PNv5-nHBYw&s"
+                            preview={{
+                                movable: false
+                            }}
+                        />
                     </div>
                     <div className="flex flex-col justify-between p-5 w-full">
                         <div className="flex gap-5">
@@ -47,7 +65,7 @@ export default function EmployeeDetails({user_details}) {
                                 </div>
                             </div>
                             <div>
-                                <Button size="sm" iconOnly variant="text">
+                                <Button size="sm" iconOnly variant="text" onClick={openProfileInfo}>
                                     <EditIcon />
                                 </Button>
                             </div>
@@ -115,6 +133,13 @@ export default function EmployeeDetails({user_details}) {
                     </div>
                 </div>
             </div>
+
+            <ProfileInfo 
+                user_details={user_details}
+                isProfileOpen={isProfileOpen}
+                setIsProfileOpen={setIsProfileOpen}
+                closeProfileInfo={closeProfileInfo}
+            />
         </AuthenticatedLayout>
     )
 }

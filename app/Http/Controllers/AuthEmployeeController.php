@@ -38,6 +38,8 @@ class AuthEmployeeController extends Controller
             'department',
         ])->find($id);
 
+        $user_details->profile_image = $user_details->getFirstMediaUrl('profile_image') ?? null;
+
         return Inertia::render('EmployeeListing/Partials/EmployeeDetails', [
             'user_details' => $user_details,
         ]);
@@ -187,6 +189,20 @@ class AuthEmployeeController extends Controller
         ]);
 
 
+
+        return redirect()->back();
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        dd($request->all());
+
+        $user = User::find($request->id);
+
+        if ($request->hasFile('profile_image')) {
+            $user->addMedia($request->profile_image)->toMediaCollection('profile_image');
+        };
 
         return redirect()->back();
     }
