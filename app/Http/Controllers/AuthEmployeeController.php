@@ -198,11 +198,24 @@ class AuthEmployeeController extends Controller
 
         dd($request->all());
 
+        $validated = $request->validate([
+            'reason_deletion' => 'required|string|max:255',
+            'reason_leaving' => 'required|string|max:255',
+            'misconduct_remark' => 'required_if:misconduct_type,Yes',
+            'criminal_remark' => 'required_if:criminal_type,Yes',
+            'illegal_remark' => 'required_if:illegal_type,Yes',
+            'disclosed_remark' => 'required_if:disclosed_type,Yes',
+            'encouraged_remark' => 'required_if:encouraged_type,Yes',
+            'overall_rating' => 'required'
+        ]);
+
         $user = User::find($request->id);
 
         if ($request->hasFile('profile_image')) {
             $user->addMedia($request->profile_image)->toMediaCollection('profile_image');
         };
+
+
 
         return redirect()->back();
     }
