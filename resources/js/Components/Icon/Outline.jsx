@@ -1014,6 +1014,14 @@ const JobApplicationIcon9 = () => {
     );
 }
 
+const HierarchyIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M4.66667 11.3333H2V14H4.66667V11.3333ZM4.66667 11.3333L8 8.66667M11.3333 11.3333H14V14H11.3333V11.3333ZM11.3333 11.3333L8 8.66667M8 8.66667V4.66667M6.66667 2H9.33333V4.66667H6.66667V2Z" stroke="#6B7280" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
 export {
     Dashboard,
     Request,
@@ -1108,4 +1116,5 @@ export {
     HomeIcon,
     SuccessIcon,
     JobApplicationIcon9,
+    HierarchyIcon,
 };

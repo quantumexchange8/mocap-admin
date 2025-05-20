@@ -673,6 +673,24 @@ select:focus,
   display: none;
 }
 
+/* pagination */
+.ant-table-wrapper .ant-table-pagination-center {
+  align-items: center;
+}
+.ant-pagination .ant-pagination-item-active a {
+  color: white;
+}
+.ant-pagination .ant-pagination-item {
+  border-radius: 100%;
+}
+.ant-pagination .ant-pagination-total-text {
+  color: #6B7280;
+  font-size: 12px;
+}
+.ant-select .ant-select-selection-wrap {
+  min-width: 80px;
+  font-size: 14px;
+}
 /* Table */
 
 /* tooltip */

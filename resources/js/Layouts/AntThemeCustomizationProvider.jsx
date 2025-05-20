@@ -57,6 +57,9 @@ function AntThemeCustomizationProvider({ children }) {
                         headerSortHoverBg: '#E5E7EB',
                         headerSortActiveBg: '#030712'
                     },
+                    Pagination: {
+                        itemActiveBg: '#030712'
+                    },
                     Radio:{
                         radioSize: 20,
                     },
