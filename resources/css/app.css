@@ -701,3 +701,19 @@ select:focus,
 }
 
 /* tooltip */
+
+/* Tabs */
+
+.ant-tabs .ant-tabs-tab {
+  padding: 16px 12px;
+}
+
+.ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  font-weight: 500;
+}
+
+.ant-tabs .ant-tabs-tab+.ant-tabs-tab {
+  margin: 0;
+}
+
+/* Tabs */

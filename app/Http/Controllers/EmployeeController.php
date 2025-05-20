@@ -50,9 +50,6 @@ class EmployeeController extends Controller
             'bank_name' => ['required', 'string', 'max:255'],
             'acc_type' => ['required', 'string', 'max:255'],
             'acc_no' => ['required', 'string', 'max:255'],
-            'income_tax_no' => ['required', 'string', 'max:255'],
-            'epf_no' => ['required', 'string', 'max:255'],
-            'socso_no' => ['required', 'string', 'max:255'],
         ];
 
         $messages = [
@@ -350,6 +347,7 @@ class EmployeeController extends Controller
             'employee_date' => Carbon::parse($request->date_of_employment)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
             'employee_end_date' => Carbon::parse($request->intern_end_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
             'handle_by' => $request->submitted_by,
+            'job_id' => $request->job_applicant ?? null,
             'status' => 'invited'
         ]);
 
@@ -358,9 +356,9 @@ class EmployeeController extends Controller
             'bank_name' => $request->bank_name,
             'acc_type' => $request->acc_type,
             'acc_no' => $request->acc_no,
-            'income_tax_no' => $request->income_tax_no,
-            'epf_no' => $request->epf_no,
-            'socso_no' => $request->socso_no
+            'income_tax_no' => $request->income_tax_no ?? null,
+            'epf_no' => $request->epf_no ?? null,
+            'socso_no' => $request->socso_no ?? null
         ]);
 
         $emergency1 = EmergencyInfo::create([

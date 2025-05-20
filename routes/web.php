@@ -27,6 +27,8 @@ Route::get('/getDepartment', [GlobalController::class, 'getDepartment'])->name('
 Route::get('/getDepartmentposition', [GlobalController::class, 'getDepartmentposition'])->name('getDepartmentposition');
 Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getAllAdmin');
 Route::get('/getQualification', [GlobalController::class, 'getQualification'])->name('getQualification');
+Route::get('/getJobApplications', [GlobalController::class, 'getJobApplications'])->name('getJobApplications');
+
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -112,7 +114,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
     
     Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
-
+    Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
+    
     /**
      * ==============================
      *           Department

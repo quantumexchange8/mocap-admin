@@ -4,11 +4,14 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/Components/Button";
 import { BirthdayIcon, DateJoinedIcon, EditIcon, EmailIcon, Employee, HomeIcon, PhoneIcon, TagActiveIcon, TagInvitedIcon, TagSuspendedIcon } from "@/Components/Icon/Outline";
-import { Image, Tag } from "antd";
+import { Image, Tabs, Tag } from "antd";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import ProfileInfo from "./EmployeeInfo/ProfileInfo";
+import Profile from "./EmployeeInfo/Profile";
+import Company from "./EmployeeInfo/Company";
+import Documents from "./EmployeeInfo/Documents";
 
 export default function EmployeeDetails({user_details}) {
 
@@ -21,6 +24,12 @@ export default function EmployeeDetails({user_details}) {
     const closeProfileInfo = () => {
         setIsProfileOpen(false);
     }
+
+    const items = [
+        { key: '1', label: 'Profile', children: <Profile user_details={user_details} /> },
+        { key: '2', label: 'Company Assets', disabled: true, children: <Company /> },
+        { key: '3', label: 'Employee Documents', disabled: true, children: <Documents /> },
+    ];
 
     return (
         <AuthenticatedLayout
@@ -42,7 +51,7 @@ export default function EmployeeDetails({user_details}) {
                     
                 </div>
 
-                <div className="flex shadow-smShadow">
+                <div className="flex shadow-smShadow border border-gray-200">
                     <div className="max-w-60 min-w-60 w-full h-60 ">
                         <Image 
                             width={240}
@@ -55,7 +64,7 @@ export default function EmployeeDetails({user_details}) {
                     <div className="flex flex-col justify-between p-5 w-full">
                         <div className="flex gap-5">
                             <div className="flex flex-col gap-1 w-full">
-                                <div>{user_details.name}</div>
+                                <div className="text-gray-950 text-xl font-bold">{user_details.name}</div>
                                 <div className="flex items-center gap-2">
                                     <div className="text-gray-700 text-sm">{user_details.employee_id}</div>
                                     <div className="text-gray-400 text-sm">|</div>
@@ -131,6 +140,13 @@ export default function EmployeeDetails({user_details}) {
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div>
+                    <Tabs 
+                        defaultActiveKey="1"
+                        items={items}
+                    />
                 </div>
             </div>
 

@@ -6,6 +6,7 @@ use App\Models\Bank;
 use App\Models\Country;
 use App\Models\Department;
 use App\Models\DepartmentPosition;
+use App\Models\JobApplication;
 use App\Models\Nationality;
 use App\Models\Qualification;
 use App\Models\State;
@@ -97,5 +98,10 @@ class GlobalController extends Controller
         return response()->json($qualifications);
     }
 
-    
+    public function getJobApplications()
+    {
+        $jobApplications = JobApplication::where('status', 'hired')->get();
+
+        return response()->json($jobApplications);
+    }
 }

@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 export default function JobApplication() {
 
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(1);
     const sigCanvas = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [sign, setSign] = useState(null);

@@ -8,6 +8,7 @@ import { GridViewIcon, ListViewIcon, XIcon, SearchIcon } from "@/Components/Icon
 import SearchInput from "@/Components/SearchInput";
 import EmployeeListView from "./Partials/EmployeeListView";
 import EmployeeGridView from "./Partials/EmployeeGridView";
+import Button from "@/Components/Button";
 
 export default function EmployeeListing() {
 
@@ -45,6 +46,10 @@ export default function EmployeeListing() {
     useEffect(() => {
         fetchEmployee();
     }, []);
+
+    const redirectCreateEmployee = () => {
+        window.location.href = `/employee-application`
+    }
 
     const clearFilter = () => {
         setSearchFilter('');
@@ -130,6 +135,9 @@ export default function EmployeeListing() {
                                         <div className="flex flex-col items-center gap-2">
                                             <div className="text-gray-950 text-base font-bold">Oops! No Employee Here Yet</div>
                                             <div className="text-gray-700 text-sm">Seems like no employee have been added yet. Add a new employee to see them listed here.</div>
+                                        </div>
+                                        <div>
+                                            <Button size="sm" onClick={redirectCreateEmployee}>Add Employee</Button>
                                         </div>
                                     </div>
                                 )

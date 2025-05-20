@@ -37,4 +37,14 @@ class JobApplication extends Model implements HasMedia
         'status',
     ];
 
+    public function education(): \Illuminate\Database\Eloquent\Relations\hasMany
+    {
+        return $this->hasMany(JobEducation::class, 'job_apply_id', 'id');
+    }
+
+    public function experience(): \Illuminate\Database\Eloquent\Relations\hasMany
+    {
+        return $this->hasMany(JobExperience::class, 'job_apply_id', 'id');
+    }
+
 }

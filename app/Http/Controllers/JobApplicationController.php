@@ -404,27 +404,32 @@ class JobApplicationController extends Controller
             'special_skill' => $request->skills,
         ]);
 
-        $education2 = JobEducation::create([
-            'job_apply_id' => $application->id,
-            'from_date' => Carbon::parse($request->edu2_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
-            'to_date' => Carbon::parse($request->edu2_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
-            'school_name' => $request->edu2_school ?? null,
-            'address' => $request->edu2_address ?? null,
-            'qualification' => $request->edu2_qualification ?? null,
-            'course_name' => $request->edu2_course ?? null,
-            'special_skill' => $request->skills ?? null,
-        ]);
+        if ($request->edu2_school) {
+            $education2 = JobEducation::create([
+                'job_apply_id' => $application->id,
+                'from_date' => Carbon::parse($request->edu2_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                'to_date' => Carbon::parse($request->edu2_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                'school_name' => $request->edu2_school ?? null,
+                'address' => $request->edu2_address ?? null,
+                'qualification' => $request->edu2_qualification ?? null,
+                'course_name' => $request->edu2_course ?? null,
+                'special_skill' => $request->skills ?? null,
+            ]);
+        }
 
-        $education3 = JobEducation::create([
-            'job_apply_id' => $application->id,
-            'from_date' => Carbon::parse($request->edu3_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
-            'to_date' => Carbon::parse($request->edu3_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
-            'school_name' => $request->edu3_school ?? null,
-            'address' => $request->edu3_address ?? null,
-            'qualification' => $request->edu3_qualification ?? null,
-            'course_name' => $request->edu3_course ?? null,
-            'special_skill' => $request->skills ?? null,
-        ]);
+        if ($request->edu3_school) {
+            $education3 = JobEducation::create([
+                'job_apply_id' => $application->id,
+                'from_date' => Carbon::parse($request->edu3_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                'to_date' => Carbon::parse($request->edu3_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                'school_name' => $request->edu3_school ?? null,
+                'address' => $request->edu3_address ?? null,
+                'qualification' => $request->edu3_qualification ?? null,
+                'course_name' => $request->edu3_course ?? null,
+                'special_skill' => $request->skills ?? null,
+            ]);
+        }
+
 
         $period1 = $request->job1_period;
         $experience1 = JobExperience::create([

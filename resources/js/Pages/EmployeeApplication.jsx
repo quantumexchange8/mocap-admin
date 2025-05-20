@@ -43,6 +43,7 @@ export default function EmployeeApplication() {
     const [confirmationDialog, setConfirmationDialog] = useState(false);
     const [completedSteps, setCompletedSteps] = useState(false);
     const [open, setOpen] = useState(false);
+    const [getJobApplication, setGetJobApplication] = useState([]);
 
     const fetchDepartment = async  () => {
         setIsLoading(true);
@@ -89,10 +90,26 @@ export default function EmployeeApplication() {
         }
     }
 
+    const fetchJobApplication = async  () => {
+        setIsLoading(true);
+        try {
+
+            const response = await axios.get('/getJobApplications');
+            
+            setGetJobApplication(response.data);
+            
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchDepartment();
         fetchPosition();
         fetchAdmin();
+        fetchJobApplication();
     }, []);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -190,6 +207,7 @@ export default function EmployeeApplication() {
         date_of_employment: today,
         intern_end_date: null,
         submitted_by: 'CT Admin',
+        job_applicant: '',
     }); 
 
     const steps = [
@@ -845,7 +863,34 @@ export default function EmployeeApplication() {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-span-2 flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
+                            <InputLabel value='Job Applicant' />
+                            <Dropdown 
+                                value={data.job_applicant} 
+                                onChange={(e) => setData('job_applicant', e.value)} 
+                                options={getJobApplication.map((item) => ({
+                                    label: item.full_name,
+                                    value: item.id,
+                                }))}
+                                optionLabel="label"
+                                placeholder="Select"
+                                loading={isLoading}
+                                className="w-full text-sm"
+                                invalid={!!errors.job_applicant}
+                                pt={{
+                                    root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                    panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                    item: ({ context }) => ({
+                                        className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                            context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                        }`
+                                    }),
+                                    filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                    filterContainer: { className: 'p-2'}
+                                }}
+                            />  
+                        </div>
+                        <div className="flex flex-col gap-2">
                             <InputLabel value='Submitted by' />
                             <Dropdown 
                                 value={data.submitted_by} 

@@ -70,7 +70,8 @@ function AntThemeCustomizationProvider({ children }) {
                         padding: '8px',
                     },
                     Tabs: {
-                        cardBg: '#F3F4F6'
+                        cardBg: '#F3F4F6',
+                        itemColor: '#6B7280'
                     }
                 }
             }}
