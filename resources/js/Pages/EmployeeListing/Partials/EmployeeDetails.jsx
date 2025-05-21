@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/Components/Button";
 import { BirthdayIcon, DateJoinedIcon, EditIcon, EmailIcon, Employee, HomeIcon, PhoneIcon, TagActiveIcon, TagInvitedIcon, TagSuspendedIcon } from "@/Components/Icon/Outline";
-import { Image, Tabs, Tag } from "antd";
+import { Breadcrumb, Image, Tabs, Tag } from "antd";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
@@ -40,15 +40,24 @@ export default function EmployeeDetails({user_details}) {
 
             <div className="flex flex-col gap-5 p-5">
                 <div className="w-full sticky top-[55px] bg-white z-30 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                            <span><Employee /></span>
-                            <span>Employee Listing</span>
-                        </div>
-                        <div className="text-gray-400 text-base">/</div>
-                        <div className="text-gray-950 text-sm font-semibold">{user_details.name} - Employee Details</div>
-                    </div>
-                    
+                    <Breadcrumb 
+                        items={[
+                            {
+                                href: '/employee-listing',
+                                title: (
+                                    <div className="flex items-center gap-2">
+                                      <Employee />
+                                      <span>Employee Listing</span>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: (
+                                    <span className="text-gray-950 text-sm font-semibold">{user_details.name} - Employee Details</span>
+                                )
+                            }
+                        ]}
+                    />
                 </div>
 
                 <div className="flex shadow-smShadow border border-gray-200">
@@ -105,7 +114,7 @@ export default function EmployeeDetails({user_details}) {
                             <div>
                                 {
                                     user_details.status === 'active' && (
-                                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagActiveIcon /></span>
                                             <span>Active</span>
                                         </Tag>
@@ -113,7 +122,7 @@ export default function EmployeeDetails({user_details}) {
                                 }
                                 {
                                     user_details.status === 'invited' && (
-                                        <Tag bordered={false} color="#884dff26" className='ant-tag-purple text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="#884dff26" className='ant-tag-purple text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagInvitedIcon /></span>
                                             <span>Invited</span>
                                         </Tag>
@@ -121,7 +130,7 @@ export default function EmployeeDetails({user_details}) {
                                 }
                                 {
                                     user_details.status === 'suspended' && (
-                                        <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagSuspendedIcon /></span>
                                             <span>Suspended</span>
                                         </Tag>
@@ -129,12 +138,12 @@ export default function EmployeeDetails({user_details}) {
                                 }
                             </div>
                             <div>
-                                <Tag bordered={false} color={user_details.department.color} className='text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                <Tag bordered={false} color={user_details.department.color} className='text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                     <span>{user_details.department.name}</span>
                                 </Tag>
                             </div>
                             <div>
-                                <Tag bordered={false} color='others' className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                <Tag bordered={false} color='others' className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                     <span>{user_details.employee_type}</span>
                                 </Tag>
                             </div>
@@ -145,17 +154,21 @@ export default function EmployeeDetails({user_details}) {
                 <div>
                     <Tabs 
                         defaultActiveKey="1"
+                        destroyInactiveTabPane={true}
                         items={items}
                     />
                 </div>
             </div>
 
+            {/* Personal Information */}
             <ProfileInfo 
                 user_details={user_details}
                 isProfileOpen={isProfileOpen}
                 setIsProfileOpen={setIsProfileOpen}
                 closeProfileInfo={closeProfileInfo}
             />
+
+
         </AuthenticatedLayout>
     )
 }

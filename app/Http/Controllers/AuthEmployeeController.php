@@ -196,7 +196,7 @@ class AuthEmployeeController extends Controller
 
     public function updateProfile(Request $request)
     {
-
+        
         $user = User::find($request->id);
 
         $validated = $request->validate([
@@ -224,8 +224,8 @@ class AuthEmployeeController extends Controller
             'address' => $request->address,
         ]);
 
-        if ($request->hasFile('profile_image')) {
-            $user->addMedia($request->profile_image)->toMediaCollection('profile_image');
+        if ($request->hasFile('image')) {
+            $user->addMedia($request->image)->toMediaCollection('profile_image');
         };
 
         return redirect()->back();

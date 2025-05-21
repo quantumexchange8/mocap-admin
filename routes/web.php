@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthEmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ProfileController;
@@ -115,6 +116,9 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
     Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
+    
+    Route::post('/update-personal-info', [EmployeeProfileController::class, 'updatePersonalInfo'])->name('update-personal-info');
+    
     
     /**
      * ==============================

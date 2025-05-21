@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router, useForm } from "@inertiajs/react";
-import { ColorPicker, Select } from "antd";
+import { Breadcrumb, ColorPicker, Select } from "antd";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { DownOutlined } from '@ant-design/icons';
 import axios from "axios";
@@ -220,14 +220,24 @@ export default function CreateDepartment() {
 
         <div className="flex flex-col">
             <div className="w-full sticky top-[55px] bg-white z-30 py-2 px-5 flex justify-between items-center border-b border-gray-200">
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-2 text-gray-500 text-sm">
-                        <span><Department /></span>
-                        <span>Departments</span>
-                    </div>
-                    <div className="text-gray-400 text-base">/</div>
-                    <div className="text-gray-950 text-sm font-semibold">New Department</div>
-                </div>
+                <Breadcrumb 
+                    items={[
+                        {
+                            href: '/department',
+                            title: (
+                                <div className="flex items-center gap-2">
+                                    <Department />
+                                    <span>Departments</span>
+                                </div>
+                            ),
+                        },
+                        {
+                            title: (
+                                <span className="text-gray-950 text-sm font-semibold">New Department</span>
+                            )
+                        }
+                    ]}
+                />
                 <div>
                     <Button size="sm" onClick={submit} disabled={isLoading}>Create</Button>
                 </div>
