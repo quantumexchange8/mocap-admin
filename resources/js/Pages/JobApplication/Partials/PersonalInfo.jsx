@@ -5,6 +5,7 @@ import { Dropdown } from 'primereact/dropdown';
 import { Calendar } from 'primereact/calendar';
 import { CalendarIcon, ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
 import InputError from "@/Components/InputError";
+import { Select } from "antd";
 
 export default function PersonalInfo({ data, setData, errors }) {
     
@@ -40,7 +41,7 @@ export default function PersonalInfo({ data, setData, errors }) {
         setIsLoading(true);
         try {
 
-            const response = await axios.get('/getDepartmentposition');
+            const response = await axios.get('/getPosition');
             
             setGetPosition(response.data);
             
@@ -50,14 +51,6 @@ export default function PersonalInfo({ data, setData, errors }) {
             setIsLoading(false);
         }
     }
-
-    const transformedOptions = getPosition.map(dept => ({
-        label: dept.department_name,
-        items: dept.positions.map(pos => ({
-            label: pos.position_name,
-            value: pos, // or pos.id if you only want the ID
-        }))
-    }));
 
     const fetchNationality = async  () => {
         setIsLoading(true);
@@ -131,6 +124,10 @@ export default function PersonalInfo({ data, setData, errors }) {
         setData('start_date', null);
     }
 
+    const handleSelectChange = (selected) => {
+        setData('position', selected)
+    }
+
     return (
         <div className="flex w-full px-0 flex-col items-center gap-5">
             {/* Job Preferences */}
@@ -143,31 +140,19 @@ export default function PersonalInfo({ data, setData, errors }) {
                     <div className="flex flex-col min-w-[300px] max-w-[334px] items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
                             <InputLabel htmlFor="position" value="Position Apply For" /><div className="text-sm text-error-600">*</div>
-                        </div>                        
-                        <Dropdown 
-                            value={data.position} 
-                            onChange={(e) => setData('position', e.value)} 
-                            options={transformedOptions}
-                            optionGroupLabel="label"
-                            optionGroupChildren="items"
-                            placeholder="Select" 
-                            loading={isLoading}
-                            className="w-full text-sm"
-                            invalid={!!errors.position}
-                            pt={{
-                                root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
-                                panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm px-1 py-3' }, // dropdown list
-                                item: ({ context }) => ({
-                                    className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
-                                        context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
-                                    }`
-                                }),
-                                
-                                itemGroup: { className: 'px-4' },
-                                itemGroupLabel: { className: 'text-gray-500 text-xs' },
-                                filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
-                                filterContainer: { className: 'p-2'}
-                            }}
+                        </div>   
+                        <Select 
+                            showSearch
+                            placeholder="Select"
+                            className="antd-select-custom focus:ring-offset-transparent"
+                            onChange={handleSelectChange}
+                            filterOption={(input, option) =>
+                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                            }
+                            options={getPosition.map(user => ({
+                                label: user.name,
+                                value: user.name,
+                            }))}
                         />
                         <InputError message={errors.position}  />  
                     </div>

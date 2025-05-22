@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('postcode');
             $table->string('city');
             $table->string('state');
+            $table->integer('test_mark');
             $table->string('status');
             $table->timestamps();
         });

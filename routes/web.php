@@ -7,6 +7,7 @@ use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SmartDataController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -29,6 +30,7 @@ Route::get('/getDepartmentposition', [GlobalController::class, 'getDepartmentpos
 Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getAllAdmin');
 Route::get('/getQualification', [GlobalController::class, 'getQualification'])->name('getQualification');
 Route::get('/getJobApplications', [GlobalController::class, 'getJobApplications'])->name('getJobApplications');
+Route::get('/getPosition', [GlobalController::class, 'getPosition'])->name('getPosition');
 
 
 // Route::get('/', function () {
@@ -134,6 +136,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
     Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
     
+
+    /**
+     * ==============================
+     *           Smart Data
+     * ==============================
+    */
+    Route::get('/smart-data', [SmartDataController::class, 'smartData'])->name('smart-data');
+    Route::get('/getJobApplicants', [SmartDataController::class, 'getJobApplicants'])->name('getJobApplicants');
+    Route::get('/jobApplicant-details/{id}', [SmartDataController::class, 'jobApplicantDetails'])->name('jobApplicant-details');
+    Route::get('/jobApplicant-evaluation/{id}', [SmartDataController::class, 'jobApplicantEvaluation'])->name('jobApplicant-evaluation');
+    
+    Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
+    Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
+
     /**
      * ==============================
      *           Profile

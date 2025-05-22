@@ -389,7 +389,7 @@ class JobApplicationController extends Controller
             'postcode' => $request->postcode,
             'city' => $request->city,
             'state' => $request->state,
-            'status' => 'Pending Review',
+            'status' => 'pending_review',
         ]);
 
         $education1 = JobEducation::create([

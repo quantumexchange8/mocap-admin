@@ -36,6 +36,7 @@ function AntThemeCustomizationProvider({ children }) {
                         selectorBg: '#FFF', // Tailwind gray-100
                         multipleItemHeight: '20px',
                         activeOutlineColor: 'rgb(0 0 0 / 0%)',
+                        optionHeight: '36px',
                     },
                     Tag: {
                         defaultBg: '#F3F4F6',
