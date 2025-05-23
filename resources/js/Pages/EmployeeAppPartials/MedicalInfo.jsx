@@ -57,18 +57,20 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="allergic_remark"
-                                    type="text"
-                                    name="allergic_remark"
-                                    value={data.allergic_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="allergic_remark"
-                                    disabled={data.allergic_type === 'No'}
-                                    onChange={(e) => setData('allergic_remark', e.target.value)}
-                                    hasError={!!errors.allergic_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="allergic_remark"
+                                        type="text"
+                                        name="allergic_remark"
+                                        value={data.allergic_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="allergic_remark"
+                                        disabled={data.allergic_type === 'No'}
+                                        onChange={(e) => setData('allergic_remark', e.target.value)}
+                                        hasError={!!errors.allergic_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -88,18 +90,21 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="medical_remark"
-                                    type="text"
-                                    name="medical_remark"
-                                    value={data.medical_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="medical_remark"
-                                    disabled={data.medical_type === 'No'}
-                                    onChange={(e) => setData('medical_remark', e.target.value)}
-                                    hasError={!!errors.medical_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="medical_remark"
+                                        type="text"
+                                        name="medical_remark"
+                                        value={data.medical_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="medical_remark"
+                                        disabled={data.medical_type === 'No'}
+                                        onChange={(e) => setData('medical_remark', e.target.value)}
+                                        hasError={!!errors.medical_remark}
+                                    />
+                                </div>
+                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
@@ -119,18 +124,21 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="medication_remark"
-                                    type="text"
-                                    name="medication_remark"
-                                    value={data.medication_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="medication_remark"
-                                    disabled={data.medication_type === 'No'}
-                                    onChange={(e) => setData('medication_remark', e.target.value)}
-                                    hasError={!!errors.medication_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="medication_remark"
+                                        type="text"
+                                        name="medication_remark"
+                                        value={data.medication_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="medication_remark"
+                                        disabled={data.medication_type === 'No'}
+                                        onChange={(e) => setData('medication_remark', e.target.value)}
+                                        hasError={!!errors.medication_remark}
+                                    />
+                                </div>
+                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
@@ -151,18 +159,20 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     className="py-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <TextInput 
-                                    id="pregnant_remark"
-                                    type="text"
-                                    name="pregnant_remark"
-                                    value={data.pregnant_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="pregnant_remark"
-                                    disabled={data.pregnant_type === 'No' || data.gender === 'male'}
-                                    onChange={(e) => setData('pregnant_remark', e.target.value)}
-                                    hasError={!!errors.pregnant_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="pregnant_remark"
+                                        type="text"
+                                        name="pregnant_remark"
+                                        value={data.pregnant_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="pregnant_remark"
+                                        disabled={data.pregnant_type === 'No' || data.gender === 'male'}
+                                        onChange={(e) => setData('pregnant_remark', e.target.value)}
+                                        hasError={!!errors.pregnant_remark}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
@@ -245,18 +255,21 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     className="py-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <TextInput 
-                                    id="pregnancy_medication_remark"
-                                    type="text"
-                                    name="pregnancy_medication_remark"
-                                    value={data.pregnancy_medication_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="pregnancy_medication_remark"
-                                    disabled={data.pregnancy_medication_type === 'No' || data.gender === 'male'}
-                                    onChange={(e) => setData('pregnancy_medication_remark', e.target.value)}
-                                    hasError={!!errors.pregnancy_medication_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="pregnancy_medication_remark"
+                                        type="text"
+                                        name="pregnancy_medication_remark"
+                                        value={data.pregnancy_medication_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="pregnancy_medication_remark"
+                                        disabled={data.pregnancy_medication_type === 'No' || data.gender === 'male'}
+                                        onChange={(e) => setData('pregnancy_medication_remark', e.target.value)}
+                                        hasError={!!errors.pregnancy_medication_remark}
+                                    />
+                                </div>
+                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
@@ -277,18 +290,20 @@ export default function MedicalInfo({ data, setData, errors }) {
                                     className="py-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <TextInput 
-                                    id="gynaecological_remark"
-                                    type="text"
-                                    name="gynaecological_remark"
-                                    value={data.gynaecological_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="gynaecological_remark"
-                                    disabled={data.gynaecological_type === 'No' || data.gender === 'male'}
-                                    onChange={(e) => setData('gynaecological_remark', e.target.value)}
-                                    hasError={!!errors.gynaecological_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="gynaecological_remark"
+                                        type="text"
+                                        name="gynaecological_remark"
+                                        value={data.gynaecological_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="gynaecological_remark"
+                                        disabled={data.gynaecological_type === 'No' || data.gender === 'male'}
+                                        onChange={(e) => setData('gynaecological_remark', e.target.value)}
+                                        hasError={!!errors.gynaecological_remark}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
