@@ -194,7 +194,7 @@ const Authority = ({color, className, ...rest}) => {
 
 const SmartData = ({color, className, ...rest}) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <g clipPath="url(#clip0_2013_610)">
                 <path d="M7.33203 3V6.66667C7.33203 7.40303 5.9889 8 4.33203 8C2.67518 8 1.33203 7.40303 1.33203 6.66667V3" stroke="currentColor" strokeLinecap="square"/>
                 <path d="M7.33203 4.66797C7.33203 5.40434 5.9889 6.0013 4.33203 6.0013C2.67518 6.0013 1.33203 5.40434 1.33203 4.66797" stroke="currentColor" strokeLinecap="square"/>
@@ -1054,6 +1054,14 @@ const PrintIcon = () => {
     )
 }
 
+const FilterIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2.66797 2.66663H13.3346V4.11463C13.3346 4.46822 13.194 4.8073 12.944 5.05729L10.0013 7.99996V12.6666L6.0013 14V8.33329L3.01464 5.04796C2.7916 4.80258 2.668 4.48289 2.66797 4.15129V2.66663Z" stroke="#030712" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
 
 
 export {
@@ -1155,4 +1163,5 @@ export {
     ViewIcon,
     ExportIcon,
     PrintIcon,
+    FilterIcon,
 };

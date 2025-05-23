@@ -73,6 +73,11 @@ function AntThemeCustomizationProvider({ children }) {
                     Tabs: {
                         cardBg: '#F3F4F6',
                         itemColor: '#6B7280'
+                    },
+                    DatePicker: {
+                        lineHeight: '20px',
+                        cellWidth: '36px',
+                        cellHoverBg: '#F3F4F6'
                     }
                 }
             }}

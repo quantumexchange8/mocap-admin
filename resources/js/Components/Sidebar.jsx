@@ -178,7 +178,7 @@ export default function SideBar({expanded, toggleSidebar}) {
                         </div>
                         <Link href={route('smart-data')} className="flex flex-col items-center gap-1 self-stretch">
                             <div className={`${url === '/smart-data' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                                <SmartData color='currentColor' className={`${url === '/smart-data' ? 'text-white' : 'text-gray-950'}`}/>
+                                <SmartData className={`${url === '/smart-data' ? 'text-white' : 'text-gray-950'}`}/>
                                 <div className={`${url === '/smart-data' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Smart Data </div>
                             </div>
                         </Link>

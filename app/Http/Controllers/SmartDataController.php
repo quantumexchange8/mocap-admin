@@ -17,10 +17,25 @@ class SmartDataController extends Controller
         return Inertia::render('SmartData/SmartData');
     }
 
-    public function getJobApplicants()
+    public function getJobApplicants(Request $request)
     {
 
-        $jobApplicants = JobApplication::latest()->get();
+        $jobApplicants = JobApplication::query();
+
+        if ($request->has('status') && is_array($request->status)) {
+            $jobApplicants->whereIn('status', $request->status);
+        }
+
+        if ($request->has('submission_date')) {
+            $jobApplicants->whereDate('created_at', '=', $request->submission_date);
+        }
+
+        if ($request->has('position')) {
+            $jobApplicants->where('position', $request->position);
+        }
+
+        $jobApplicants = $jobApplicants->latest()->get();
+
         
         return response()->json($jobApplicants);
     }
@@ -28,7 +43,15 @@ class SmartDataController extends Controller
     public function jobApplicantDetails($id) 
     {
 
-        $jobApplicant = JobApplication::find($id);
+        $jobApplicant = JobApplication::with([
+            'work_experience',
+            'job_reference',
+            'job_language',
+            'job_transport',
+            'job_additional',
+        ])->find($id);
+
+        $jobApplicant->digital_signature = $jobApplicant->getFirstMediaUrl('job_signature');
 
         return Inertia::render('SmartData/JobApplicantDetails', [
             'jobApplicant' => $jobApplicant,

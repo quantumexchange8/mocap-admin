@@ -717,3 +717,43 @@ select:focus,
 }
 
 /* Tabs */
+
+
+/* Datepicker */
+
+.ant-picker-dropdown .ant-picker-cell .ant-picker-cell-inner {
+  border-radius: 100%;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border-radius: 100%;
+  border: none;
+}
+
+.ant-picker-dropdown .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner {
+  background: #F3F4F6;
+}
+
+.ant-picker-dropdown .ant-picker-year-panel .ant-picker-cell-inner, .ant-picker-dropdown .ant-picker-quarter-panel .ant-picker-cell-inner, .ant-picker-dropdown .ant-picker-month-panel .ant-picker-cell-inner {
+  border-radius: 2px;
+}
+.ant-picker-dropdown .ant-picker-cell {
+  padding: 4px;
+}
+
+.ant-picker-dropdown .ant-picker-decade-panel .ant-picker-cell-inner {
+  border-radius: 2px;
+}
+
+.ant-picker-dropdown .ant-picker-header >button {
+  min-width: 36px;
+}
+
+.ant-picker-dropdown .ant-picker-header {
+  padding-top: 20px;
+  padding-bottom: 8px;
+}
+
+.ant-pagination .ant-pagination-prev .ant-pagination-item-link, .ant-pagination .ant-pagination-next .ant-pagination-item-link {
+  border-radius: 100%;
+}

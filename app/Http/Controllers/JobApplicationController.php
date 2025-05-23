@@ -390,6 +390,7 @@ class JobApplicationController extends Controller
             'city' => $request->city,
             'state' => $request->state,
             'status' => 'pending_review',
+            'special_skill' => $request->skills,
         ]);
 
         $education1 = JobEducation::create([
@@ -400,8 +401,6 @@ class JobApplicationController extends Controller
             'address' => $request->edu1_address,
             'qualification' => $request->edu1_qualification,
             'course_name' => $request->edu1_course,
-    
-            'special_skill' => $request->skills,
         ]);
 
         if ($request->edu2_school) {
@@ -413,7 +412,6 @@ class JobApplicationController extends Controller
                 'address' => $request->edu2_address ?? null,
                 'qualification' => $request->edu2_qualification ?? null,
                 'course_name' => $request->edu2_course ?? null,
-                'special_skill' => $request->skills ?? null,
             ]);
         }
 
@@ -426,7 +424,6 @@ class JobApplicationController extends Controller
                 'address' => $request->edu3_address ?? null,
                 'qualification' => $request->edu3_qualification ?? null,
                 'course_name' => $request->edu3_course ?? null,
-                'special_skill' => $request->skills ?? null,
             ]);
         }
 

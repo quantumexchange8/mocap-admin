@@ -34,6 +34,7 @@ class JobApplication extends Model implements HasMedia
         'postcode',
         'city',
         'state',
+        'special_skill',
         'status',
     ];
 
@@ -45,6 +46,31 @@ class JobApplication extends Model implements HasMedia
     public function experience(): \Illuminate\Database\Eloquent\Relations\hasMany
     {
         return $this->hasMany(JobExperience::class, 'job_apply_id', 'id');
+    }
+
+    public function work_experience()
+    {
+        return $this->hasMany(JobExperience::class, 'job_apply_id', 'id');
+    }
+
+    public function job_reference()
+    {
+        return $this->hasMany(JobReference::class, 'job_apply_id', 'id');
+    }
+
+    public function job_language()
+    {
+        return $this->hasOne(JobLanguage::class, 'job_apply_id', 'id');
+    }
+
+    public function job_transport()
+    {
+        return $this->hasOne(JobTransport::class, 'job_apply_id', 'id');
+    }
+
+    public function job_additional()
+    {
+        return $this->hasOne(JobAdditional::class, 'job_apply_id', 'id');
     }
 
 }

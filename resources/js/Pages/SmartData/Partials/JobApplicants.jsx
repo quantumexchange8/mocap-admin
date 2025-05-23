@@ -1,18 +1,23 @@
 import Button from "@/Components/Button";
-import { ColumnIcon, DefaultSortIcon, SearchIcon, SortAsc, SortDesc, ViewIcon, XIcon } from "@/Components/Icon/Outline";
+import { ClearIcon, ColumnIcon, DatePickerIcon, DefaultSortIcon, FilterIcon, SearchIcon, SortAsc, SortDesc, ViewIcon, XIcon } from "@/Components/Icon/Outline";
 import SearchInput from "@/Components/SearchInput";
-import { Checkbox, Popover, Table, Tag, Tooltip } from "antd";
+import { Checkbox, DatePicker, Popover, Select, Table, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { formatDate, formatAmount } from "@/Composables";
 import { NoRecordIllus } from "@/Components/Icon/Illustration";
+import { Calendar } from "primereact/calendar";
 
 export default function JobApplicants() {
 
     const [searchFilter, setSearchFilter] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [getJobApplicant, setGetJobApplicant] = useState([]);
+    const [getPosition, setGetPosition] = useState([]);
     const [sortOrder, setSortOrder] = useState(null); 
     const [submissionSort, setSubmissionSort] = useState(null); 
+    const [filterSubmissionDate, setFilterSubmissionDate] = useState(null); 
+    const [filterPosition, setFilterPosition] = useState(null); 
+    const [filterStatus, setFilterStatus] = useState(null); 
     const [visibleColumns, setVisibleColumns] = useState([
         'applicant',
         'submission_date',
@@ -31,15 +36,28 @@ export default function JobApplicants() {
         { label: 'Status', value: 'status' },
     ];
 
-    const onColumnChange = (checkedValues) => {
-        setVisibleColumns(checkedValues);
-    };
+    // const onColumnChange = (checkedValues) => {
+    //     setVisibleColumns(checkedValues);
+    // };
 
-    const fetchDepartment = async () => {
+    const fetchJobApplicant = async () => {
         setIsLoading(true);
+
+        const hasFilter = filterSubmissionDate || filterPosition || (filterStatus && filterStatus.length > 0);
+
+        if (hasFilter) {
+            setIsLoading(true);
+        }
+
         try {
             
-            const response = await axios.get('/getJobApplicants');
+            const response = await axios.get('/getJobApplicants', {
+                params: {
+                    submission_date: filterSubmissionDate,
+                    position: filterPosition,
+                    status: filterStatus,
+                }
+            });
 
             setGetJobApplicant(response.data);
 
@@ -50,10 +68,28 @@ export default function JobApplicants() {
         }
     }
 
-    useEffect(() => {
-        fetchDepartment();
-    }, []);
+    const fetchPosition = async () => {
+        setIsLoading(true);
+        try {
+            
+            const response = await axios.get('/getPosition');
 
+            setGetPosition(response.data);
+
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchPosition();
+    }, []);
+    
+    useEffect(() => {
+        fetchJobApplicant();
+    }, [filterSubmissionDate, filterPosition, filterStatus]);
 
     const clearFilter = () => {
         setSearchFilter('');
@@ -104,7 +140,7 @@ export default function JobApplicants() {
                 return (
                     <div className="flex flex-col">
                         <div className="text-gray-950 font-medium text-sm max-w-[100px] truncate">{record.full_name}</div>
-                        <div className="text-xs text-gray-500 max-w-[100px] truncate">{record.email}</div>
+                        <div className="text-xs text-gray-500 max-w-[180px] truncate">{record.email}</div>
                     </div>
                 )
             },
@@ -135,8 +171,8 @@ export default function JobApplicants() {
             ),
             key: 'submission_date',
             dataIndex: 'created_at',
-            sorter: (a, b) => a.created_at.localeCompare(b.created_at),
-            sortOrder,
+            sorter: (a, b) => new Date(a.created_at) - new Date(b.created_at),
+            sortOrder: submissionSort,
             width: 144,
             onHeaderCell: () => ({
                 onClick: () => {
@@ -252,9 +288,44 @@ export default function JobApplicants() {
         }, 
     ];
 
+    const filterJobApplicant = getJobApplicant.filter((applicant) =>
+        applicant.full_name.toLowerCase().includes(searchFilter.toLowerCase())
+    );
+
     const directEmployeeDetails = (record) => {
         window.location.href = `/jobApplicant-details/${record.id}`;
     };
+
+    const clearDate = () => {
+
+    }
+
+    const onChange = (date, dateString) => {
+        setFilterSubmissionDate(dateString);
+    };
+
+    const handleSelectChange = (selected) => {
+        setFilterPosition(selected);
+    }
+
+    const getActiveFilterCount = () => {
+        let count = 0;
+    
+        if (filterSubmissionDate) count += 1;
+        if (filterPosition) count += 1;
+        if (filterStatus?.includes('pending_review')) count += 1;
+        if (filterStatus?.includes('hired')) count += 1;
+        if (filterStatus?.includes('rejected')) count += 1;
+    
+        return count;
+    };
+
+    const clearAllFilter = () => {
+        setFilterSubmissionDate(null);
+        setFilterPosition(null);
+        setFilterStatus(null);
+    }
+    
 
     const filteredColumns = columns.filter(col => col.key === 'action' || visibleColumns.includes(col.key));
 
@@ -307,7 +378,70 @@ export default function JobApplicants() {
                     </Popover>
                 </div>
                 <div className="flex items-center gap-3">
-                    <div></div>
+                    {/* Filter */}
+                    <div>
+                        <Popover content={
+                            <div className="flex flex-col max-w-[208px] w-[208px] ">
+                                <div className="pt-4 pb-8 flex flex-col gap-8">
+                                    <div className="flex flex-col gap-2">
+                                        <div className="text-gray-950 font-bold text-xs">Filter by Submission Date</div>
+                                        <DatePicker
+                                            onChange={onChange}
+                                            className="w-full py-3 px-4"
+                                            renderExtraFooter={() => null}
+                                            superNextIcon={false}
+                                            superPrevIcon={false}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="text-gray-950 font-bold text-xs">Filter by Position Applied</div>
+                                        <Select 
+                                            showSearch
+                                            placeholder="Select"
+                                            className="antd-select-custom focus:ring-offset-transparent"
+                                            onChange={handleSelectChange}
+                                            filterOption={(input, option) =>
+                                                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                                            }
+                                            options={getPosition.map(position => ({
+                                                label: position.name,
+                                                value: position.name,
+                                            }))}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col gap-2">
+                                        <div className="text-gray-950 font-bold text-xs">Filter by Status</div>
+                                        <Checkbox.Group 
+                                            options={[
+                                                { label: 'Pending Review', value: 'pending_review' },
+                                                { label: 'Hired', value: 'hired' },
+                                                { label: 'Rejected', value: 'rejected' },
+                                            ]}
+                                            value={filterStatus}
+                                            onChange={(checkedValues) => setFilterStatus(checkedValues)}
+                                            className="flex flex-col gap-4 text-sm text-gray-950"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="pt-4 w-full border-t border-gray-200">
+                                    <Button size="sm" variant="outlined-danger" className="w-full flex justify-center" onClick={clearAllFilter}>
+                                        Clear All
+                                    </Button>
+                                </div>
+                            </div>
+                        } placement="bottomRight" trigger="click" >
+                            <div>
+                                <Button variant="outlined" size="sm" className="flex items-center gap-2">
+                                    <div><FilterIcon /></div>
+                                    <div className="text-gray-950 text-sm">Filter</div>
+                                    <div className="px-1 text-white text-xs bg-gray-950 rounded-sm flex items-center justify-center h-full">
+                                        {getActiveFilterCount()}
+                                    </div>
+                                </Button>
+                            </div>
+                        </Popover>
+                        
+                    </div>
                     <div>
                         <SearchInput 
                             withIcon
@@ -328,7 +462,7 @@ export default function JobApplicants() {
             <div>
                 <Table 
                     columns={filteredColumns}
-                    dataSource={isLoading ? [] : getJobApplicant}
+                    dataSource={isLoading ? [] : filterJobApplicant}
                     loading={isLoading}
                     pagination={{ 
                         position: ['bottomCenter'],
@@ -336,7 +470,7 @@ export default function JobApplicants() {
                         pageSizeOptions: ['10', '25', '50', '100'],
                         defaultPageSize: 10, 
                         showQuickJumper: false,
-                        total: getJobApplicant.length,
+                        total: filterJobApplicant.length,
                         showTotal: (total, range) => `Showing ${range[0]} to ${range[1]} of ${total} entries`,
                     }}
                     rowKey="id"
