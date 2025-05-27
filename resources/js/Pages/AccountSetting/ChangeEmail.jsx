@@ -75,7 +75,7 @@ export default function ChangeEmail({user, show, onClose}) {
                         onChange={(e) => setData('new_email', e.target.value)}
                         placeholder="New Email Address"
                     />
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.new_email} className="mt-2" />
                     </div>
                     <div className="flex w-full">
                         <InputIconWrapper>
@@ -87,7 +87,6 @@ export default function ChangeEmail({user, show, onClose}) {
                                 className="w-full"
                                 placeholder="Current Password"
                                 autoComplete="current-password"
-                                isFocused={false}
                                 onChange={(e) => setData("password", e.target.value)}
                             />
                             <div className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer" onClick={() => setShowPassword(!showPassword)}>

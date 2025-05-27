@@ -10,8 +10,10 @@ import { XIcon } from "@/Components/Icon/Outline";
 import { useForm } from "@inertiajs/react";
 import toast from "react-hot-toast";
 import { Upload } from "antd";
+import DeleteAccount from "./DeleteAccount";
 
 export default function AccountSetting({user, show, onClose}) {
+
     const { data, setData, post, reset } = useForm({
             profile_image: null,
     });
@@ -21,7 +23,28 @@ export default function AccountSetting({user, show, onClose}) {
     const [isChangeEmailOpen, setIsChangeEmailOpen] = useState(false);
     const [isChangeTitleOpen, setIsChangeTitleOpen] = useState(false);
     const [isChangePasswordOpen, setIsChangePasswordOpen] = useState(false);
+    const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false);
 
+    const handleChangeNameClose = () => {
+        document.activeElement.blur();
+        setIsChangeNameOpen(false);
+    }
+    const handleChangeEmailClose = () => {
+        document.activeElement.blur();
+        setIsChangeEmailOpen(false);
+    }
+    const handleChangeTitleClose = () => {
+        document.activeElement.blur();
+        setIsChangeTitleOpen(false);
+    }
+    const handleChangePasswordClose = () => {
+        document.activeElement.blur();
+        setIsChangePasswordOpen(false);
+    }
+    const handleDeleteAccountClose = () => {
+        document.activeElement.blur();
+        setIsDeleteAccountOpen(false);
+    }
     const handleRemovePhoto = () => {
         post(route('remove-profile-pic'), {
             onSuccess: () => {
@@ -36,16 +59,25 @@ export default function AccountSetting({user, show, onClose}) {
     }
 
     const handlePhotoSelected = (info) => {
-        const file = info.file.originFileObj || info.file;
-        console.log('Selected file:', file); // should log a File object
-        console.log('Is File:', file instanceof File); // should log `true`
-        setData('profile_image',  file);
-        // const formData = new FormData();
-        // formData.append('profile_image', file);
+        const file = info.file;
 
-        post(route('update-profile-pic'), {
-            forceFormData: true,
+        setData('profile_image',  file);
+    };
+
+    useEffect(() => {
+
+        if (data.profile_image) {
+            // If a new profile image is selected, reset the form
+            handleSubmit();
+        }
+
+    }, [data.profile_image]);
+
+    const handleSubmit = () => {
+
+        post('/update-profile-pic', {
             preserveScroll: true,
+
             onSuccess: () => {
                 // reset();
                 toast.success(`Profile Picture successfully changed.`, {
@@ -58,7 +90,8 @@ export default function AccountSetting({user, show, onClose}) {
                 console.error(errors);
             },
         });
-    };
+    }
+
     
     return (
         <>
@@ -67,6 +100,7 @@ export default function AccountSetting({user, show, onClose}) {
                 onClose={onClose}
                 maxWidth='md'
                 title='Account Settings'
+                showFooter='hidden'
             >
                 <div className="py-5 px-10 flex justify-center items-start gap-10 self-stretch">
                     <div className="flex flex-col items-center gap-3">
@@ -84,7 +118,7 @@ export default function AccountSetting({user, show, onClose}) {
                                     <Button
                                         type="button"
                                         onClick={handleRemovePhoto}
-                                        className="absolute top-2 right-2 bg-black bg-opacity-60 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 group-hover:bg-gray-100 transition-opacity"
+                                        className="absolute top-2 right-2 text-white p-1 opacity-0 hover:opacity-100 hover:bg-opacity-0"
                                         title="Remove photo"
                                     >
                                         <XIcon className="w-5 h-5" />
@@ -169,7 +203,9 @@ export default function AccountSetting({user, show, onClose}) {
                             <div className="text-gray-950 text-base font-semibold">Account</div>
                             <Button
                                 variant="outlined-danger"
-                                size="sm">
+                                size="sm"
+                                onClick={() => setIsDeleteAccountOpen(true)}
+                            >
                                     Delete Account
                             </Button>
                         </div>
@@ -179,22 +215,27 @@ export default function AccountSetting({user, show, onClose}) {
 
             <ChangeName
                 show={isChangeNameOpen}
-                onClose={() => setIsChangeNameOpen(false)}
+                onClose={handleChangeNameClose}
                 user={user}
             />
             <ChangeEmail
                 show={isChangeEmailOpen}
-                onClose={() => setIsChangeEmailOpen(false)}
+                onClose={handleChangeEmailClose}
                 user={user}
             />
             <ChangeTitle
                 show={isChangeTitleOpen}
-                onClose={() => setIsChangeTitleOpen(false)}
+                onClose={handleChangeTitleClose}
                 user={user}
             />
             <ChangePassword
                 show={isChangePasswordOpen}
-                onClose={() => setIsChangePasswordOpen(false)}
+                onClose={handleChangePasswordClose}
+                user={user}
+            />
+            <DeleteAccount
+                show={isDeleteAccountOpen}
+                onClose={handleDeleteAccountClose}
                 user={user}
             />
         </>

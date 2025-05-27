@@ -68,7 +68,6 @@ class ProfileController extends Controller
     
     public function updateProfilePic(Request $request)
     {
-        // dd($request->all(), $request->file('profile_image'));
 
         $request->validate([
             'profile_image' => ['required', 'image', 'mimes:jpeg,png,jpg', 'max:2048'],
@@ -107,8 +106,10 @@ class ProfileController extends Controller
         $request->validate([
             'new_email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'current_password'],
-
+        ],[
+            'new_email.unique' => 'The new email address is already in use.',
         ]);
+
         $newEmail = $request->new_email;
 
         // Generate a signed URL with the new email as a parameter
@@ -177,7 +178,6 @@ class ProfileController extends Controller
         $request->validate([
             'password' => ['required', 'current_password'],
             'new_password' => ['required', 'string', 'confirmed'],
-            'new_password_confirmation' => ['required', 'string'],
         ],[
             'new_password.confirmed' => 'The new password confirmation does not match.',
         ]);
@@ -186,5 +186,34 @@ class ProfileController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
         return redirect()->back();
+    }
+
+    public function validatePassword(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        $user = Auth::user();
+        $request->validate([
+            'password' => ['required', 'current_password'],
+        ]);
+
+        Auth::logout();
+
+        $user->update([
+            'status' => 'deleted',
+        ]);
+
+        // Send confirmation email
+        Mail::to($user->email)->send(new \App\Mail\DeleteAccount($user));
+
+        return Inertia::render('AccountSetting/Farewell');;
     }
 }

@@ -32,21 +32,34 @@ export default function SideBar({user, expanded, toggleSidebar}) {
         <aside className={`fixed flex flex-col inset-y-0 z-20 overflow-auto border-r border-gray-200 bg-gray-100 
             ${!expanded ? 'translate-x-[-100%]' : 'translate-x-0 w-[230px]'}
             ease-in-out duration-300`}>
-            <div className="flex items-center px-3 py-2 gap-3 border-b border-gray-200 bg-gray-100 sticky top-0 z-10">
+            <div className="flex items-center px-3 py-2 gap-3 border-b border-gray-200 bg-gray-100 sticky top-0 z-10 cursor-pointer"
+                onClick={() => setIsAccountOpen(true)}>
                 <div className="">
-                    {/* <img src="" className="w-8 h-8"/> */}
-                    <LogoIcon />
+                    {
+                        user.profile_image ? (
+                            <div className="relative w-8 h-8 group">
+                                <img
+                                    src={data.profile_image}
+                                    className="w-8 h-8"
+                                />
+                            </div>
+                        ) : (
+                            <div className="relative w-8 h-8 group">
+                                <LogoIcon />
+                            </div>
+                        )
+                    }
                 </div>
-                <div className="flex flex-col items-start gap-0.5 flex-[1_0_0] cursor-pointer"
-                    onClick={() => setIsAccountOpen(true)}
-                >
+                <div className="flex flex-col items-start gap-0.5 flex-[1_0_0]">
                     <div className="text-sm font-semibold">{user.username}</div>
                     <div className="flex items-center gap-2">
                         <div className="text-xs font-normal text-gray-700">{user.employee_id}</div>
-                        <Tag bordered={false} color="black" className="text-xxs">{user.title}</Tag>
+                        <Tag bordered={false} color="black" className="text-xxs me-0 px-1">{user.title}</Tag>
                     </div>
                 </div>
-                <ChevronDown/>
+               
+                    <ChevronDown className="w-4 h-4"/>
+               
             </div>
             <div className="flex flex-col items-center px-3 py-5 gap-6 ">
                 {/* General */}

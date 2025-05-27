@@ -27,6 +27,14 @@ export default function ChangePassword({ user, show, onClose }) {
         }
     }, [show, reset]);
 
+    const requirements = {
+        length: data.new_password.length >= 8,
+        uppercase: /[A-Z]/.test(data.new_password),
+        lowercase: /[a-z]/.test(data.new_password),
+        number: /\d/.test(data.new_password),
+        symbol: /[^A-Za-z0-9]/.test(data.new_password),
+    };
+
     const saveChange = (e) => {
         e.preventDefault();
         post(route("update-password"), {
@@ -42,6 +50,7 @@ export default function ChangePassword({ user, show, onClose }) {
             },
         });
     };
+
 
     return (
         <Modal
@@ -97,8 +106,27 @@ export default function ChangePassword({ user, show, onClose }) {
                     <div className="self-stretch text-gray-500 text-xs">
                         Must be at least 8 characters containing uppercase letters, lowercase letters, numbers, and symbols.
                     </div>
-                    <InputError message={errors.new_password} />
-
+                    {
+                        data.new_password && (
+                            <div className="text-gray-500 text-xs space-y-1">
+                                <div className={requirements.length ? 'text-green-600' : 'text-red-500'}>
+                                    {requirements.length ? '✔' : '✖'} At least 8 characters
+                                </div>
+                                <div className={requirements.uppercase ? 'text-green-600' : 'text-red-500'}>
+                                    {requirements.uppercase ? '✔' : '✖'} At least 1 uppercase letter
+                                </div>
+                                <div className={requirements.lowercase ? 'text-green-600' : 'text-red-500'}>
+                                    {requirements.lowercase ? '✔' : '✖'} At least 1 lowercase letter
+                                </div>
+                                <div className={requirements.number ? 'text-green-600' : 'text-red-500'}>
+                                    {requirements.number ? '✔' : '✖'} At least 1 number
+                                </div>
+                                <div className={requirements.symbol ? 'text-green-600' : 'text-red-500'}>
+                                    {requirements.symbol ? '✔' : '✖'} At least 1 symbol
+                                </div>
+                            </div>
+                        )
+                    }
                 </div>
                 <div>
                     <InputIconWrapper>
@@ -116,7 +144,7 @@ export default function ChangePassword({ user, show, onClose }) {
                             {showConfirmPassword ? <EyeOff /> : <EyeOn />}
                         </div>
                     </InputIconWrapper>
-                    <InputError message={errors.new_password_confirmation } />
+                    <InputError message={errors.new_password } />
                 </div>
             </div>
         </Modal>

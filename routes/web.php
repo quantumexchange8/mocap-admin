@@ -17,6 +17,7 @@ Route::get('/', function() {
     return Inertia::render('Onboarding');
 });
 
+
 /**
  * ==============================
  *           Global Usage
@@ -168,6 +169,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/verify-new-email', [ProfileController::class, 'verifyNewEmail'])->name('verify-new-email')->middleware('signed');
     Route::post('/update-title', [ProfileController::class, 'updateTitle'])->name('update-title');
     Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');    
+    Route::post('/validate-password', [ProfileController::class, 'validatePassword'])->name('validate-password');
+    Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete-account');
 });
 
 require __DIR__.'/auth.php';
