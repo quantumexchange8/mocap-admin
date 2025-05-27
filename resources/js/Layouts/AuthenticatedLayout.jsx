@@ -9,8 +9,7 @@ import Navbar from '@/Components/Navbar';
 import { CustomToaster } from '@/Components/CustomToaster';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const user = usePage().props.auth.user;
-
+    const user = usePage().props.auth?.user;
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
 
     const toggleSidebar = () => {
@@ -40,7 +39,7 @@ export default function AuthenticatedLayout({ header, children }) {
         <div className="min-h-screen bg-white">
             <CustomToaster />
             
-            <SideBar expanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
+            <SideBar user={user} expanded={isSidebarExpanded} toggleSidebar={toggleSidebar}/>
             
             <div className={`min-h-screen flex flex-col transition-all duration-300 ${isSidebarExpanded ? 'lg:ml-[230px]' : 'translate-x-0'}`}>
                 <Navbar header={header} toggleSidebar={toggleSidebar} expanded={isSidebarExpanded}/>

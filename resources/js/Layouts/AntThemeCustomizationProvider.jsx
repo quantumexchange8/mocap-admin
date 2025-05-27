@@ -36,6 +36,7 @@ function AntThemeCustomizationProvider({ children }) {
                         selectorBg: '#FFF', // Tailwind gray-100
                         multipleItemHeight: '20px',
                         activeOutlineColor: 'rgb(0 0 0 / 0%)',
+                        optionHeight: '36px',
                     },
                     Tag: {
                         defaultBg: '#F3F4F6',
@@ -70,7 +71,13 @@ function AntThemeCustomizationProvider({ children }) {
                         padding: '8px',
                     },
                     Tabs: {
-                        cardBg: '#F3F4F6'
+                        cardBg: '#F3F4F6',
+                        itemColor: '#6B7280'
+                    },
+                    DatePicker: {
+                        lineHeight: '20px',
+                        cellWidth: '36px',
+                        cellHoverBg: '#F3F4F6'
                     }
                 }
             }}

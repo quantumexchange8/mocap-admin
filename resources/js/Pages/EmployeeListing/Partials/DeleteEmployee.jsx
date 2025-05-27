@@ -227,18 +227,20 @@ export default function DeleteEmployee({
                                                     options={['Yes', 'No']}
                                                     className="py-3"
                                                 />
-                                                <TextInput 
-                                                    id="misconduct_remark"
-                                                    type="text"
-                                                    name="misconduct_remark"
-                                                    value={data.misconduct_remark}
-                                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                                    placeholder="If yes, please specify"
-                                                    autoComplete="misconduct_remark"
-                                                    disabled={data.misconduct_type === 'No'}
-                                                    onChange={(e) => setData('misconduct_remark', e.target.value)}
-                                                    hasError={!!errors.misconduct_remark}
-                                                />
+                                                 <div className="w-full max-w-[500px]">
+                                                    <TextInput 
+                                                        id="misconduct_remark"
+                                                        type="text"
+                                                        name="misconduct_remark"
+                                                        value={data.misconduct_remark}
+                                                        className="disabled:cursor-not-allowed"
+                                                        placeholder="If yes, please specify"
+                                                        autoComplete="misconduct_remark"
+                                                        disabled={data.misconduct_type === 'No'}
+                                                        onChange={(e) => setData('misconduct_remark', e.target.value)}
+                                                        hasError={!!errors.misconduct_remark}
+                                                    />
+                                                 </div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className=""></div>
@@ -259,18 +261,20 @@ export default function DeleteEmployee({
                                                     options={['Yes', 'No']}
                                                     className="py-3"
                                                 />
-                                                <TextInput 
-                                                    id="criminal_remark"
-                                                    type="text"
-                                                    name="criminal_remark"
-                                                    value={data.criminal_remark}
-                                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                                    placeholder="If yes, please specify"
-                                                    autoComplete="criminal_remark"
-                                                    disabled={data.criminal_type === 'No'}
-                                                    onChange={(e) => setData('criminal_remark', e.target.value)}
-                                                    hasError={!!errors.criminal_remark}
-                                                />
+                                                <div className="w-full max-w-[500px]">
+                                                    <TextInput 
+                                                        id="criminal_remark"
+                                                        type="text"
+                                                        name="criminal_remark"
+                                                        value={data.criminal_remark}
+                                                        className="w-full max-w-[500px] disabled:cursor-not-allowed"
+                                                        placeholder="If yes, please specify"
+                                                        autoComplete="criminal_remark"
+                                                        disabled={data.criminal_type === 'No'}
+                                                        onChange={(e) => setData('criminal_remark', e.target.value)}
+                                                        hasError={!!errors.criminal_remark}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className=""></div>
@@ -291,18 +295,20 @@ export default function DeleteEmployee({
                                                     options={['Yes', 'No']}
                                                     className="py-3"
                                                 />
-                                                <TextInput 
-                                                    id="illegal_remark"
-                                                    type="text"
-                                                    name="illegal_remark"
-                                                    value={data.illegal_remark}
-                                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                                    placeholder="If yes, please specify"
-                                                    autoComplete="illegal_remark"
-                                                    disabled={data.illegal_type === 'No'}
-                                                    onChange={(e) => setData('illegal_remark', e.target.value)}
-                                                    hasError={!!errors.illegal_remark}
-                                                />
+                                                <div className="w-full max-w-[500px]">
+                                                    <TextInput 
+                                                        id="illegal_remark"
+                                                        type="text"
+                                                        name="illegal_remark"
+                                                        value={data.illegal_remark}
+                                                        className="w-full max-w-[500px] disabled:cursor-not-allowed"
+                                                        placeholder="If yes, please specify"
+                                                        autoComplete="illegal_remark"
+                                                        disabled={data.illegal_type === 'No'}
+                                                        onChange={(e) => setData('illegal_remark', e.target.value)}
+                                                        hasError={!!errors.illegal_remark}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className=""></div>
@@ -323,18 +329,20 @@ export default function DeleteEmployee({
                                                     options={['Yes', 'No']}
                                                     className="py-3"
                                                 />
-                                                <TextInput 
-                                                    id="disclosed_remark"
-                                                    type="text"
-                                                    name="disclosed_remark"
-                                                    value={data.disclosed_remark}
-                                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                                    placeholder="If yes, please specify"
-                                                    autoComplete="disclosed_remark"
-                                                    disabled={data.disclosed_type === 'No'}
-                                                    onChange={(e) => setData('disclosed_remark', e.target.value)}
-                                                    hasError={!!errors.disclosed_remark}
-                                                />
+                                                <div className="w-full max-w-[500px]">
+                                                    <TextInput 
+                                                        id="disclosed_remark"
+                                                        type="text"
+                                                        name="disclosed_remark"
+                                                        value={data.disclosed_remark}
+                                                        className="w-full max-w-[500px] disabled:cursor-not-allowed"
+                                                        placeholder="If yes, please specify"
+                                                        autoComplete="disclosed_remark"
+                                                        disabled={data.disclosed_type === 'No'}
+                                                        onChange={(e) => setData('disclosed_remark', e.target.value)}
+                                                        hasError={!!errors.disclosed_remark}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className=""></div>
@@ -355,18 +363,20 @@ export default function DeleteEmployee({
                                                     options={['Yes', 'No']}
                                                     className="py-3"
                                                 />
-                                                <TextInput 
-                                                    id="encouraged_remark"
-                                                    type="text"
-                                                    name="encouraged_remark"
-                                                    value={data.encouraged_remark}
-                                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                                    placeholder="If yes, please specify"
-                                                    autoComplete="encouraged_remark"
-                                                    disabled={data.encouraged_type === 'No'}
-                                                    onChange={(e) => setData('encouraged_remark', e.target.value)}
-                                                    hasError={!!errors.encouraged_remark}
-                                                />
+                                                <div className="w-full max-w-[500px]">
+                                                    <TextInput 
+                                                        id="encouraged_remark"
+                                                        type="text"
+                                                        name="encouraged_remark"
+                                                        value={data.encouraged_remark}
+                                                        className="w-full max-w-[500px] disabled:cursor-not-allowed"
+                                                        placeholder="If yes, please specify"
+                                                        autoComplete="encouraged_remark"
+                                                        disabled={data.encouraged_type === 'No'}
+                                                        onChange={(e) => setData('encouraged_remark', e.target.value)}
+                                                        hasError={!!errors.encouraged_remark}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="flex items-center justify-between">
                                                 <div className=""></div>

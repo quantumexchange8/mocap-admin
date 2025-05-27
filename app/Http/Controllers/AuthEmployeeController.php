@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class AuthEmployeeController extends Controller
 {
@@ -195,28 +196,51 @@ class AuthEmployeeController extends Controller
 
     public function updateProfile(Request $request)
     {
-
-        dd($request->all());
-
-        $validated = $request->validate([
-            'reason_deletion' => 'required|string|max:255',
-            'reason_leaving' => 'required|string|max:255',
-            'misconduct_remark' => 'required_if:misconduct_type,Yes',
-            'criminal_remark' => 'required_if:criminal_type,Yes',
-            'illegal_remark' => 'required_if:illegal_type,Yes',
-            'disclosed_remark' => 'required_if:disclosed_type,Yes',
-            'encouraged_remark' => 'required_if:encouraged_type,Yes',
-            'overall_rating' => 'required'
-        ]);
-
+        
         $user = User::find($request->id);
 
-        if ($request->hasFile('profile_image')) {
-            $user->addMedia($request->profile_image)->toMediaCollection('profile_image');
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'dob' => 'required',
+            'phone_no' => [
+                'required',
+                Rule::unique('users', 'phone_no')->ignore($user->id),
+            ],
+            'email' => [
+                'required',
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'address' => 'required',
+        ]);
+
+        $user->update([
+            'name' => $request->full_name,
+            'username' => $request->username,
+            'dob' => isset($request->dob) ? Carbon::parse($request->dob)->setTimezone('Asia/Kuala_Lumpur') : null,
+            'dial_code' => $request->dial_code,
+            'phone_no' => $request->phone_no,
+            'email' => $request->email,
+            'address' => $request->address,
+        ]);
+
+        if ($request->hasFile('image')) {
+            $user->addMedia($request->image)->toMediaCollection('profile_image');
         };
 
-
-
         return redirect()->back();
+    }
+
+    public function getEduBg(Request $request)
+    {
+
+        $user_details = User::with([
+            'job_application',
+            'job_application.education',
+            'job_application.experience'
+        ])->find($request->id);
+
+        return response()->json($user_details->job_application);
+
     }
 }

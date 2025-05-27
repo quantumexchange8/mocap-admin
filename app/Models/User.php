@@ -45,6 +45,7 @@ class User extends Authenticatable implements HasMedia
         'department_id',
         'employee_date',
         'employee_end_date',
+        'job_id',
         'handle_by',
         'status',
     ];
@@ -92,4 +93,11 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasOne(Department::class, 'id', 'department_id');
     }
+
+    public function job_application()
+    {
+        return $this->hasOne(JobApplication::class, 'id', 'job_id');
+    }
+
+    
 }

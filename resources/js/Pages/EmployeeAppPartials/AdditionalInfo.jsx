@@ -28,18 +28,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="investigate_remark"
-                                    type="text"
-                                    name="investigate_remark"
-                                    value={data.investigate_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="investigate_remark"
-                                    disabled={data.investigate_type === 'No'}
-                                    onChange={(e) => setData('investigate_remark', e.target.value)}
-                                    hasError={!!errors.investigate_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="investigate_remark"
+                                        type="text"
+                                        name="investigate_remark"
+                                        value={data.investigate_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="investigate_remark"
+                                        disabled={data.investigate_type === 'No'}
+                                        onChange={(e) => setData('investigate_remark', e.target.value)}
+                                        hasError={!!errors.investigate_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -59,18 +61,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="convicted_remark"
-                                    type="text"
-                                    name="convicted_remark"
-                                    value={data.convicted_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="convicted_remark"
-                                    disabled={data.convicted_type === 'No'}
-                                    onChange={(e) => setData('convicted_remark', e.target.value)}
-                                    hasError={!!errors.convicted_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="convicted_remark"
+                                        type="text"
+                                        name="convicted_remark"
+                                        value={data.convicted_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="convicted_remark"
+                                        disabled={data.convicted_type === 'No'}
+                                        onChange={(e) => setData('convicted_remark', e.target.value)}
+                                        hasError={!!errors.convicted_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -90,18 +94,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="bankrupt_remark"
-                                    type="text"
-                                    name="bankrupt_remark"
-                                    value={data.bankrupt_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="bankrupt_remark"
-                                    disabled={data.bankrupt_type === 'No'}
-                                    onChange={(e) => setData('bankrupt_remark', e.target.value)}
-                                    hasError={!!errors.bankrupt_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="bankrupt_remark"
+                                        type="text"
+                                        name="bankrupt_remark"
+                                        value={data.bankrupt_remark}
+                                        className=" disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="bankrupt_remark"
+                                        disabled={data.bankrupt_type === 'No'}
+                                        onChange={(e) => setData('bankrupt_remark', e.target.value)}
+                                        hasError={!!errors.bankrupt_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -121,18 +127,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="suspended_remark"
-                                    type="text"
-                                    name="suspended_remark"
-                                    value={data.suspended_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="suspended_remark"
-                                    disabled={data.suspended_type === 'No'}
-                                    onChange={(e) => setData('suspended_remark', e.target.value)}
-                                    hasError={!!errors.suspended_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="suspended_remark"
+                                        type="text"
+                                        name="suspended_remark"
+                                        value={data.suspended_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="suspended_remark"
+                                        disabled={data.suspended_type === 'No'}
+                                        onChange={(e) => setData('suspended_remark', e.target.value)}
+                                        hasError={!!errors.suspended_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -152,18 +160,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="directorship_remark"
-                                    type="text"
-                                    name="directorship_remark"
-                                    value={data.directorship_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="directorship_remark"
-                                    disabled={data.directorship_type === 'No'}
-                                    onChange={(e) => setData('directorship_remark', e.target.value)}
-                                    hasError={!!errors.directorship_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="directorship_remark"
+                                        type="text"
+                                        name="directorship_remark"
+                                        value={data.directorship_remark}
+                                        className="disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="directorship_remark"
+                                        disabled={data.directorship_type === 'No'}
+                                        onChange={(e) => setData('directorship_remark', e.target.value)}
+                                        hasError={!!errors.directorship_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
@@ -183,18 +193,20 @@ export default function AdditionalInfo({ data, setData, errors }) {
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
-                                <TextInput 
-                                    id="relative_remark"
-                                    type="text"
-                                    name="relative_remark"
-                                    value={data.relative_remark}
-                                    className="w-full max-w-[500px] disabled:cursor-not-allowed"
-                                    placeholder="If yes, please specify"
-                                    autoComplete="relative_remark"
-                                    disabled={data.relative_type === 'No'}
-                                    onChange={(e) => setData('relative_remark', e.target.value)}
-                                    hasError={!!errors.relative_remark}
-                                />
+                                <div className="w-full max-w-[500px]">
+                                    <TextInput 
+                                        id="relative_remark"
+                                        type="text"
+                                        name="relative_remark"
+                                        value={data.relative_remark}
+                                        className="w-full max-w-[500px] disabled:cursor-not-allowed"
+                                        placeholder="If yes, please specify"
+                                        autoComplete="relative_remark"
+                                        disabled={data.relative_type === 'No'}
+                                        onChange={(e) => setData('relative_remark', e.target.value)}
+                                        hasError={!!errors.relative_remark}
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>

@@ -3,12 +3,15 @@
 use App\Http\Controllers\AuthEmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\EmployeeProfileController;
 use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SmartDataController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function() {
     return Inertia::render('Onboarding');
@@ -27,6 +30,9 @@ Route::get('/getDepartment', [GlobalController::class, 'getDepartment'])->name('
 Route::get('/getDepartmentposition', [GlobalController::class, 'getDepartmentposition'])->name('getDepartmentposition');
 Route::get('/getAllAdmin', [GlobalController::class, 'getAllAdmin'])->name('getAllAdmin');
 Route::get('/getQualification', [GlobalController::class, 'getQualification'])->name('getQualification');
+Route::get('/getJobApplications', [GlobalController::class, 'getJobApplications'])->name('getJobApplications');
+Route::get('/getPosition', [GlobalController::class, 'getPosition'])->name('getPosition');
+
 
 // Route::get('/', function () {
 //     return Inertia::render('Welcome', [
@@ -112,7 +118,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
     
     Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
-
+    Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
+    
+    Route::post('/update-personal-info', [EmployeeProfileController::class, 'updatePersonalInfo'])->name('update-personal-info');
+    
+    
     /**
      * ==============================
      *           Department
@@ -127,6 +137,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
     Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
     
+
+    /**
+     * ==============================
+     *           Smart Data
+     * ==============================
+    */
+    Route::get('/smart-data', [SmartDataController::class, 'smartData'])->name('smart-data');
+    Route::get('/getJobApplicants', [SmartDataController::class, 'getJobApplicants'])->name('getJobApplicants');
+    Route::get('/jobApplicant-details/{id}', [SmartDataController::class, 'jobApplicantDetails'])->name('jobApplicant-details');
+    Route::get('/jobApplicant-evaluation/{id}', [SmartDataController::class, 'jobApplicantEvaluation'])->name('jobApplicant-evaluation');
+    
+    Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
+    Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
+
     /**
      * ==============================
      *           Profile
@@ -135,6 +159,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::post('/update-profile-pic', [ProfileController::class, 'updateProfilePic'])->name('update-profile-pic');
+    Route::post('/remove-profile-pic', [ProfileController::class, 'removeProfilePic'])->name('remove-profile-pic');
+    Route::post('/update-name', [ProfileController::class, 'updateName'])->name('update-name');
+    Route::post('/update-email', [ProfileController::class, 'updateEmail'])->name('update-email');
+    Route::get('/confirm-email', [ProfileController::class, 'confirmEmailChange'])->name('confirm-email')->middleware('signed');   
+    Route::get('/verify-new-email', [ProfileController::class, 'verifyNewEmail'])->name('verify-new-email')->middleware('signed');
+    Route::post('/update-title', [ProfileController::class, 'updateTitle'])->name('update-title');
+    Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');    
 });
 
 require __DIR__.'/auth.php';

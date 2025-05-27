@@ -4,10 +4,12 @@ import { ChevronDown, Dashboard, Request, CalendarIcon, Announcement, Report, Em
 import { Tag, Badge } from "antd";
 import ConfirmDialog from "./ConfirmDialog";
 import Button from "./Button";
+import AccountSetting from "@/Pages/AccountSetting/AccountSetting";
 
-export default function SideBar({expanded, toggleSidebar}) {
-
+export default function SideBar({user, expanded, toggleSidebar}) {
+    
     const [isOpen, setIsOpen] = useState(false);
+    const [isAccountOpen, setIsAccountOpen] = useState(false);
     const { url } = usePage();
 
     const { post } = useForm({}); 
@@ -35,11 +37,13 @@ export default function SideBar({expanded, toggleSidebar}) {
                     {/* <img src="" className="w-8 h-8"/> */}
                     <LogoIcon />
                 </div>
-                <div className="flex flex-col items-start gap-0.5 flex-[1_0_0]">
-                    <div className="text-sm font-semibold"> CT Admin </div>
+                <div className="flex flex-col items-start gap-0.5 flex-[1_0_0] cursor-pointer"
+                    onClick={() => setIsAccountOpen(true)}
+                >
+                    <div className="text-sm font-semibold">{user.username}</div>
                     <div className="flex items-center gap-2">
-                        <div className="text-xs font-normal text-gray-700"> CT00000 </div>
-                        <Tag bordered={false} color="black" className="text-xxs"> Admin </Tag>
+                        <div className="text-xs font-normal text-gray-700">{user.employee_id}</div>
+                        <Tag bordered={false} color="black" className="text-xxs">{user.title}</Tag>
                     </div>
                 </div>
                 <ChevronDown/>
@@ -176,10 +180,12 @@ export default function SideBar({expanded, toggleSidebar}) {
                             <Authority color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Administrators </div>
                         </div>
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                            <SmartData color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
-                            <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Smart Data </div>
-                        </div>
+                        <Link href={route('smart-data')} className="flex flex-col items-center gap-1 self-stretch">
+                            <div className={`${url === '/smart-data' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                                <SmartData className={`${url === '/smart-data' ? 'text-white' : 'text-gray-950'}`}/>
+                                <div className={`${url === '/smart-data' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Smart Data </div>
+                            </div>
+                        </Link>
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Setting color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Settings </div>
@@ -219,6 +225,12 @@ export default function SideBar({expanded, toggleSidebar}) {
                 </div>
             </div>
         </ConfirmDialog>
+
+        <AccountSetting
+            show={isAccountOpen}
+            onClose={() => setIsAccountOpen(false)}
+            user={user}
+        />
     </>
     )
 }

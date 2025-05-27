@@ -6,7 +6,7 @@ import Button from "@/Components/Button";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import InputError from "@/Components/InputError";
-import { ColorPicker, Select } from "antd";
+import { Breadcrumb, ColorPicker, Select } from "antd";
 import { ReactSortable } from "react-sortablejs";
 import ConfirmDialog from "@/Components/ConfirmDialog";
 import { UnsavedIllus } from "@/Components/Icon/Illustration";
@@ -206,14 +206,24 @@ export default function EditDepartment({ department }) {
 
             <div className="flex flex-col">
                 <div className="w-full sticky top-[55px] bg-white z-30 py-2 px-5 flex justify-between items-center border-b border-gray-200">
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                            <span><Department /></span>
-                            <span>Departments</span>
-                        </div>
-                        <div className="text-gray-400 text-base">/</div>
-                        <div className="text-gray-950 text-sm font-semibold">Edit Department</div>
-                    </div>
+                    <Breadcrumb 
+                        items={[
+                            {
+                                href: '/department',
+                                title: (
+                                    <div className="flex items-center gap-2">
+                                        <Department />
+                                        <span>Departments</span>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: (
+                                    <span className="text-gray-950 text-sm font-semibold">Edit Department</span>
+                                )
+                            }
+                        ]}
+                    />
                     <div>
                         <Button size="sm" disabled={!isDirty || isLoading} onClick={submit} >{!isDirty ? 'Saved' : 'Save Changes'}</Button>
                     </div>

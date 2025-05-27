@@ -4,11 +4,14 @@ import React, { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Button from "@/Components/Button";
 import { BirthdayIcon, DateJoinedIcon, EditIcon, EmailIcon, Employee, HomeIcon, PhoneIcon, TagActiveIcon, TagInvitedIcon, TagSuspendedIcon } from "@/Components/Icon/Outline";
-import { Image, Tag } from "antd";
+import { Breadcrumb, Image, Tabs, Tag } from "antd";
 import Modal from "@/Components/Modal";
 import InputLabel from "@/Components/InputLabel";
 import TextInput from "@/Components/TextInput";
 import ProfileInfo from "./EmployeeInfo/ProfileInfo";
+import Profile from "./EmployeeInfo/Profile";
+import Company from "./EmployeeInfo/Company";
+import Documents from "./EmployeeInfo/Documents";
 
 export default function EmployeeDetails({user_details}) {
 
@@ -22,6 +25,12 @@ export default function EmployeeDetails({user_details}) {
         setIsProfileOpen(false);
     }
 
+    const items = [
+        { key: '1', label: 'Profile', children: <Profile user_details={user_details} /> },
+        { key: '2', label: 'Company Assets', disabled: true, children: <Company /> },
+        { key: '3', label: 'Employee Documents', disabled: true, children: <Documents /> },
+    ];
+
     return (
         <AuthenticatedLayout
             header="Employee Listing"
@@ -31,18 +40,27 @@ export default function EmployeeDetails({user_details}) {
 
             <div className="flex flex-col gap-5 p-5">
                 <div className="w-full sticky top-[55px] bg-white z-30 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2 text-gray-500 text-sm">
-                            <span><Employee /></span>
-                            <span>Employee Listing</span>
-                        </div>
-                        <div className="text-gray-400 text-base">/</div>
-                        <div className="text-gray-950 text-sm font-semibold">{user_details.name} - Employee Details</div>
-                    </div>
-                    
+                    <Breadcrumb 
+                        items={[
+                            {
+                                href: '/employee-listing',
+                                title: (
+                                    <div className="flex items-center gap-2">
+                                      <Employee />
+                                      <span>Employee Listing</span>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: (
+                                    <span className="text-gray-950 text-sm font-semibold">{user_details.name} - Employee Details</span>
+                                )
+                            }
+                        ]}
+                    />
                 </div>
 
-                <div className="flex shadow-smShadow">
+                <div className="flex shadow-smShadow border border-gray-200">
                     <div className="max-w-60 min-w-60 w-full h-60 ">
                         <Image 
                             width={240}
@@ -55,7 +73,7 @@ export default function EmployeeDetails({user_details}) {
                     <div className="flex flex-col justify-between p-5 w-full">
                         <div className="flex gap-5">
                             <div className="flex flex-col gap-1 w-full">
-                                <div>{user_details.name}</div>
+                                <div className="text-gray-950 text-xl font-bold">{user_details.name}</div>
                                 <div className="flex items-center gap-2">
                                     <div className="text-gray-700 text-sm">{user_details.employee_id}</div>
                                     <div className="text-gray-400 text-sm">|</div>
@@ -96,7 +114,7 @@ export default function EmployeeDetails({user_details}) {
                             <div>
                                 {
                                     user_details.status === 'active' && (
-                                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="info" className='ant-tag-info text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagActiveIcon /></span>
                                             <span>Active</span>
                                         </Tag>
@@ -104,7 +122,7 @@ export default function EmployeeDetails({user_details}) {
                                 }
                                 {
                                     user_details.status === 'invited' && (
-                                        <Tag bordered={false} color="#884dff26" className='ant-tag-purple text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="#884dff26" className='ant-tag-purple text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagInvitedIcon /></span>
                                             <span>Invited</span>
                                         </Tag>
@@ -112,7 +130,7 @@ export default function EmployeeDetails({user_details}) {
                                 }
                                 {
                                     user_details.status === 'suspended' && (
-                                        <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                        <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                             <span><TagSuspendedIcon /></span>
                                             <span>Suspended</span>
                                         </Tag>
@@ -120,26 +138,37 @@ export default function EmployeeDetails({user_details}) {
                                 }
                             </div>
                             <div>
-                                <Tag bordered={false} color={user_details.department.color} className='text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                <Tag bordered={false} color={user_details.department.color} className='text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                     <span>{user_details.department.name}</span>
                                 </Tag>
                             </div>
                             <div>
-                                <Tag bordered={false} color='others' className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1'>
+                                <Tag bordered={false} color='others' className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
                                     <span>{user_details.employee_type}</span>
                                 </Tag>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div>
+                    <Tabs 
+                        defaultActiveKey="1"
+                        destroyInactiveTabPane={true}
+                        items={items}
+                    />
+                </div>
             </div>
 
+            {/* Personal Information */}
             <ProfileInfo 
                 user_details={user_details}
                 isProfileOpen={isProfileOpen}
                 setIsProfileOpen={setIsProfileOpen}
                 closeProfileInfo={closeProfileInfo}
             />
+
+
         </AuthenticatedLayout>
     )
 }

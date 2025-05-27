@@ -40,7 +40,7 @@ return new class extends Migration
             $table->unsignedBigInteger('department_id')->nullable();
             $table->date('employee_date')->nullable();
             $table->date('employee_end_date')->nullable();
-            $table->unsignedBigInteger('job_apply_id')->nullable();
+            $table->unsignedBigInteger('job_id')->nullable();
             $table->integer('handle_by')->nullable();
             $table->string('status');
             $table->rememberToken();

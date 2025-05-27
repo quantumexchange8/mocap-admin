@@ -14,6 +14,5 @@ class JobEducation extends Model
         'address',
         'qualification',
         'course_name',
-        'special_skill',
     ];
 }

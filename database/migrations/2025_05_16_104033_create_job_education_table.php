@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('address');
             $table->string('qualification');
             $table->string('course_name');
-            $table->longText('special_skill');
             $table->timestamps();
         });
     }

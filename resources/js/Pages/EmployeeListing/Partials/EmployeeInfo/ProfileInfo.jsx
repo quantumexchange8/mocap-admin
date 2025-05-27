@@ -5,7 +5,7 @@ import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import TextInput from "@/Components/TextInput";
-import { useForm } from "@inertiajs/react";
+import { router, useForm } from "@inertiajs/react";
 import { Upload } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
 import { Calendar } from "primereact/calendar";
@@ -43,7 +43,7 @@ export default function ProfileInfo({
         fetchPhoneCode();
     }, []);
 
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, post, processing, errors, reset, isDirty } = useForm({
         id: '',
         full_name: '',
         username: '',
@@ -99,6 +99,10 @@ export default function ProfileInfo({
                 setIsLoading(false);
                 closeProfileInfo();
                 reset();
+
+                // 🔁 Refresh only user_details prop from the backend
+                router.reload({ only: ['user_details'] });
+
                 toast.success('Succesfully Created Department.', {
                     title: 'Succesfully Created Department.',
                     duration: 3000,
@@ -117,7 +121,7 @@ export default function ProfileInfo({
             footer={
                 <div className="flex items-center justify-end gap-4 w-full">
                     <Button variant="outlined" size="sm" onClick={closeProfileInfo}>Cancel</Button>
-                    <Button size="sm" onClick={submit}>Save Changes</Button>
+                    <Button size="sm" onClick={submit} >Save Changes</Button>
                 </div>
             }
         >
@@ -143,7 +147,7 @@ export default function ProfileInfo({
                                 )
                             }
                         </AnimatePresence>
-
+                        
                         {
                             data.image ? (
                                 <motion.img
