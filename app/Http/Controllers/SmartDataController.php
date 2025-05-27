@@ -66,7 +66,7 @@ class SmartDataController extends Controller
         $checkEvaluated = EvaluationForm::where('job_id', $id)->first();
 
         if ($checkEvaluated) {
-            $checkEvaluated->evaluation_signature = $checkEvaluated->getFirstMediaUrl('evaluation_signature') ?? null;
+            $checkEvaluated->evaluation_signature = $checkEvaluated->getFirstMediaUrl('evaluation_signature');
         }
 
         return Inertia::render('SmartData/JobApplicantEvaluation', [
@@ -146,7 +146,7 @@ class SmartDataController extends Controller
         ]);
         
         if ($request->hasFile('evaluation_signature')) {
-           $user->addMedia($request->evaluation_signature)->toMediaCollection('evaluation_signature');
+           $evaluation->addMedia($request->evaluation_signature)->toMediaCollection('evaluation_signature');
         }
 
         return redirect()->back();

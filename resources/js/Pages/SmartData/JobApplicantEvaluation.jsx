@@ -21,6 +21,7 @@ export default function JobApplicantEvaluation({ jobApplicant, checkEvaluated })
     const isSubmittingRef = useRef(false);
     const [nextUrl, setNextUrl] = useState(null);
     const [confirmLeaveOpen, setConfirmLeaveOpen] = useState(false);
+    const [initializingForm, setInitializingForm] = useState(false);
 
     const { data, setData, post, processing, errors, isDirty, reset } = useForm({
         id: jobApplicant.id || '',
@@ -54,6 +55,7 @@ export default function JobApplicantEvaluation({ jobApplicant, checkEvaluated })
 
     useEffect(() => {
         if (checkEvaluated) {
+            setInitializingForm(true);
             setData('edu_bg', checkEvaluated.edu_bg);
             setData('edu_remark', checkEvaluated.edu_remark || '');
             setData('work_exp', checkEvaluated.work_exp);
@@ -98,7 +100,7 @@ export default function JobApplicantEvaluation({ jobApplicant, checkEvaluated })
 
     useEffect(() => {
         const handler = (event) => {
-            if (isDirty && !isSubmittingRef.current) {
+            if (!initializingForm && isDirty && !isSubmittingRef.current) {
                 event.preventDefault();
                 setNextUrl(event.detail.visit.url);
                 setConfirmLeaveOpen(true);

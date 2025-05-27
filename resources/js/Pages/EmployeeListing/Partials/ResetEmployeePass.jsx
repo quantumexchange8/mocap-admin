@@ -92,68 +92,70 @@ export default function ResetEmployeePass ({
             >
                 {
                     employmentDetails && (
-                        <div className="py-3 px-6 flex flex-col gap-8">
-                            <div className="text-gray-700 text-sm">
-                                Please note that resetting the login password will take effect immediately by clicking “Confirm”. The current user session will be logged out, and the employee will be prompted to log in again using the new password.
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                <Radio.Group 
-                                    value={pwVal}
-                                    style={style}
-                                    onChange={(e) => setPwVal(e.target.value)}
-                                    options={[
-                                        { value: 'generate_by_system', label: 'Generated password by system'},
-                                        { value: 'manual_password', label: 'Set password manually'},
-                                    ]}
-                                />
-                                {
-                                    pwVal === 'manual_password' && (
-                                        <div className="flex flex-col gap-2">
-                                            <InputIconWrapper>
-                                                <TextInput 
-                                                    id="password"
-                                                    type={showPassword ? 'text' : 'password'}
-                                                    name="password"
-                                                    value={inputPw}
-                                                    className="w-full"
-                                                    placeholder="Enter new password"
-                                                    autoComplete="current-password"
-                                                    onChange={(e) => setInputPw(e.target.value)}
-                                                />
-                                                <div className='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer' onClick={() => setShowPassword(!showPassword)}>
-                                                    {showPassword ? <EyeOn /> : <EyeOff /> }
-                                                </div>
-                                                
-                                            </InputIconWrapper>
-                                            <div className="text-gray-500 text-xs ">
-                                                Must be at least 8 characters containing uppercase letters, lowercase letters, numbers, and symbols.
-                                            </div>
-                                            {
-                                                inputPw && (
-                                                    <div className="text-gray-500 text-xs space-y-1">
-                                                        <div className={requirements.length ? 'text-green-600' : 'text-red-500'}>
-                                                            {requirements.length ? '✔' : '✖'} At least 8 characters
-                                                        </div>
-                                                        <div className={requirements.uppercase ? 'text-green-600' : 'text-red-500'}>
-                                                            {requirements.uppercase ? '✔' : '✖'} At least 1 uppercase letter
-                                                        </div>
-                                                        <div className={requirements.lowercase ? 'text-green-600' : 'text-red-500'}>
-                                                            {requirements.lowercase ? '✔' : '✖'} At least 1 lowercase letter
-                                                        </div>
-                                                        <div className={requirements.number ? 'text-green-600' : 'text-red-500'}>
-                                                            {requirements.number ? '✔' : '✖'} At least 1 number
-                                                        </div>
-                                                        <div className={requirements.symbol ? 'text-green-600' : 'text-red-500'}>
-                                                            {requirements.symbol ? '✔' : '✖'} At least 1 symbol
-                                                        </div>
+                        <form >
+                            <div className="py-3 px-6 flex flex-col gap-8">
+                                <div className="text-gray-700 text-sm">
+                                    Please note that resetting the login password will take effect immediately by clicking “Confirm”. The current user session will be logged out, and the employee will be prompted to log in again using the new password.
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <Radio.Group 
+                                        value={pwVal}
+                                        style={style}
+                                        onChange={(e) => setPwVal(e.target.value)}
+                                        options={[
+                                            { value: 'generate_by_system', label: 'Generated password by system'},
+                                            { value: 'manual_password', label: 'Set password manually'},
+                                        ]}
+                                    />
+                                    {
+                                        pwVal === 'manual_password' && (
+                                            <div className="flex flex-col gap-2">
+                                                <InputIconWrapper>
+                                                    <TextInput 
+                                                        id="password"
+                                                        type={showPassword ? 'text' : 'password'}
+                                                        name="password"
+                                                        value={inputPw}
+                                                        className="w-full"
+                                                        placeholder="Enter new password"
+                                                        autoComplete="current-password"
+                                                        onChange={(e) => setInputPw(e.target.value)}
+                                                    />
+                                                    <div className='absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer' onClick={() => setShowPassword(!showPassword)}>
+                                                        {showPassword ? <EyeOn /> : <EyeOff /> }
                                                     </div>
-                                                )
-                                            }
-                                        </div>
-                                    )
-                                }
+                                                    
+                                                </InputIconWrapper>
+                                                <div className="text-gray-500 text-xs ">
+                                                    Must be at least 8 characters containing uppercase letters, lowercase letters, numbers, and symbols.
+                                                </div>
+                                                {
+                                                    inputPw && (
+                                                        <div className="text-gray-500 text-xs space-y-1">
+                                                            <div className={requirements.length ? 'text-green-600' : 'text-red-500'}>
+                                                                {requirements.length ? '✔' : '✖'} At least 8 characters
+                                                            </div>
+                                                            <div className={requirements.uppercase ? 'text-green-600' : 'text-red-500'}>
+                                                                {requirements.uppercase ? '✔' : '✖'} At least 1 uppercase letter
+                                                            </div>
+                                                            <div className={requirements.lowercase ? 'text-green-600' : 'text-red-500'}>
+                                                                {requirements.lowercase ? '✔' : '✖'} At least 1 lowercase letter
+                                                            </div>
+                                                            <div className={requirements.number ? 'text-green-600' : 'text-red-500'}>
+                                                                {requirements.number ? '✔' : '✖'} At least 1 number
+                                                            </div>
+                                                            <div className={requirements.symbol ? 'text-green-600' : 'text-red-500'}>
+                                                                {requirements.symbol ? '✔' : '✖'} At least 1 symbol
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                    }
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     )
                 }
             </Modal>

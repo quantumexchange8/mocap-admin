@@ -8,7 +8,8 @@ import { Head } from "@inertiajs/react";
 import { Breadcrumb, Checkbox, Radio } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { InputNumber } from "primereact/inputnumber";
-import React from "react";
+import React, { useRef } from "react";
+import { useReactToPrint } from "react-to-print";
 
 export default function JobApplicantDetails({ jobApplicant }) {
 
@@ -19,6 +20,17 @@ export default function JobApplicantDetails({ jobApplicant }) {
         return formattedValue;
     }
 
+    const contentRef = useRef(null);
+
+    const reactToPrintFn = useReactToPrint({ contentRef });
+
+
+    const setRefs = (node) => {
+        contentRef.current = node;
+        // targetRef.current = node;
+    };
+
+      
     const worksTransport  = ['Walk', 'Bicycle', 'Motorcycle', 'Car', 'Public Transport'];
 
     return (
@@ -50,11 +62,11 @@ export default function JobApplicantDetails({ jobApplicant }) {
                     />
                     <div className="flex items-center gap-3">
                         <Button variant="outlined" size="sm" className="flex items-center gap-2" ><ExportIcon />Export</Button>
-                        <Button variant="outlined" size="sm" className="flex items-center gap-2" ><PrintIcon />Print</Button>
+                        <Button variant="outlined" size="sm" className="flex items-center gap-2" onClick={reactToPrintFn} ><PrintIcon />Print</Button>
                     </div>
                 </div>
-                <div className="p-5 flex flex-col justify-center items-center">
-                    <div className="flex flex-col gap-5 max-w-[728px] w-full">
+                <div ref={contentRef} className="pdf-content p-5 flex flex-col justify-center items-center">
+                    <div className="flex flex-col gap-5 max-w-[728px] w-full" >
                         <div className="flex flex-col border border-gray-200 shadow-smShadow ">
                             <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
                                 Job Preferences
