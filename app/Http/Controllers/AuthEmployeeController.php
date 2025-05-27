@@ -23,7 +23,7 @@ class AuthEmployeeController extends Controller
     public function getEmployeeListing()
     {
 
-        $employees = User::where('role', 'employee')->whereNot('status', 'deleted')->with(['department'])->get();
+        $employees = User::whereNot('role', 'superadmin')->whereNot('status', 'deleted')->with(['department'])->get();
 
         return response()->json($employees);
     }
