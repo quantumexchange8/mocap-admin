@@ -23,7 +23,7 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
                     `bg-white hover:bg-white disabled:bg-gray-100 border py-3 px-4 text-gray-950 text-sm rounded-sm caret-gray-950 placeholder-gray-500 placeholder:text-sm w-full
                     ${withIcon ? 'pl-11 pr-4' : ''}
                     ${prefix ? 'pl-10' : ''}
-                    ${hasError ? 'border-error-500 focus:border-error-500' : 'border-gray-300 focus:border-gray-950'}` +
+                    ${hasError ? 'border-error-500 focus:border-error-500' : 'border-gray-300 focus:border-gray-950 '}` +
                     className
                 }
                 ref={input}

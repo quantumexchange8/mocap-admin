@@ -59,7 +59,7 @@ export default function DeleteAccount({user, show, onClose}) {
                         </Button>
                         <Button size="sm" 
                             onClick={validatePassword}
-                            disabled={processing}
+                            disabled={processing || user.role === 'superadmin'}
                         >
                             Continue
                         </Button>

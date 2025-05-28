@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\AuthEmployeeController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
@@ -83,6 +84,12 @@ Route::post('/employee-information-validation', [EmployeeController::class, 'emp
 Route::post('/store-employee', [EmployeeController::class, 'storeEmployee'])->name('store-employee');
 Route::get('/employee-success', [EmployeeController::class, 'employeeSuccess'])->name('employee-success');
 
+/**
+ * ==============================
+ *     Employee Application
+ * ==============================
+*/
+Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete-account');
 
 Route::middleware('auth')->group(function () {
 
@@ -109,19 +116,21 @@ Route::middleware('auth')->group(function () {
      *           Employee Listing
      * ==============================
     */
-    Route::get('/employee-listing', [AuthEmployeeController::class, 'employeeListing'])->name('employee-listing');
-    Route::get('/getEmployeeListing', [AuthEmployeeController::class, 'getEmployeeListing'])->name('getEmployeeListing');
-    Route::get('/employee-details/{id}', [AuthEmployeeController::class, 'employeeDetails'])->name('employee-details');
-    Route::post('/update-employee-details', [AuthEmployeeController::class, 'updateEmployeeDetails'])->name('update-employee-details');
-    Route::post('/suspend-employee', [AuthEmployeeController::class, 'suspendEmployee'])->name('suspend-employee');
-    Route::post('/restore-employee', [AuthEmployeeController::class, 'restoreEmployee'])->name('restore-employee');
-    Route::post('/reset-employee-pw', [AuthEmployeeController::class, 'resetEmployeePw'])->name('reset-employee-pw');
-    Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
-    
-    Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
-    Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
-    
-    Route::post('/update-personal-info', [EmployeeProfileController::class, 'updatePersonalInfo'])->name('update-personal-info');
+    Route::group(['middleware' => ['permission:employee_listing']], function () {
+        Route::get('/employee-listing', [AuthEmployeeController::class, 'employeeListing'])->name('employee-listing');
+        Route::get('/getEmployeeListing', [AuthEmployeeController::class, 'getEmployeeListing'])->name('getEmployeeListing');
+        Route::get('/employee-details/{id}', [AuthEmployeeController::class, 'employeeDetails'])->name('employee-details');
+        Route::post('/update-employee-details', [AuthEmployeeController::class, 'updateEmployeeDetails'])->name('update-employee-details');
+        Route::post('/suspend-employee', [AuthEmployeeController::class, 'suspendEmployee'])->name('suspend-employee');
+        Route::post('/restore-employee', [AuthEmployeeController::class, 'restoreEmployee'])->name('restore-employee');
+        Route::post('/reset-employee-pw', [AuthEmployeeController::class, 'resetEmployeePw'])->name('reset-employee-pw');
+        Route::post('/delete-employee', [AuthEmployeeController::class, 'deleteEmployee'])->name('delete-employee');
+        
+        Route::post('/update-profile', [AuthEmployeeController::class, 'updateProfile'])->name('update-profile');
+        Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
+        
+        Route::post('/update-personal-info', [EmployeeProfileController::class, 'updatePersonalInfo'])->name('update-personal-info');
+    });
     
     
     /**
@@ -129,16 +138,28 @@ Route::middleware('auth')->group(function () {
      *           Department
      * ==============================
     */
-    Route::get('/department', [DepartmentController::class, 'department'])->name('department');
-    Route::get('/getDepartmentListing', [DepartmentController::class, 'getDepartmentListing'])->name('getDepartmentListing');
-    Route::get('/create-department', [DepartmentController::class, 'createDepartment'])->name('create-department');
-    Route::get('/edit-department/{id}', [DepartmentController::class, 'editDepartment'])->name('edit-department');
-    Route::post('/store-department', [DepartmentController::class, 'storeDepartment'])->name('store-department');
-    Route::post('/validate-department', [DepartmentController::class, 'validateDepartment'])->name('validate-department');
-    Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
-    Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
+    Route::group(['middleware' => ['permission:department']], function () {
+        Route::get('/department', [DepartmentController::class, 'department'])->name('department');
+        Route::get('/getDepartmentListing', [DepartmentController::class, 'getDepartmentListing'])->name('getDepartmentListing');
+        Route::get('/create-department', [DepartmentController::class, 'createDepartment'])->name('create-department');
+        Route::get('/edit-department/{id}', [DepartmentController::class, 'editDepartment'])->name('edit-department');
+        Route::post('/store-department', [DepartmentController::class, 'storeDepartment'])->name('store-department');
+        Route::post('/validate-department', [DepartmentController::class, 'validateDepartment'])->name('validate-department');
+        Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
+        Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
+    });
     
 
+    /**
+     * ==============================
+     *        Administrators
+     * ==============================
+    */
+    Route::get('/administrators', [AdministratorController::class, 'administrators'])->name('administrators');
+    Route::get('/getAdministrator', [AdministratorController::class, 'getAdministrator'])->name('getAdministrator');
+    Route::post('/create-administrator', [AdministratorController::class, 'createAdministrator'])->name('create-administrator');
+    Route::post('/update-administrator', [AdministratorController::class, 'updateAdministrator'])->name('update-administrator');
+    
     /**
      * ==============================
      *           Smart Data
@@ -170,7 +191,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-title', [ProfileController::class, 'updateTitle'])->name('update-title');
     Route::post('/update-password', [ProfileController::class, 'updatePassword'])->name('update-password');    
     Route::post('/validate-password', [ProfileController::class, 'validatePassword'])->name('validate-password');
-    Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete-account');
 });
 
 require __DIR__.'/auth.php';

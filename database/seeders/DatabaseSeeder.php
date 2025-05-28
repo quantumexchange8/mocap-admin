@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             QualificationSeeder::class,
             NationalitySeeder::class,
             RunningNumber::class,
+            PermissionSeeder::class,
         ]);
         
         User::factory()->create([
