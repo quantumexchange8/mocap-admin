@@ -86,4 +86,35 @@ class AdministratorController extends Controller
 
         return redirect()->back();
     }
+
+    public function updateAdminTitle(Request $request)
+    {
+        $user = User::find($request->id);
+
+        $user->update([
+            'title' => $request->title,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function removeAdministrator(Request $request)
+    {
+
+        $user = User::find($request->id);
+
+        $user->update([
+            'status' => 'active',
+            'role' => 'employee',
+            'title' => null,
+        ]);
+
+        $user->syncPermissions([]);
+
+        // Optionally remove roles if you're using roles too
+        $user->syncRoles([]);
+
+        return redirect()->back();
+
+    }
 }

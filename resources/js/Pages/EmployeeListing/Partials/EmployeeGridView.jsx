@@ -199,7 +199,7 @@ export default function EmployeeGridView({ getEmployeeListing, fetchEmployee, is
                                                         </div>
                                                     </div>
                                                     <div onClick={(e) => e.stopPropagation()}>
-                                                        <Dropdown menu={{ items }} placement="bottomRight" arrow >
+                                                        <Dropdown menu={{ items }} placement="bottomRight" arrow trigger={['click']} >
                                                             <div>
                                                                 <Button variant="text" size="sm" iconOnly >
                                                                     <DotVerticalIcon />

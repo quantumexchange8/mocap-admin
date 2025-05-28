@@ -11,6 +11,8 @@ import Modal from "@/Components/Modal";
 import Permission from "./Partials/Permission";
 import InputLabel from "@/Components/InputLabel";
 import NewAdministrator from "./Partials/NewAdministrator";
+import AdminTitle from "./Partials/AdminTitle";
+import RemoveAdmin from "./Partials/RemoveAdmin";
 
 export default function administrators() {
 
@@ -21,6 +23,8 @@ export default function administrators() {
     const [selectedRowDetail, setSelectedRowDetail] = useState(null);
     const [isPermissionOpen, setIsPermissionOpen] = useState(false);
     const [isNewAdminOpen, setIsNewAdminOpen] = useState(false);
+    const [isAdminTitleOpen, setIsAdminTitleOpen] = useState(false);
+    const [isRemoveOpen, setIsRemoveOpen] = useState(false);
 
     const fetchAdministrator = async () => {
         setIsLoading(true);
@@ -63,12 +67,23 @@ export default function administrators() {
         setSelectedRowDetail(null);
     }
 
-    const openTitle = () => {
-
+    const openTitle = (record) => {
+        setIsAdminTitleOpen(true);
+        setSelectedRowDetail(record);
     }
 
-    const openConfirmRemove = () => {
+    const closeTitle = () => {
+        setIsAdminTitleOpen(false);
+        setSelectedRowDetail(null);
+    }
 
+    const openConfirmRemove = (record) => {
+        setIsRemoveOpen(true)
+        setSelectedRowDetail(record);
+    }
+    const closeConfirmRemove = () => {
+        setIsRemoveOpen(false);
+        setSelectedRowDetail(null);
     }
 
     const columns = [
@@ -131,7 +146,25 @@ export default function administrators() {
         {
             title: 'Scope of Permissions',
             dataIndex: 'permission',
-            width: 105,
+            width: 177,
+            render: (_, record) => {
+
+                return (
+                    <div>
+                        {
+                            record.permissions.length === 21 || record.roles[0].name === 'superadmin' ? (
+                                <div>
+                                    All permissions
+                                </div>
+                            ) : (
+                                <div>
+                                    Limited
+                                </div>
+                            )
+                        }
+                    </div>
+                )
+            }
         }, 
         {
             title: 'Last Active',
@@ -142,7 +175,7 @@ export default function administrators() {
             title: '',
             dataIndex: '',
             key: 'action',
-            width: 105,
+            width: 100,
             align: 'center',
             fixed: 'right',
             render: (_, record) => {
@@ -209,7 +242,7 @@ export default function administrators() {
                         className="flex items-center justify-center gap-1"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+                        <Dropdown menu={{ items }} placement="bottomRight" arrow trigger={['click']}>
                             <div onClick={(e) => e.preventDefault()}>
                                 <Button iconOnly variant="text" size="sm">
                                     <DotVerticalIcon />
@@ -221,10 +254,6 @@ export default function administrators() {
             }
         }, 
     ];
-
-    const submit = () => {
-
-    }
 
     return (
         <AuthenticatedLayout
@@ -335,6 +364,24 @@ export default function administrators() {
                 selectedRowDetail={selectedRowDetail}
                 isPermissionOpen={isPermissionOpen}
                 setIsPermissionOpen={setIsPermissionOpen}
+            />
+
+            {/* Change Title */}
+            <AdminTitle 
+                isAdminTitleOpen={isAdminTitleOpen}
+                setIsAdminTitleOpen={setIsAdminTitleOpen}
+                closeTitle={closeTitle}
+                selectedRowDetail={selectedRowDetail}
+                fetchAdministrator={fetchAdministrator}
+            />
+            
+            {/* Remove Admin */}
+            <RemoveAdmin 
+                isRemoveOpen={isRemoveOpen}
+                setIsRemoveOpen={setIsRemoveOpen}
+                closeConfirmRemove={closeConfirmRemove}
+                selectedRowDetail={selectedRowDetail}
+                fetchAdministrator={fetchAdministrator}
             />
 
         </AuthenticatedLayout>

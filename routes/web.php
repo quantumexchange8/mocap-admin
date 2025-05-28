@@ -161,6 +161,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/getAdministrator', [AdministratorController::class, 'getAdministrator'])->name('getAdministrator');
     Route::post('/create-administrator', [AdministratorController::class, 'createAdministrator'])->name('create-administrator');
     Route::post('/update-administrator', [AdministratorController::class, 'updateAdministrator'])->name('update-administrator');
+    Route::post('/update-admin-title', [AdministratorController::class, 'updateAdminTitle'])->name('update-admin-title');
+    Route::post('/remove-administrator', [AdministratorController::class, 'removeAdministrator'])->name('remove-administrator');
     
     /**
      * ==============================
