@@ -86,7 +86,7 @@ Route::get('/employee-success', [EmployeeController::class, 'employeeSuccess'])-
 
 /**
  * ==============================
- *     Employee Application
+ *     Deleted Illustration
  * ==============================
 */
 Route::post('/delete-account', [ProfileController::class, 'deleteAccount'])->name('delete-account');
@@ -106,9 +106,11 @@ Route::middleware('auth')->group(function () {
      *           Dashboard
      * ==============================
     */
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->name('dashboard');
+    Route::group(['middleware' => ['permission:dashboard']], function () {
+        Route::get('/dashboard', function () {
+            return Inertia::render('Dashboard');
+        })->name('dashboard');
+    });
 
 
     /**
