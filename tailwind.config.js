@@ -13,7 +13,9 @@ export default {
     theme: {
         extend: {
             backgroundImage: {
-                'onboarding': "url('/asset/onboarding.png')"
+                'onboarding': "url('/asset/onboarding.png')",
+                'dashboard1': "url('/asset/dashboardbg.jpg')",
+                'request-container': 'linear-gradient(90deg, rgba(255, 255, 255, 0.80) 0%, rgba(209, 213, 219, 0.80) 100%)',
             },
             fontFamily: {
                 sans: ['Outfit', ...defaultTheme.fontFamily.sans],
@@ -105,7 +107,7 @@ export default {
                 'toast': '0px 4px 20px 0px rgba(12, 17, 29, 0.08)',
                 'dialog': '0px 12px 24px -4px rgba(12, 17, 29, 0.10)',
                 'smShadow': '0px 2px 4px 0px rgba(0, 0, 0, 0.05)',
-            }
+            },
         },
         fontSize: {
             'xxs': ['10px', {

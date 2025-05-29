@@ -424,7 +424,7 @@ export default function JobApplication() {
                         onClick={() => next()}
                     >
                         <span>Next</span>
-                        <ArrowRight/>
+                        <ArrowRight className='text-white' />
                     </Button>
                 )}
                 {current === steps.length - 1 && (

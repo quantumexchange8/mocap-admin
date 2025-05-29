@@ -760,8 +760,8 @@ const ArrowLeft = ({className}) => {
 
 const ArrowRight = ({className}) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M3.33203 8H12.6654M12.6654 8L8.66536 12M12.6654 8L8.66536 4" stroke="white" strokeLinecap="round"/>
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.33203 8H12.6654M12.6654 8L8.66536 12M12.6654 8L8.66536 4" stroke="currentColor" strokeLinecap="round"/>
         </svg>
     );
 }
@@ -1062,7 +1062,53 @@ const FilterIcon = () => {
     )
 }
 
+const UserIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M6 21V19C6 17.9391 6.42143 16.9217 7.17157 16.1716C7.92172 15.4214 8.93913 15 10 15H14C15.0609 15 16.0783 15.4214 16.8284 16.1716C17.5786 16.9217 18 17.9391 18 19V21M8 7C8 8.06087 8.42143 9.07828 9.17157 9.82843C9.92172 10.5786 10.9391 11 12 11C13.0609 11 14.0783 10.5786 14.8284 9.82843C15.5786 9.07828 16 8.06087 16 7C16 5.93913 15.5786 4.92172 14.8284 4.17157C14.0783 3.42143 13.0609 3 12 3C10.9391 3 9.92172 3.42143 9.17157 4.17157C8.42143 4.92172 8 5.93913 8 7Z" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
 
+const ArrowIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3.33203 7.9987H12.6654M12.6654 7.9987L9.9987 10.6654M12.6654 7.9987L9.9987 5.33203" stroke="#D1D5DB" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+const CalendarCheckIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+            <path d="M12.168 21H6.66797C6.13754 21 5.62883 20.7893 5.25376 20.4142C4.87868 20.0391 4.66797 19.5304 4.66797 19V7C4.66797 6.46957 4.87868 5.96086 5.25376 5.58579C5.62883 5.21071 6.13754 5 6.66797 5H18.668C19.1984 5 19.7071 5.21071 20.0822 5.58579C20.4573 5.96086 20.668 6.46957 20.668 7V13M16.668 3V7M8.66797 3V7M4.66797 11H20.668M15.668 19L17.668 21L21.668 17" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+const ClockIcon = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+            <path d="M21.3161 12.5352C21.4246 10.7136 20.9768 8.90201 20.0321 7.34073C19.0874 5.77946 17.6904 4.54225 16.0264 3.79318C14.3623 3.04412 12.5099 2.81859 10.7148 3.1465C8.91964 3.47442 7.26659 4.34029 5.97485 5.62928C4.68312 6.91827 3.81373 8.56947 3.482 10.3639C3.15026 12.1584 3.37185 14.0112 4.11737 15.6769C4.8629 17.3425 6.09713 18.7421 7.65639 19.6902C9.21565 20.6382 11.0263 21.0898 12.8481 20.9852M16.3321 19.0002H22.3321M19.3321 16.0002V22.0002M12.3321 7.0002V12.0002L15.3321 15.0002" stroke="white" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+const ChevronLeft = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none">
+            <path d="M10.668 4L6.66797 8L10.668 12" stroke="#030712" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
+
+const ChevronRIght = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M6 4L10 8L6 12" stroke="#030712" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    )
+}
 
 export {
     Dashboard,
@@ -1164,4 +1210,10 @@ export {
     ExportIcon,
     PrintIcon,
     FilterIcon,
+    UserIcon,
+    ArrowIcon,
+    CalendarCheckIcon,
+    ClockIcon,
+    ChevronLeft,
+    ChevronRIght,
 };
