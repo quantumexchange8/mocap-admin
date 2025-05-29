@@ -185,7 +185,7 @@ const Assets = ({color, className, ...rest}) => {
 
 const Authority = ({color, className, ...rest}) => {
     return (
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <svg xmlns="http://www.w3.org/2000/svg" className={className} width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path d="M6.25781 7.12964L7.51915 8.39297L10.1178 5.79297" stroke="currentColor" strokeLinecap="square"/>
             <path fillRule="evenodd" clipRule="evenodd" d="M7.99912 14C7.99912 14 13.2443 12.4118 13.2443 8.0335V2H2.75391V8.0335C2.75391 12.4118 7.99912 14 7.99912 14Z" stroke="currentColor" strokeLinecap="round"/>
         </svg>

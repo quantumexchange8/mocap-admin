@@ -274,7 +274,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
                     <div className="flex items-center justify-center gap-1"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Dropdown menu={{ items }} placement="bottomRight" arrow>
+                        <Dropdown menu={{ items }} placement="bottomRight" arrow trigger={['click']}>
                             <div onClick={(e) => e.preventDefault()}>
                                 <Button iconOnly variant="text" size="sm">
                                     <DotVerticalIcon />

@@ -13,6 +13,7 @@
         "league/flysystem-aws-s3-v3": "^3.29",
         "opcodesio/log-viewer": "^3.17",
         "spatie/laravel-medialibrary": "^11.12",
+        "spatie/laravel-permission": "^6.18",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {

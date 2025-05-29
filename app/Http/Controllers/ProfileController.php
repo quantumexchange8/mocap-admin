@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\ValidationException;
 
 class ProfileController extends Controller
 {
@@ -191,29 +192,40 @@ class ProfileController extends Controller
     public function validatePassword(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
 
-        return redirect()->back();
+        try {
+            $request->validate([
+                'password' => ['required', 'current_password'],
+            ]);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        }
+    
+        return back()->with('message', 'Password validated!');
+
     }
 
     public function deleteAccount(Request $request)
     {
         $user = Auth::user();
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-
-        Auth::logout();
 
         $user->update([
-            'status' => 'deleted',
+            'status' => 'active',
+            'role' => 'employee',
+            'title' => null,
         ]);
+
+        // ❗️ Remove all assigned permissions
+        $user->syncPermissions([]);
+
+        // Optionally remove roles if you're using roles too
+        $user->syncRoles([]);
 
         // Send confirmation email
         Mail::to($user->email)->send(new \App\Mail\DeleteAccount($user));
 
-        return Inertia::render('AccountSetting/Farewell');;
+        Auth::logout();
+
+        return Inertia::render('AccountSetting/Farewell');
     }
 }
