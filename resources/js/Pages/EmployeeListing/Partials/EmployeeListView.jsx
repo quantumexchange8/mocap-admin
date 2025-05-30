@@ -20,6 +20,9 @@ import ResetEmployeePass from "./ResetEmployeePass";
 export default function EmployeeListView({ getEmployeeListing, fetchEmployee, isLoading}) {
 
     const [sortOrder, setSortOrder] = useState(null); 
+    const [sortCtidOrder, setSortCtidOrder] = useState(null); 
+    const [sortEntryDate, setSortEntryDate] = useState(null);
+
     const [isOpenEmploymentDetail, setIsOpenEmploymentDetail] = useState(false);
     const [employmentDetails, setEmploymentDetails] = useState(null);
     const [isRestoreDialogOpen, setIsRestoreDialogOpen] = useState(false);
@@ -193,9 +196,43 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
             }
         }, 
         {
-            title: 'CTID',
+            title: () => (
+                <div className="flex items-center gap-2">
+                CTID
+                <span className="text-gray-500 flex items-center gap-1">
+                    {sortCtidOrder === null && <DefaultSortIcon className="w-4 h-4" />}
+                    {
+                        sortCtidOrder === 'ascend' && (
+                            <>
+                                <SortAsc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                    {
+                        sortCtidOrder === 'descend' && (
+                            <>
+                                <SortDesc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                </span>
+                </div>
+            ),
             dataIndex: 'employee_id',
             width: 105,
+            sorter: (a, b) => a.employee_id.localeCompare(b.employee_id),
+            sortOrder: sortCtidOrder, // bind the state
+            onHeaderCell: () => ({
+                onClick: () => {
+                if (sortCtidOrder === null) {
+                    setSortCtidOrder('ascend');
+                } else if (sortCtidOrder === 'ascend') {
+                    setSortCtidOrder('descend');
+                } else {
+                    setSortCtidOrder(null);
+                }
+                }
+            }),
             // sort
         }, 
         {
@@ -214,9 +251,43 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
             width: 105,
         }, 
         {
-            title: 'Entry Date',
+            title: () => (
+                <div className="flex items-center gap-2">
+                Entry Date
+                <span className="text-gray-500 flex items-center gap-1">
+                    {sortEntryDate === null && <DefaultSortIcon className="w-4 h-4" />}
+                    {
+                        sortEntryDate === 'ascend' && (
+                            <>
+                                <SortAsc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                    {
+                        sortEntryDate === 'descend' && (
+                            <>
+                                <SortDesc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                </span>
+                </div>
+            ),
             dataIndex: 'employee_date',
             width: 105,
+            sorter: (a, b) => new Date(a.employee_date) - new Date(b.employee_date),
+            sortOrder: sortEntryDate, // bind the state
+            onHeaderCell: () => ({
+                onClick: () => {
+                if (sortEntryDate === null) {
+                    setSortEntryDate('ascend');
+                } else if (sortEntryDate === 'ascend') {
+                    setSortEntryDate('descend');
+                } else {
+                    setSortEntryDate(null);
+                }
+                }
+            }),
         }, 
         {
             title: '',

@@ -13,8 +13,10 @@ export default function JobApplicants() {
     const [isLoading, setIsLoading] = useState(false);
     const [getJobApplicant, setGetJobApplicant] = useState([]);
     const [getPosition, setGetPosition] = useState([]);
-    const [sortOrder, setSortOrder] = useState(null); 
-    const [submissionSort, setSubmissionSort] = useState(null); 
+    const [sortOrder, setSortOrder] = useState(null); // applicant sort
+    const [submissionSort, setSubmissionSort] = useState(null); // submission date sort
+    const [expectedSalarySort, setExpectedSalarySort] = useState(null); // expected salary sort
+    const [testMarkSort, setTestMarkSort] = useState(null); // test mark sort
     const [filterSubmissionDate, setFilterSubmissionDate] = useState(null); 
     const [filterPosition, setFilterPosition] = useState(null); 
     const [filterStatus, setFilterStatus] = useState(null); 
@@ -202,10 +204,44 @@ export default function JobApplicants() {
             // sort
         }, 
         {
-            title: 'Expected Salary',
+            title: () => (
+                <div className="flex items-center gap-2">
+                Expected Salary
+                <span className="text-gray-500 flex items-center gap-1">
+                    {expectedSalarySort === null && <DefaultSortIcon className="w-4 h-4" />}
+                    {
+                        expectedSalarySort === 'ascend' && (
+                            <>
+                                <SortAsc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                    {
+                        expectedSalarySort === 'descend' && (
+                            <>
+                                <SortDesc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                </span>
+                </div>
+            ),
             key: 'expected_salary',
             dataIndex: 'expected_salary',
             width: 142,
+            sorter: (a, b) => a.expected_salary.localeCompare(b.expected_salary),
+            sortOrder: expectedSalarySort,
+            onHeaderCell: () => ({
+                onClick: () => {
+                if (expectedSalarySort === null) {
+                    setExpectedSalarySort('ascend');
+                } else if (expectedSalarySort === 'ascend') {
+                    setExpectedSalarySort('descend');
+                } else {
+                    setExpectedSalarySort(null);
+                }
+                }
+            }),
             render: (_, record) => {
                 return (
                     <div className="flex flex-col">
@@ -216,10 +252,46 @@ export default function JobApplicants() {
             // sort
         }, 
         {
-            title: 'Test Mark',
+            title: () => (
+                <div className="flex items-center gap-2">
+                Test Mark
+                <span className="text-gray-500 flex items-center gap-1">
+                    {testMarkSort === null && <DefaultSortIcon className="w-4 h-4" />}
+                    {
+                        testMarkSort === 'ascend' && (
+                            <>
+                                <SortAsc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                    {
+                        testMarkSort === 'descend' && (
+                            <>
+                                <SortDesc className="w-4 h-4 text-gray-950" />
+                            </>
+                        )
+                    }
+                </span>
+                </div>
+            ),
             key: 'test_mark',
             dataIndex: 'test_mark',
             width: 142,
+            sorter: (a, b) => {
+                return (a.test_mark ?? 0) - (b.test_mark ?? 0);
+            },
+            sortOrder: testMarkSort,
+            onHeaderCell: () => ({
+                onClick: () => {
+                if (testMarkSort === null) {
+                    setTestMarkSort('ascend');
+                } else if (testMarkSort === 'ascend') {
+                    setTestMarkSort('descend');
+                } else {
+                    setTestMarkSort(null);
+                }
+                }
+            }),
             render: (_, record) => {
                 return (
                     <div className="flex flex-col">
