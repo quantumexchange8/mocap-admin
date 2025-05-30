@@ -33,21 +33,21 @@ export default function LanguageInfo({data, setData, errors}) {
                 </div>
                 {languages.map((languages) => (
                     <form key={languages.prefix} className="flex p-5 flex-col items-center gap-5 self-stretch">
-                        <div className="flex justify-between items-center self-stretch">
+                        <div className="flex justify-between items-center self-stretch gap-5">
                             {languages.name === 'other' ? (
                                 <TextInput
                                     id="other_language"
                                     type="text"
                                     name="other_language"
                                     value={data.other_language|| ""}
-                                    className="w-[168px]"
+                                    className="max-w-[168px] w-full"
                                     placeholder="Other Language"
                                     onChange={(e) => setData('other_language', e.target.value)}
                                 />
                             ) : (
                                 <div className="text-gray-950 font-semibold">{languages.name}</div>
                             )}
-                            <label className="flex w-[500px] h-4 text-gray-700 text-xs justify-between">
+                            <label className="flex min-w-[500px] h-4 text-gray-700 text-xs justify-between">
                                 <div>Very Poor</div>
                                 <div>Poor</div>
                                 <div>Fair</div>

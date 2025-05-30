@@ -136,6 +136,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/getEduBg', [AuthEmployeeController::class, 'getEduBg'])->name('getEduBg');
         
         Route::post('/update-personal-info', [EmployeeProfileController::class, 'updatePersonalInfo'])->name('update-personal-info');
+        Route::post('/update-bank-info', [EmployeeProfileController::class, 'updateBankInfo'])->name('update-bank-info');
+        Route::post('/update-beneficiary-info', [EmployeeProfileController::class, 'updateBeneficiaryInfo'])->name('update-beneficiary-info');
+        Route::post('/update-urgent-info', [EmployeeProfileController::class, 'updateUrgentInfo'])->name('update-urgent-info');
+        Route::post('/update-education', [EmployeeProfileController::class, 'updateEducation'])->name('update-education');
+        Route::post('/update-work-info', [EmployeeProfileController::class, 'updateWorkInfo'])->name('update-work-info');
     });
     
     

@@ -13,6 +13,7 @@ import AdditionalInfo from "./Partials/AdditionalInfo";
 import Declaration from "./Partials/Declaration";
 import { MocapLogo, Onboarding2Logo } from '@/Components/Icon/Logo';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Popover } from "antd";
 
 export default function JobApplication() {
 
@@ -23,6 +24,7 @@ export default function JobApplication() {
     const [direction, setDirection] = useState('forward');
     const [completedSteps, setCompletedSteps] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [open, setOpen] = useState(false);
 
     const {data, setData, post, processing, errors, reset } = useForm ({
         //personal
@@ -245,14 +247,153 @@ export default function JobApplication() {
         }
     };
 
-    const confirm = e => {
-        console.log(e);
-        message.success('Clear');
+    const handleOpenClear = (newOpen) => {
+        setOpen(newOpen);
+    }
+
+    const handleCloseClear = () => {
+        setOpen(false);
     };
 
-    const cancel = e => {
-        console.log(e);
-        message.error('Cancel');
+    const handleClear = () => {
+        if (current === 0) {
+        //personal
+            setData('position', '');
+            setData('expected_salary', '');
+            setData('start_date', null);
+            setData('full_name', '');
+            setData('identity_no', '');
+            setData('nationality', 'Malaysian');
+            setData('place_of_birth', '');
+            setData('marital_status', '');
+            setData('race', '');
+            setData('religion', '');
+            setData('dial_code', '+60');
+            setData('phone_no', '');
+            setData('email', '');
+            setData('address', '');
+            setData('postcode', '');
+            setData('city', '');
+            setData('state', '');
+        }
+        if (current === 1) {
+            // Education
+            setData('edu1_start', null);
+            setData('edu1_end', null);
+            setData('edu1_school', '');
+            setData('edu1_address', '');
+            setData('edu1_qualification', '');
+            setData('edu1_course', '');
+            setData('edu2_start', null);
+            setData('edu2_end', null);
+            setData('edu2_school', '');
+            setData('edu2_address', '');
+            setData('edu2_qualification', '');
+            setData('edu2_course', '');
+            setData('edu3_start', null);
+            setData('edu3_end', null);
+            setData('edu3_school', '');
+            setData('edu3_address', '');
+            setData('edu3_qualification', '');
+            setData('edu3_course', '');
+            setData('skills', '');
+        }
+        if (current === 2) {
+            // Work experience
+            setData('experience', true);
+            setData('job1_title', '');
+            setData('job1_period', null);
+            setData('job1_company', '');
+            setData('job1_address', '');
+            setData('job1_supervisor', '');
+            setData('job1_dailcode', '+60');
+            setData('job1_phonecode', '');
+            setData('job1_reason', '');
+            setData('job1_startsalary', '');
+            setData('job1_endsalary', '');
+            setData('job2_title', '');
+            setData('job2_period', null);
+            setData('job2_company', '');
+            setData('job2_address', '');
+            setData('job2_supervisor', '');
+            setData('job2_dailcode', '');
+            setData('job2_phonecode', '');
+            setData('job2_reason', '');
+            setData('job2_startsalary', '');
+            setData('job2_endsalary', '');
+            setData('job3_title', '');
+            setData('job3_period', null);
+            setData('job3_company', '');
+            setData('job3_address', '');
+            setData('job3_supervisor', '');
+            setData('job3_dailcode', '');
+            setData('job3_phonecode', '');
+            setData('job3_reason', '');
+            setData('job3_startsalary', '');
+            setData('job3_endsalary', '');
+        }
+        if (current === 3) {
+            // Reference
+            setData('refer1_name', '');
+            setData('relation1', '');
+            setData('refer1_dailcode', '+60');
+            setData('refer1_phoneno', '');
+            setData('refer1_email', '');
+            setData('refer2_name', '');
+            setData('relation2', '');
+            setData('refer2_dailcode', '');
+            setData('refer2_phoneno', '');
+            setData('refer2_email', '');
+            setData('refer3_name', '');
+            setData('relation3', '');
+            setData('refer3_dailcode', '');
+            setData('refer3_phoneno', '');
+            setData('refer3_email', '');
+        }
+        if (current === 4) {
+            // Language
+            setData('eng_speak', '3');
+            setData('eng_write', '3');
+            setData('eng_listen', '3');
+            setData('malay_speak', '3');
+            setData('malay_write', '3');
+            setData('malay_listen', '3');
+            setData('chinese_speak', '3');
+            setData('chinese_write', '3');
+            setData('chinese_listen', '3');
+            setData('other_language', '');
+            setData('other_speak', '');
+            setData('other_write', '');
+            setData('other_listen', '');
+        }
+        if (current === 5) {
+            // Transport
+            setData('transport', '');
+            setData('approximate_distance', '');
+            setData('approximate_hours', '');
+            setData('approximate_minutes', '');
+        }
+        if (current === 6) {
+            // Additional info
+            setData('overtime_type', 'No');
+            setData('investigate_type', 'No');
+            setData('investigate_remark', '');
+            setData('convicted_type', 'No');
+            setData('convicted_remark', '');
+            setData('bankrupt_type', 'No');
+            setData('bankrupt_remark', '');
+            setData('suspended_type', 'No');
+            setData('suspended_remark', '');
+            setData('directorship_type', 'No');
+            setData('directorship_remark', '');
+            setData('relative_type', 'No');
+            setData('relative_remark', '');
+            setData('health_type', 'No');
+            setData('health_remark', '');
+            setData('find_job_type', '');
+            setData('find_job_remark', '');
+        }
+        setOpen(false);
     };
 
     const handleSubmit = async (e) => {
@@ -383,26 +524,22 @@ export default function JobApplication() {
 
             {/* footer */}
             <div className="flex sticky bottom-0 w-full p-5 justify-between items-center bg-white border-t border-t-gray-200">
-                <Popconfirm
-                    icon={false}
-                    description="Are you sure you want to clear?"
-                    onConfirm={confirm}
-                    onCancel={cancel}
-                    okText="Clear"
-                    okType="danger"
-                    cancelText="Cancel"
-                    placement="topRight"
-                    >
+                <Popover
+                    content={
+                        <div className="flex items-center gap-2 justify-end">
+                            <Button variant="outlined" size="sm" onClick={handleCloseClear}>Cancel</Button>
+                            <Button variant="danger" size="sm" onClick={handleClear}>Clear</Button>
+                        </div>
+                    }
+                    title="Are you sure you want to clear?"
+                    open={open}
+                    onOpenChange={handleOpenClear}
+                    trigger="click"
+                >
                     <span>
-                        <Button 
-                            size="lg"
-                            variant="text"
-                            className="flex px-6 py-4 justify-center items-center gap-2"
-                        >
-                            Clear Form
-                        </Button>   
+                        <Button variant="text" size="lg">Clear Form</Button>
                     </span>
-                </Popconfirm>
+                </Popover>
                 
                 <div className="flex items-center gap-5">
                 {current > 0 && (
