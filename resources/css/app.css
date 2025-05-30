@@ -757,3 +757,45 @@ select:focus,
 .ant-pagination .ant-pagination-prev .ant-pagination-item-link, .ant-pagination .ant-pagination-next .ant-pagination-item-link {
   border-radius: 100%;
 }
+
+/* mini calendar */
+
+.ant-picker-calendar-mini {
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05);
+}
+.ant-picker-calendar-mini .ant-picker-panel {
+  padding-top: 12px;
+}
+.ant-picker-calendar .ant-picker-panel .ant-picker-body {
+  padding: 0;
+}
+.ant-picker-calendar .ant-picker-cell .ant-picker-cell-inner {
+  border-radius: 100%;
+}
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner::before {
+  border: none;
+}
+.ant-picker-calendar .ant-picker-cell-in-view.ant-picker-cell-today .ant-picker-cell-inner {
+  background: #E5E7EB;
+}
+.ant-picker-calendar .ant-picker-date-panel .ant-picker-content th {
+  color: #6B7280;
+  text-align: center;
+  font-size: 14px;
+  padding: 12px 0px;
+}
+/* mini calendar */
+
+/* Segment */
+
+.custom-segmented.ant-segmented .ant-segmented-item {
+  width: 100%;
+}
+
+.custom-segmented.ant-segmented .ant-segmented-item-selected {
+  width: 100%;
+}
+
+/* Segment */

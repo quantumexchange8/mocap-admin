@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\AuthEmployeeController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\EmployeeProfileController;
@@ -110,6 +111,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', function () {
             return Inertia::render('Dashboard');
         })->name('dashboard');
+        Route::get('/getAnouncement', [DashboardController::class, 'getAnouncement'])->name('getAnouncement');
+        Route::get('/getTotalEmployee', [DashboardController::class, 'getTotalEmployee'])->name('getTotalEmployee');
+        
     });
 
 

@@ -44,7 +44,7 @@ export default function AuthenticatedLayout({ header, children }) {
             <div className={`min-h-screen flex flex-col transition-all duration-300 ${isSidebarExpanded ? 'lg:ml-[230px]' : 'translate-x-0'}`}>
                 <Navbar header={header} toggleSidebar={toggleSidebar} expanded={isSidebarExpanded}/>
                 <main className='w-full flex justify-center'>
-                    <div className='max-w-[1440px] w-full '>
+                    <div className='w-full '>
                         {children}
                     </div>
                 </main>

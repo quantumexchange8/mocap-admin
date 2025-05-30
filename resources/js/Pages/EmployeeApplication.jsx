@@ -629,7 +629,7 @@ export default function EmployeeApplication() {
                                 <span>
                                     {step === steps.length - 1 ? 'Submit' : 'Next'}
                                 </span>
-                                {step < steps.length - 1 && <ArrowRight />}
+                                {step < steps.length - 1 && <ArrowRight className='text-white' />}
                             </Button>
                         )
                     }
