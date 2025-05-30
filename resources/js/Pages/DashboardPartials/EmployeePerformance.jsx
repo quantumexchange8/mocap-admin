@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Button from "@/Components/Button";
 import { ArrowRight } from "@/Components/Icon/Outline";
-import { Segmented } from "antd";
+import { DatePicker, Segmented } from "antd";
+import dayjs from "dayjs";
 
 const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -20,6 +21,11 @@ const containerVariants = {
 export default function EmployeePerformance() {
 
     const [viewType, setViewType] = useState('Top Performers');
+    const [performanceDate, setPerformanceDate] = useState(dayjs());
+
+    const onChange = (date, dateString) => {
+        setPerformanceDate(dateString);
+    }
 
     return (
         <motion.div
@@ -31,9 +37,9 @@ export default function EmployeePerformance() {
 
             <div className="flex items-center justify-between">
                 <div className="text-gray-950 text-base font-semibold">Employee’s Performance</div>
-                <Button size="sm" variant="text" iconOnly>
-                    <ArrowRight className='text-gray-950' />
-                </Button>
+                <div>
+                    <DatePicker value={performanceDate} onChange={onChange} picker="month" className="py-2 px-4" />
+                </div>
             </div>
 
             <div className="w-full">
