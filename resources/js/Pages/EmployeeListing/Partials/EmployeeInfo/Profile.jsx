@@ -5,13 +5,23 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Modal from "@/Components/Modal";
 import PersonalInfo from "./PersonalInfo";
+import BankInfo from "./BankInfo";
+import BeneficiaryInfo from "./BeneficiaryInfo";
+import UrgentInfo from "./UrgentInfo";
+import Education from "./Education";
+import WorkInfo from "./WorkInfo";
 
 export default function Profile({ user_details, id }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [getEduBg, setGetEduBg] = useState([]);
     const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);
-    
+    const [isBankInfoOpen, setIsBankInfoOpen] = useState(false);
+    const [isBeneficiaryInfoOpen, setIsBeneficiaryInfoOpen] = useState(false);
+    const [isUrgentInfoOpen, setIsUrgentInfoOpen] = useState(false);
+    const [isEducationOpen, setIsEducationOpen] = useState(false);
+    const [isWorkInfoOpen, setIsWorkInfoOpen] = useState(false);
+
     const fetchEduBg = async  () => {
         setIsLoading(true);
         try {
@@ -41,6 +51,48 @@ export default function Profile({ user_details, id }) {
     const closePersonalInfo = () => {
         setIsPersonalInfoOpen(false);
     }
+
+    const openBankInfo = () => {
+        setIsBankInfoOpen(true);
+    }
+    const closeBankInfo = () => {
+        setIsBankInfoOpen(false);
+    }
+
+    const openBeneficiaryInfo = () => {
+        setIsBeneficiaryInfoOpen(true);
+    }
+    const closeBeneficiaryInfo = () => {
+        setIsBeneficiaryInfoOpen(false);
+    }
+
+    const openUrgentInfo = () => {
+        setIsUrgentInfoOpen(true);
+    }
+    const closeUrgentInfo = () => {
+        setIsUrgentInfoOpen(false);
+    }
+
+    const openEducation = () => {
+        setIsEducationOpen(true);
+    }
+    const closeEducation = () => {
+        setIsEducationOpen(false);
+    }
+
+    const openWorkInfo = () => {
+        setIsWorkInfoOpen(true);
+    }
+    const closeWorkInfo = () => {
+        setIsWorkInfoOpen(false);
+    }
+
+    const formatToMonthYear = (dateString) => {
+        const date = new Date(dateString);
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month
+        const year = date.getFullYear();
+        return `${month}/${year}`;
+    };
 
 
     return (
@@ -112,7 +164,7 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Bank and Contribution Information</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly>
+                                    <Button variant="text" size="sm" iconOnly onClick={openBankInfo}>
                                         <EditIcon />
                                     </Button>
                                 </div>
@@ -149,7 +201,7 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Beneficiary/Nominee Information</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly>
+                                    <Button variant="text" size="sm" iconOnly onClick={openBeneficiaryInfo}>
                                         <EditIcon />
                                     </Button>
                                 </div>
@@ -197,7 +249,7 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Emergency Contact Information</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly>
+                                    <Button variant="text" size="sm" iconOnly onClick={openUrgentInfo}>
                                         <EditIcon />
                                     </Button>
                                 </div>
@@ -234,7 +286,7 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Education Background</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly>
+                                    <Button variant="text" size="sm" iconOnly onClick={openEducation}>
                                         <EditIcon />
                                     </Button>
                                 </div>
@@ -255,8 +307,8 @@ export default function Profile({ user_details, id }) {
                                                             children: (
                                                                 <div className="flex flex-col gap-1">
                                                                     <div className="font-semibold text-gray-950 text-sm">{item.school_name}</div>
-                                                                    <div className="text-gray-700 text-sm">{item.qualification}</div>
-                                                                    <div className="text-gray-500 text-xs">{item.from_date} - {item.to_date}</div>
+                                                                    <div className="text-gray-700 text-sm">{item.course_name}</div>
+                                                                    <div className="text-gray-500 text-xs">{formatToMonthYear(item.from_date)} - {formatToMonthYear(item.to_date)}</div>
                                                                 </div>
                                                             )
                                                         }))}
@@ -276,7 +328,7 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Work Experience</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly>
+                                    <Button variant="text" size="sm" iconOnly onClick={openWorkInfo}>
                                         <EditIcon />
                                     </Button>
                                 </div>
@@ -330,9 +382,68 @@ export default function Profile({ user_details, id }) {
                     </div>
                 ) : null
             }
-            
-
-            
+            {
+                isBankInfoOpen ? (
+                    <div>
+                        <BankInfo
+                            isBankInfoOpen={isBankInfoOpen}
+                            setIsBankInfoOpen={setIsBankInfoOpen}
+                            closeBankInfo={closeBankInfo}
+                            user_details={user_details}
+                        />
+                    </div>
+                ) : null
+            }
+            {
+                isBeneficiaryInfoOpen ? (
+                    <div>
+                        <BeneficiaryInfo
+                            isBeneficiaryInfoOpen={isBeneficiaryInfoOpen}
+                            setIsBeneficiaryInfoOpen={setIsBeneficiaryInfoOpen}
+                            closeBeneficiaryInfo={closeBeneficiaryInfo}
+                            user_details={user_details}
+                        />
+                    </div>
+                ) : null
+            }
+            {
+                isUrgentInfoOpen ? (
+                    <div>
+                        <UrgentInfo
+                            isUrgentInfoOpen={isUrgentInfoOpen}
+                            setIsUrgentInfoOpen={setIsUrgentInfoOpen}
+                            closeUrgentInfo={closeUrgentInfo}
+                            user_details={user_details}
+                        />
+                    </div>
+                ) : null
+            }
+            {
+                isEducationOpen ? (
+                    <div>
+                        <Education
+                            isEducationOpen={isEducationOpen}
+                            setIsEducationOpen={setIsEducationOpen}
+                            closeEducation={closeEducation}
+                            user_details={user_details}
+                            education={getEduBg.education}
+                        />
+                    </div>
+                ) : null
+            }
+            {
+                isWorkInfoOpen ? (
+                    <div>
+                        <WorkInfo
+                            isWorkInfoOpen={isWorkInfoOpen}
+                            setIsWorkInfoOpen={setIsWorkInfoOpen}
+                            closeWorkInfo={closeWorkInfo}
+                            user_details={user_details}
+                            work_info={getEduBg.experience}
+                        />
+                    </div>
+                ) : null
+            }
         </>
     )
 }
