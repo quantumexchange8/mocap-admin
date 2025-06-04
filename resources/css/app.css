@@ -637,14 +637,19 @@ select:focus,
 
 .ant-segmented .ant-segmented-item-label {
   padding: 4px 8px;
+  line-height: 20px;
 }
 
 .ant-segmented .ant-segmented-item {
   color: #6B7280;
+  font-weight: 500;
+  
 }
 
 .ant-segmented .ant-segmented-item-selected {
   color: #030712;
+  font-weight: 500;
+  
 }
 
 /* Tab */
@@ -799,3 +804,56 @@ select:focus,
 }
 
 /* Segment */
+
+.p-treeselect-panel .p-treeselect-header {
+  padding: 8px 20px;
+}
+
+.p-treeselect-panel .p-treeselect-header .p-treeselect-filter-container .p-treeselect-filter {
+  padding-right: 1.75rem;
+  border-color: #D1D5DB;
+}
+
+.p-treeselect-panel .p-treeselect-header .p-treeselect-filter-container .p-treeselect-filter-icon {
+  right: 0.75rem;
+  color: #6b7280;
+}
+
+.p-treeselect-panel .p-treeselect-header .p-treeselect-close {
+  width: 2rem;
+  height: 2rem;
+  color: #6b7280;
+  border: 0 none;
+  background: transparent;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.p-tree .p-tree-container .p-treenode {
+  padding: 0.143rem;
+  outline: 0 none;
+}
+
+.p-treenode-content {
+  display: flex;
+  align-items: center;
+}
+
+.p-tree .p-tree-container .p-treenode .p-treenode-content {
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+  padding: 0.5rem;
+}
+
+.custom-tree-select .ant-select-selector {
+  padding: 12px 16px;
+}
+
+.custom-tree-select .ant-select-selection-wrap {
+  line-height: normal;
+}
+
+.ant-picker-dropdown .ant-picker-time-panel-column >li.ant-picker-time-panel-cell-selected .ant-picker-time-panel-cell-inner {
+  background: #030712;
+  color: #FFF;
+}

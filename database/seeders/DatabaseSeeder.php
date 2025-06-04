@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             NationalitySeeder::class,
             RunningNumber::class,
             PermissionSeeder::class,
+            CustomColorSeeder::class,
         ]);
         
         User::factory()->create([

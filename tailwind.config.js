@@ -139,7 +139,10 @@ export default {
         }
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        require('tailwind-scrollbar-hide'),
+    ],
     corePlugins: {
         // preflight: false, // <== disable this!
         ringColor: false, // 禁用 ring color 插件

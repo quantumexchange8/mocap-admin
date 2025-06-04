@@ -33,4 +33,8 @@ class Department extends Model
     {
         return $this->belongsTo(User::class, 'id', 'department_id');
     }
+    public function users(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(User::class, 'department_id', 'id');
+    }
 }

@@ -30,6 +30,7 @@ return new class extends Migration
             $table->json('positive_attidude')->nullable();
             $table->string('overall_rating')->nullable();
             $table->string('overall_remark')->nullable();
+            $table->unsignedBigInteger('handle_by')->nullable();
             $table->timestamps();
         });
     }

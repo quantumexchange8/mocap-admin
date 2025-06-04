@@ -28,8 +28,8 @@ export default function SideBar({user, expanded, toggleSidebar}) {
 
     return (
     <>
-        <div className={`${expanded ? 'fixed inset-0 z-20 bg-black/50 lg:hidden' : ''} `} onClick={toggleSidebar}></div>
-        <aside className={`fixed flex flex-col inset-y-0 z-20 overflow-auto border-r border-gray-200 bg-gray-100 
+        <div className={`${expanded ? 'fixed inset-0 z-40 bg-black/50 lg:hidden' : ''} `} onClick={toggleSidebar}></div>
+        <aside className={`fixed flex flex-col inset-y-0 z-40 overflow-auto scrollbar-hide border-r border-gray-200 bg-gray-100 
             ${!expanded ? 'translate-x-[-100%]' : 'translate-x-0 w-[230px]'}
             ease-in-out duration-300`}>
             <div className="flex items-center px-3 py-2 gap-3 border-b border-gray-200 bg-gray-100 sticky top-0 z-10 cursor-pointer"
@@ -83,10 +83,12 @@ export default function SideBar({user, expanded, toggleSidebar}) {
                             <CalendarIcon color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Calendar </div>
                         </div>
-                        <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
-                            <Announcement color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
-                            <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Announcement </div>
-                        </div>
+                        <Link href={route('announcement')} className="flex flex-col items-center gap-1 self-stretch">
+                            <div className={`${url === '/announcement' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
+                                <Announcement color='currentColor' className={`${url === '/announcement' ? 'text-white' : 'text-gray-950'}`}/>
+                                <div className={`${url === '/announcement' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Announcement </div>
+                            </div>
+                        </Link>
                         <div className={`${url === '/' ?'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm bg-gray-950' :'flex items-center px-3 py-1.5 gap-3 self-stretch rounded-sm cursor-pointer hover:bg-gray-200'}`}>
                             <Report color='currentColor' className={`${url === '/' ? 'text-white' : 'text-gray-950'}`}/>
                             <div className={`${url === '/' ? 'text-white text-sm' :'text-gray-950 text-sm'}`}> Reports </div>

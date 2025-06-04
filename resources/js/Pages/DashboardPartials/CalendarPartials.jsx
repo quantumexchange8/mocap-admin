@@ -1,7 +1,7 @@
 import React from "react";
 import { Badge, Calendar, theme } from 'antd';
 import Button from "@/Components/Button";
-import { ChevronDown, ChevronLeft, ChevronRIght } from "@/Components/Icon/Outline";
+import { ChevronDown, ChevronLeftIcon, ChevronRIghtIcon } from "@/Components/Icon/Outline";
 import { AnimatePresence, motion } from "framer-motion";
 
 const containerVariants = {
@@ -47,13 +47,13 @@ export default function CalendarPartials() {
         return (
           <div style={{ paddingBottom: 8 }} className='flex items-center justify-between'>
             <Button variant="text" size="sm" iconOnly onClick={goPrevMonth}>
-                <ChevronLeft />
+                <ChevronLeftIcon />
             </Button>
             <div className="text-gray-950 text-center text-base font-semibold">
                 {monthYear}
             </div>
             <Button variant="text" size="sm" iconOnly onClick={goNextMonth}>
-                <ChevronRIght />
+                <ChevronRIghtIcon />
             </Button>
           </div>
         );
@@ -68,7 +68,7 @@ export default function CalendarPartials() {
     const dateCellRender = (date) => {
         const count = getEventCount(date);
         return count > 0 ? (
-          <div className="absolute left-2 flex items-center gap-0.5" >
+          <div className="absolute left-2 -bottom-1.5 flex items-center gap-0.5" >
             <div className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: '#1890ff' }}></div>
             {/* <div className="w-[5px] h-[5px] rounded-full" style={{ backgroundColor: '#884DFF' }}></div> */}
           </div>

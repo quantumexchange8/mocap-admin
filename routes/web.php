@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministratorController;
+use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthEmployeeController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
@@ -116,10 +117,23 @@ Route::middleware('auth')->group(function () {
         
     });
 
+    /**
+     * ==============================
+     *           Announcement
+     * ==============================
+    */
+    Route::group(['middleware' => ['permission:announcement']], function () {
+        Route::get('/announcement', [AnnouncementController::class, 'announcement'])->name('announcement');
+        Route::get('/create-announcement', [AnnouncementController::class, 'CreateAnnouncement'])->name('create-announcement');
+        Route::get('/getEmployeeTree', [AnnouncementController::class, 'getEmployeeTree'])->name('getEmployeeTree');
+        Route::get('/getDepartmentUsers', [AnnouncementController::class, 'getDepartmentUsers'])->name('getDepartmentUsers');
+        Route::post('/store-announcement-draft', [AnnouncementController::class, 'storeAnnouncementDraft'])->name('store-announcement-draft');
+        
+    });
 
     /**
      * ==============================
-     *           Employee Listing
+     *      Employee Listing
      * ==============================
     */
     Route::group(['middleware' => ['permission:employee_listing']], function () {
@@ -166,22 +180,28 @@ Route::middleware('auth')->group(function () {
      *        Administrators
      * ==============================
     */
-    Route::get('/administrators', [AdministratorController::class, 'administrators'])->name('administrators');
-    Route::get('/getAdministrator', [AdministratorController::class, 'getAdministrator'])->name('getAdministrator');
-    Route::post('/create-administrator', [AdministratorController::class, 'createAdministrator'])->name('create-administrator');
-    Route::post('/update-administrator', [AdministratorController::class, 'updateAdministrator'])->name('update-administrator');
-    Route::post('/update-admin-title', [AdministratorController::class, 'updateAdminTitle'])->name('update-admin-title');
-    Route::post('/remove-administrator', [AdministratorController::class, 'removeAdministrator'])->name('remove-administrator');
-    
+    Route::group(['middleware' => ['permission:administrator']], function () {
+        Route::get('/administrators', [AdministratorController::class, 'administrators'])->name('administrators');
+        Route::get('/getAdministrator', [AdministratorController::class, 'getAdministrator'])->name('getAdministrator');
+        Route::post('/create-administrator', [AdministratorController::class, 'createAdministrator'])->name('create-administrator');
+        Route::post('/update-administrator', [AdministratorController::class, 'updateAdministrator'])->name('update-administrator');
+        Route::post('/update-admin-title', [AdministratorController::class, 'updateAdminTitle'])->name('update-admin-title');
+        Route::post('/remove-administrator', [AdministratorController::class, 'removeAdministrator'])->name('remove-administrator');
+    });
     /**
      * ==============================
      *           Smart Data
      * ==============================
     */
-    Route::get('/smart-data', [SmartDataController::class, 'smartData'])->name('smart-data');
-    Route::get('/getJobApplicants', [SmartDataController::class, 'getJobApplicants'])->name('getJobApplicants');
-    Route::get('/jobApplicant-details/{id}', [SmartDataController::class, 'jobApplicantDetails'])->name('jobApplicant-details');
-    Route::get('/jobApplicant-evaluation/{id}', [SmartDataController::class, 'jobApplicantEvaluation'])->name('jobApplicant-evaluation');
+    Route::group(['middleware' => ['permission:smart_data']], function () {
+        Route::get('/smart-data', [SmartDataController::class, 'smartData'])->name('smart-data');
+        Route::get('/getJobApplicants', [SmartDataController::class, 'getJobApplicants'])->name('getJobApplicants');
+        Route::get('/jobApplicant-details/{id}', [SmartDataController::class, 'jobApplicantDetails'])->name('jobApplicant-details');
+        Route::get('/jobApplicant-evaluation/{id}', [SmartDataController::class, 'jobApplicantEvaluation'])->name('jobApplicant-evaluation');
+        
+        Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
+        Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
+    });
     
     Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
     Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');

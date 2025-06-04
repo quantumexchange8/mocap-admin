@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -144,6 +145,9 @@ class AuthEmployeeController extends Controller
 
     public function deleteEmployee(Request $request)
     {
+        $auth = Auth::user();
+
+
         if ($request->reason_deletion) {
             if ($request->reason_deletion !== 'duplicate_entry') {
                 $validated = $request->validate([
@@ -187,6 +191,7 @@ class AuthEmployeeController extends Controller
             'positive_attidude' => $request->positive_attidude ?? null,
             'overall_rating' => $request->overall_rating ?? null,
             'overall_remark' => $request->remarks ?? null,
+            'handle_by' => $auth->id,
         ]);
 
 

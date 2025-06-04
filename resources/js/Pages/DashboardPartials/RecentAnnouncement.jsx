@@ -49,7 +49,7 @@ export default function RecentAnnouncement() {
         >
             <div className="flex items-center justify-between">
                 <div className="text-gray-950 text-base font-semibold">Daily Attendance</div>
-                <Button size="sm" variant="text" iconOnly>
+                <Button size="sm" variant="text" iconOnly onClick={() => window.location.href = '/announcement'}>
                     <ArrowRight className='text-gray-950' />
                 </Button>
             </div>

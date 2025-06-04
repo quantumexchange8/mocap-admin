@@ -71,7 +71,7 @@ export default function Dashboard() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2 , duration: 0.5 }}
+                            transition={{ delay: 0.2 , duration: 0.4 }}
                             className='p-5 flex flex-col gap-3 bg-[#ffffff26] w-full'
                         >
                             <div className='flex'>
@@ -115,7 +115,7 @@ export default function Dashboard() {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2 , duration: 0.5 }}
+                            transition={{ delay: 0.2 , duration: 0.6 }}
                             className='p-5 flex flex-col gap-3 bg-[#ffffff26] w-full'
                         >
                             <div className='flex'>

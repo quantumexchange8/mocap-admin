@@ -1,0 +1,792 @@
+import Button from "@/Components/Button";
+import { Announcement, CalendarPlusIcon, DeleteIcon, GripVerticalIcon, PaperClipIcon, PinIcon, PlusIcon, SendIcon, ThumbnailIcon, UploadIcon, XIcon } from "@/Components/Icon/Outline";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import Pin from "@/Components/Pin/Pin1";
+import TextInput from "@/Components/TextInput";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, useForm } from "@inertiajs/react";
+import { Breadcrumb, Checkbox, Progress, Segmented, Switch, TimePicker, TreeSelect, Upload } from "antd";
+import ImgCrop from "antd-img-crop";
+import { Calendar } from "primereact/calendar";
+import { Editor } from "primereact/editor";
+import { InputNumber } from "primereact/inputnumber";
+import React, { useEffect, useState } from "react";
+import { ReactSortable } from "react-sortablejs";
+import dayjs from 'dayjs';
+import toast from "react-hot-toast";
+
+export default function CreateAnnouncement() {
+
+    const [fileList, setFileList] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [progressPercent, setProgressPercent] = useState(0);
+    const [getEmployee, setGetEmployee] = useState([]);
+    const { Dragger } = Upload;
+    const [treeLine, setTreeLine] = useState(true);
+    const [scheduleDialog, setScheduleDialog] = useState(false);
+    
+    const fetchEmployee = async () => {
+        setIsLoading(true);
+        
+        try {
+            
+            const response = await axios.get('/getEmployeeTree');
+            setGetEmployee(response.data);
+
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchEmployee();
+    }, []);
+
+    const { data, setData, post, processing, errors, isDirty, reset } = useForm({
+        recipient: [],
+        subject: '',
+        content_text: '',
+        pin: false,
+        pin_type: '',
+        thumbnail: null,
+        attachment: null,
+        poll_question: '',
+        option: [
+            { id: Date.now().toString() , option_name: '', order_no: 1 },
+        ],
+        duration_type: 'set_end_date',
+        end_date: null,
+        length_day: '',
+        length_hour: '',
+        length_minute: '',
+        schedule_date: null,
+        schedule_time: null,
+    });
+
+    const pinOptions = [
+        { id: 'pin1', title1: 'important', title2: 'announcement', value: '1' },
+        { id: 'pin2', title1: 'important', title2: 'action needed', value: '2' },
+        { id: 'pin3', title1: 'excited', title2: 'event ahead!', value: '3' },
+        { id: 'pin4', title1: 'SEASON’S', title2: 'greetings', value: '4' },
+        { id: 'pin5', title1: 'LATEST', title2: 'COMPANY NEWS', value: '5' },
+        { id: 'pin6', title1: 'QUICK', title2: 'REMINDER', value: '6' },
+    ];
+
+    const handleSelect = (id) => {
+        setData('pin_type', id === data.pin_type ? '' : id); // deselect on second click
+    };
+
+    const onChange = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+        setIsLoading(true);
+        setProgressPercent(0);
+
+        // Set the original/cropped file to form data
+        const interval = setInterval(() => {
+            setProgressPercent(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+
+                    if (newFileList.length > 0) {
+                        const file = newFileList[0].originFileObj;
+                        setData('thumbnail', file);
+                        setIsLoading(false);
+                    } else {
+                        setData('thumbnail', null);
+                        setIsLoading(false);
+                    }
+                    setIsLoading(false);
+                    return 100;
+                }
+                return prev + 5; // Simulate loading every 100ms
+            })
+        , 100});
+    };
+
+    const removeThumbnail = () => {
+        setIsLoading(true);
+        setProgressPercent(0);
+
+        // Simulate a delay of 2 seconds
+        const interval = setInterval(() => {
+            setProgressPercent(prev => {
+                if (prev >= 100) {
+                    clearInterval(interval);
+                    setData('thumbnail', null);
+                    setFileList([]);
+                    setIsLoading(false);
+                    return 100;
+                }
+                return prev + 5; // Increase by 5% every 100ms → 2 seconds total
+            });
+        }, 100);
+    }
+
+    const props = {
+        name: 'file',
+        multiple: true,
+        accept: '.pdf,.jpg,.jpeg,.png',
+        showUploadList: false,
+        beforeUpload: () => false, // prevent auto upload
+        onChange({ fileList }) {
+            // Extract original file objects
+            const files = fileList.map(file => file.originFileObj);
+            setData('attachment', files); // set array of files to form data
+        },
+    };
+
+    const removeFile = (indexToRemove) => {
+        setData(prev => ({
+            ...prev,
+            attachment: prev.attachment.filter((_, index) => index !== indexToRemove),
+        }));
+    };
+
+    const attachmentList = () => {
+
+    }
+
+    const renderHeader  = () =>{
+        return (
+            <>
+                <span className="ql-formats">
+                    <button className="ql-bold" />
+                    <button className="ql-italic" />
+                    <button className="ql-underline" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-list" value="ordered" />
+                    <button className="ql-list" value="bullet" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-align" value="" />
+                    <button className="ql-align" value="center" />
+                    <button className="ql-align" value="right" />
+                </span>
+            </>
+        )
+    }
+
+    const header = renderHeader();
+
+    // Poll
+    const handleAdd = () => {
+        const newId = (Date.now()).toString(); // generate unique id
+        const newPosition = { id: newId, option_name: '', order_no: data.option.length + 1 };
+        setData(prev => ({
+            ...prev,
+            option: [...prev.option, newPosition],
+        }));
+    };
+
+    const handleChange = (index, value) => {
+        const newPositions = [...data.option];
+        newPositions[index].option_name = value;
+        setData(prev => ({
+          ...prev,
+          option: newPositions,
+        }));
+    };
+
+    const handleRemove = (id) => {
+        const newPositions = data.option
+          .filter(item => item.id !== id)
+          .map((item, idx) => ({ ...item, order_no: idx + 1 }));
+        setData(prev => ({
+          ...prev,
+          option: newPositions,
+        }));
+    };
+
+    const handleSort = (order) => {
+        const newPositions = order.map((id, index) => {
+            const item = data.option.find(p => p.id === id);
+            return {
+                ...item,
+                order_no: index + 1,
+            };
+        });
+        setData(prev => ({
+            ...prev,
+            option: newPositions,
+        }));
+    };
+
+    const openScheduleDialog = () =>  {
+        setScheduleDialog(true);
+    }
+    const closeScheduleDialog = () =>  {
+        setScheduleDialog(false);
+        setData('schedule_date', null);
+        setData('schedule_time', null);
+    }
+
+    const confirmSchedule = () => {
+        setScheduleDialog(false);
+
+        toast.success('Announcement scheduled successfully!', {
+            title: 'Announcement scheduled successfully!',
+            duration: 3000,
+            variant: 'variant1',
+        });
+    }
+
+    const saveDraft = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        post('/store-announcement-draft', {
+            onSuccess: () => {
+                toast.success('Draft saved successfully!', {
+                    title: 'Draft saved successfully!',
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+                window.location.href = '/announcement';
+                reset();
+                setIsLoading(false);
+            },
+            onError: (errors) => {
+                toast.error('Failed to save draft. Please try again.', {
+                    title: 'Error',
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+            }
+        })
+
+    }
+
+    return (
+        <AuthenticatedLayout header="Announcement" >
+            <Head title="New Announcement" />
+
+            <div className="flex flex-col">
+                <div className="w-full sticky top-[55px] bg-white z-30 py-2 px-5 flex justify-between items-center border-b border-gray-200">
+                    <Breadcrumb 
+                        items={[
+                            {
+                                href: '/department',
+                                title: (
+                                    <div className="flex items-center gap-2">
+                                        <Announcement />
+                                        <span>Announcement</span>
+                                    </div>
+                                ),
+                            },
+                            {
+                                title: (
+                                    <span className="text-gray-950 text-sm font-semibold">New Announcement</span>
+                                )
+                            }
+                        ]}
+                    />
+                    <div className="flex items-center gap-3">
+                        <Button variant="outlined" size="sm" className='flex items-center gap-2' >
+                            <span>Preview</span>
+                        </Button>
+                        <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={saveDraft} >
+                            <span>Save as Draft</span>
+                        </Button>
+                        <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={openScheduleDialog} >
+                            <CalendarPlusIcon />
+                            <span>Schedule</span>
+                        </Button>
+                        <Button size="sm" className='flex items-center gap-2' >
+                            <span>Publish</span>
+                            <SendIcon />
+                        </Button>
+                    </div>
+                </div>
+
+                <div className="p-5 w-full flex justify-center">
+                    <div className="max-w-[728px] w-full flex flex-col gap-8">
+                        {/* Recipient */}
+                        <div className="flex flex-col gap-2">
+                            <InputLabel value='Recipient' />
+                            <TreeSelect
+                                treeData={getEmployee}
+                                value={data.recipient}
+                                onChange={(value) => setData('recipient', value)}
+                                treeCheckable={true}
+                                treeLine={treeLine}
+                                showCheckedStrategy={TreeSelect.SHOW_CHILD}
+                                placeholder="Select recipients"
+                                allowClear
+                                multiple
+                                showSearch
+                                className="w-full custom-tree-select"
+                                dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                                treeDefaultExpandAll
+                            />
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex flex-col gap-2">
+                            <div className="flex flex-col gap-2">
+                                <InputLabel value='Content' />
+                                <TextInput 
+                                    id="subject"
+                                    type="text"
+                                    name="subject"
+                                    value={data.subject}
+                                    className="w-full"
+                                    placeholder="Subject here"
+                                    isFocused={false}
+                                    onChange={(e) => setData('subject', e.target.value)}
+                                    hasError={!!errors.subject}
+                                />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Editor 
+                                    value={data.content_text} 
+                                    onTextChange={(e) => setData('content_text', e.htmlValue)} 
+                                    style={{ height: '280px' }}
+                                    headerTemplate={header}
+                                />
+                            </div>
+                        </div>
+
+                        {/* Pin */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <PinIcon />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Pin Announcement</div>
+                                    <div className="text-gray-500 text-xs">Pin this announcement to the employee dashboard for increased visibility.</div>
+                                </div>
+                                <div className="max-w-[35px] w-full">
+                                    <Switch 
+                                        checked={data.pin}
+                                        onChange={(checked) => setData('pin', checked)}
+                                    />
+                                </div>
+                            </div>
+                            {
+                                data.pin && (
+                                    <div className="py-8 px-4 flex flex-col items-center gap-5 border-t border-gray-300">
+                                        <div className="text-gray-500 text-xs w-full text-center">Select the preset banner to display on the employee dashboard.</div>
+                                        <div className="w-full overflow-x-auto scrollbar-hide">
+                                            <div className="flex items-center gap-5 flex-nowrap min-w-max">
+                                                {
+                                                    pinOptions.map(pin => (
+                                                        <Pin
+                                                            key={pin.id}
+                                                            id={pin.id}
+                                                            title1={pin.title1}
+                                                            title2={pin.title2}
+                                                            value={pin.value}
+                                                            selected={data.pin_type === pin.id}
+                                                            onSelect={handleSelect}
+                                                        />
+                                                    ))
+                                                }
+                                            </div>
+                                        </div>
+                                        <div className="flex items-center gap-3 w-full">
+                                            <div className="w-full h-[1px] bg-gray-200"></div>
+                                            <div className="text-gray-500 text-xs min-w-[440px]">or upload image with a max size of 5 MB. Recommended dimensions: 1280*720 px.</div>
+                                            <div className="w-full h-[1px] bg-gray-200"></div>
+                                        </div>
+                                        <div>
+                                            <Button className="flex items-center gap-2" size="sm">
+                                                <PlusIcon />
+                                                <span>Choose</span>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )
+                            }
+                        </div>
+
+                        {/* Thumbnail */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <ThumbnailIcon />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Thumbnail</div>
+                                    <div className="text-gray-500 text-xs">Upload an image to represent your announcement.</div>
+                                </div>
+                            </div>
+                            <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
+                                <div className="text-gray-500 text-xs">Upload an image that fits the 9:16 aspect ratio for best display results. Once selected, use the crop tool to adjust the image to the correct dimensions.</div>
+                                <div className="w-full">
+                                    {
+                                        data.thumbnail ? (
+                                            <div className="flex flex-col gap-5">
+                                                <div className="flex">
+                                                    <Button variant="outlined-danger" size="sm" onClick={removeThumbnail} disabled={isLoading} >
+                                                        Remove
+                                                    </Button>
+                                                </div>
+                                                {
+                                                    isLoading ? (
+                                                        <Progress percent={progressPercent} status="active" />
+                                                    ) : (
+                                                        <div className="flex flex-col gap-2">
+                                                            {/* preview image */}
+                                                            <div className="max-w-[480px] max-h-[270px]">
+                                                                <img
+                                                                    src={fileList[0]?.thumbUrl || URL.createObjectURL(data.thumbnail)}
+                                                                    alt="Thumbnail Preview"
+                                                                />
+                                                            </div>
+                                                            {/* file name */}
+                                                            <div className="text-sm text-gray-700">
+                                                                {fileList[0]?.name}
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                                
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <ImgCrop aspect={16 / 9} quality={1}>
+                                                    <Upload
+                                                        fileList={fileList}
+                                                        onChange={onChange}
+                                                        beforeUpload={() => false} // Prevent auto upload
+                                                        maxCount={1}
+                                                        accept="image/*"
+                                                    >
+                                                        <Button size="sm" className="flex items-center gap-2" disabled={isLoading}>
+                                                            Choose Image
+                                                        </Button>
+                                                    </Upload>
+                                                </ImgCrop>
+
+                                                {
+                                                    isLoading && (
+                                                        <Progress percent={progressPercent} status="active" />
+                                                    )
+                                                }
+                                            </div>
+                                        )
+                                    }
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        {/* Attachment */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <PaperClipIcon />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Attachment</div>
+                                    <div className="text-gray-500 text-xs">Upload supporting files that employees can download and reference.</div>
+                                </div>
+                            </div>
+                            <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
+                                <Dragger {...props} listType="picture" >
+                                    {
+                                        data.attachment && data.attachment.length > 0 ? (
+                                            <div className="grid grid-cols-2 gap-3">
+                                                {
+                                                    data.attachment.map((file, index) => (
+                                                        <div key={index} className="flex items-center justify-between gap-3 border border-dashed border-gray-200 rounded ">
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="max-w-16 h-16">
+                                                                    {
+                                                                        file.type?.startsWith("image/") ? (
+                                                                            <img
+                                                                                src={URL.createObjectURL(file)}
+                                                                                alt="Preview"
+                                                                                className="w-full h-full object-cover rounded"
+                                                                            />
+                                                                        ) : (
+                                                                            <div className="p-3 w-full h-full flex items-center justify-center bg-gray-100 text-xxs text-gray-950">
+                                                                                <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                                    PDF
+                                                                                </div>
+                                                                            </div>
+                                                                        )
+                                                                    }
+                                                                </div>
+                                                                <div className="flex flex-col items-start gap-1">
+                                                                    <div className="text-gray-950 text-sm font-medium">{file.name}</div>
+                                                                    <div className="text-gray-500 text-xs">{file.size / 1000} KB</div>
+                                                                </div>
+                                                            </div>
+                                                            <div>
+                                                                <Button variant="text" size="sm" iconOnly 
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        removeFile(index);
+                                                                    }}
+                                                                >
+                                                                    <DeleteIcon />
+                                                                </Button>
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </div>
+                                        ) : (
+                                            <div className="h-20 flex flex-col gap-1 items-center justify-center">
+                                                <span className="text-sm text-gray-500">Click or drag file to this area to upload</span>
+                                                <span className="text-gray-400 text-xs">Maximum file size is 5 MB. Supported file types are .pdf, .jpg and .png.</span>
+                                            </div>
+                                        )
+                                    }
+                                </Dragger>
+                            </div>
+                        </div>
+
+                        {/* Poll */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <PaperClipIcon />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Poll</div>
+                                    <div className="text-gray-500 text-xs">Create a poll to gather feedback or votes from employees.</div>
+                                </div>
+                            </div>
+                            <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
+                                <div>
+                                    <TextInput 
+                                        id="poll_question"
+                                        type="text"
+                                        name="poll_question"
+                                        value={data.poll_question || ''}
+                                        className="w-full"
+                                        placeholder="Type your question..."
+                                        isFocused={false}
+                                        onChange={(e) => setData('poll_question', e.target.value)}
+                                        hasError={!!errors.poll_question}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <InputLabel value='Options' />
+                                    <div className="flex flex-col gap-4">
+                                        <ReactSortable
+                                            list={data.option}
+                                            setList={(newList) => {
+                                                // sort based on dragged list
+                                                handleSort(newList.map(item => item.id));
+                                            }}
+                                            animation={200}
+                                            handle=".drag-handle"
+                                            className="flex flex-col gap-4"
+                                        >
+                                            {
+                                                data.option.map((pos, index) => (
+                                                    <div key={pos.id} data-id={pos.id} className="flex items-center gap-3">
+                                                        <div className="drag-handle max-w-[38px] max-h-[38px] w-full h-full flex justify-center items-center cursor-move">
+                                                            <GripVerticalIcon />
+                                                        </div>
+                                                        <div className="w-full">
+                                                            <TextInput
+                                                                className="w-full"
+                                                                type="text"
+                                                                value={pos.option_name}
+                                                                onChange={(e) => handleChange(index, e.target.value)}
+                                                                placeholder="Enter option"
+                                                            />
+                                                        </div>
+                                                        <div className="w-full max-w-[38px] h-full max-h-[38px] flex items-center justify-center cursor-pointer hover:bg-gray-50 rounded-sm" onClick={() => handleRemove(pos.id)}>
+                                                            <XIcon />
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </ReactSortable>
+
+                                        {/* Add option */}
+                                        <div className="">
+                                            <Button 
+                                                variant="text" 
+                                                size="sm" 
+                                                className="flex items-center gap-2"
+                                                onClick={handleAdd}
+                                            >
+                                                <PlusIcon />
+                                                <span>Add</span>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <InputLabel value='Duration' />
+                                    <div>
+                                        <Segmented 
+                                            options={[
+                                                { label: 'Set End Date', value: 'set_end_date' },
+                                                { label: 'Set Length', value: 'set_length' },
+                                            ]}
+                                            value={data.duration_type}
+                                            onChange={(value) => setData('duration_type', value)}
+                                            className="custom-segmented w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        {
+                                            data.duration_type === 'set_end_date' && (
+                                                <Calendar 
+                                                    value={data.end_date}
+                                                    onChange={(e) => setData('end_date', e.value)} 
+                                                    className="w-full text-sm"
+                                                    placeholder="dd/mm/yyyy"
+                                                    invalid={!!errors.end_date}
+                                                    pt={{
+                                                        input: {
+                                                            className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                                        },
+                                                        panel: {
+                                                            className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                                        },
+                                                        header: {
+                                                            className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                                        },
+                                                        table: {
+                                                            className: 'w-full'
+                                                        },
+                                                        day: {
+                                                            className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                                        },
+                                                        daySelected: {
+                                                            className: 'bg-gray-950 text-white font-bold rounded-full'
+                                                        },
+                                                        dayToday: {
+                                                            className: 'border border-gray-950'
+                                                        },
+                                                        month: {
+                                                            className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                        },
+                                                        year: {
+                                                            className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                        },
+                                                        monthPicker: {
+                                                            className: 'py-1 px-3'
+                                                        }
+                                                    }}
+                                                />
+                                            )
+                                        }
+                                        {
+                                            data.duration_type === 'set_length' && (
+                                               <div className="w-full grid grid-cols-3 gap-5">
+                                                    <div>
+                                                        <InputNumber 
+                                                            inputId="days"
+                                                            value={data.length_day || 0} 
+                                                            onValueChange={(e) => setData('length_day', e.value)} 
+                                                            suffix=" day(s)" 
+                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <InputNumber 
+                                                            inputId="hours"
+                                                            value={data.length_hour || 0} 
+                                                            onValueChange={(e) => setData('length_hour', e.value)} 
+                                                            suffix=" hour(s)" 
+                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                            max={24}
+                                                        />
+                                                    </div>
+                                                    <div>
+                                                        <InputNumber 
+                                                            inputId="minutes"
+                                                            value={data.length_minute || 0} 
+                                                            onValueChange={(e) => setData('length_minute', e.value)} 
+                                                            suffix=" minute(s)" 
+                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                            max={24}
+                                                        />
+                                                    </div>
+                                               </div>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* Schedule Dialog */}
+            <Modal
+                show={scheduleDialog}
+                maxWidth='md'
+                title='Schedule Announcement'
+                onClose={closeScheduleDialog}
+                footer={
+                    <div className="flex justify-end gap-4 w-full">
+                        <Button size="sm" variant="outlined" onClick={closeScheduleDialog}>Cancel</Button>
+                        <Button size="sm" onClick={confirmSchedule} >Confirm</Button>
+                    </div>
+                }
+            >
+                <div className="py-3 px-6 flex flex-col gap-8">
+                    <div className="flex flex-col gap-2">
+                        <InputLabel value='Select the time to publish' />
+                        <div className="grid grid-cols-2 gap-5">
+                            <Calendar 
+                                value={data.schedule_date}
+                                onChange={(e) => setData('schedule_date', e.value)} 
+                                className="w-full text-sm"
+                                placeholder="dd/mm/yyyy"
+                                invalid={!!errors.schedule_date}
+                                pt={{
+                                    input: {
+                                        className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                    },
+                                    panel: {
+                                        className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                    },
+                                    header: {
+                                        className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                    },
+                                    table: {
+                                        className: 'w-full'
+                                    },
+                                    day: {
+                                        className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                    },
+                                    daySelected: {
+                                        className: 'bg-gray-950 text-white font-bold rounded-full'
+                                    },
+                                    dayToday: {
+                                        className: 'border border-gray-950'
+                                    },
+                                    month: {
+                                        className: 'p-2 hover:bg-gray-100 rounded-md'
+                                    },
+                                    year: {
+                                        className: 'p-2 hover:bg-gray-100 rounded-md'
+                                    },
+                                    monthPicker: {
+                                        className: 'py-1 px-3'
+                                    }
+                                }}
+                            />
+                            <TimePicker 
+                                 format="HH:mm"
+                                 value={data.schedule_time ? dayjs(data.schedule_time, 'HH:mm') : null}
+                                 onChange={(time, timeString) => setData('schedule_time', timeString)}
+                                 allowClear
+                            />
+                        </div>
+                    </div>
+                    <div className="text-gray-700 text-sm">The announcement will be published at  {data.schedule_date ? dayjs(data.schedule_date).format('YYYY-MM-DD') : '-'} {data.schedule_time ? data.schedule_time : '-'}</div>
+                </div>
+            </Modal>
+
+        </AuthenticatedLayout>
+    )
+}

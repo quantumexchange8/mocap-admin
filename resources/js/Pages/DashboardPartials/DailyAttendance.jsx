@@ -33,8 +33,6 @@ export default function DailyAttendance() {
     const [getTotalAbsent, setGetTotalAbsent] = useState();
     const [getTotalOnLeave, setGetTotalOnLeave] = useState();
 
-
-
     return (
         <motion.div
             initial="hidden"

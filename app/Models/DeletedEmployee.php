@@ -26,6 +26,7 @@ class DeletedEmployee extends Model
         'positive_attidude',
         'overall_rating',
         'overall_remark',
+        'handle_by',
     ];
 
     protected $casts = [

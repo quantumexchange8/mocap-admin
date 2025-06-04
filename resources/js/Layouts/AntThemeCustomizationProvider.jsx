@@ -77,8 +77,11 @@ function AntThemeCustomizationProvider({ children }) {
                     DatePicker: {
                         lineHeight: '20px',
                         cellWidth: '36px',
-                        cellHoverBg: '#F3F4F6'
-                    }
+                        cellHoverBg: '#F3F4F6',
+                    },
+                    Progress: {
+                        defaultColor: '#030712'
+                    },
                 }
             }}
         >

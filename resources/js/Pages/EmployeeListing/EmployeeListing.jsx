@@ -84,7 +84,7 @@ export default function EmployeeListing() {
                             {
                                 getEmployeeListing.length > 0 ? (
                                     <div className="flex flex-col gap-5 p-5">
-                                        <div className="flex justify-between">
+                                        <div className="flex justify-between items-center">
                                             <div>
                                                 <Segmented
                                                     value={viewType}

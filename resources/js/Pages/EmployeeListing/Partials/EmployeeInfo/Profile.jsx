@@ -370,30 +370,18 @@ export default function Profile({ user_details, id }) {
                 </div>
             </motion.div>
 
-            {
-                isPersonalInfoOpen ? (
-                    <div>
-                        <PersonalInfo 
-                            isPersonalInfoOpen={isPersonalInfoOpen}
-                            setIsPersonalInfoOpen={setIsPersonalInfoOpen}
-                            closePersonalInfo={closePersonalInfo}
-                            user_details={user_details}
-                        />
-                    </div>
-                ) : null
-            }
-            {
-                isBankInfoOpen ? (
-                    <div>
-                        <BankInfo
-                            isBankInfoOpen={isBankInfoOpen}
-                            setIsBankInfoOpen={setIsBankInfoOpen}
-                            closeBankInfo={closeBankInfo}
-                            user_details={user_details}
-                        />
-                    </div>
-                ) : null
-            }
+            <PersonalInfo 
+                isPersonalInfoOpen={isPersonalInfoOpen}
+                setIsPersonalInfoOpen={setIsPersonalInfoOpen}
+                closePersonalInfo={closePersonalInfo}
+                user_details={user_details}
+            />
+            <BankInfo
+                isBankInfoOpen={isBankInfoOpen}
+                setIsBankInfoOpen={setIsBankInfoOpen}
+                closeBankInfo={closeBankInfo}
+                user_details={user_details}
+            />
             {
                 isBeneficiaryInfoOpen ? (
                     <div>
