@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmployeeAccount;
 use App\Models\EvaluationForm;
 use App\Models\JobApplication;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -151,4 +153,39 @@ class SmartDataController extends Controller
 
         return redirect()->back();
     }
+
+    public function getEmployeeInfo (Request $request)
+    {
+        $employees = User::where('role', 'employee')->with(['department'])->get();
+
+        return response()->json($employees);
+
+    }
+
+    public function employeeInfo($id) 
+    {
+        $employee = User::with([
+            'employeebank',
+            'emergencyinfo',
+            'transportinfo',
+            'medicalinfo',
+            'beneficiaryinfo',
+            'department',
+            'deletedemployee.handleByUser'
+        ])->find($id);
+
+        $employee->digital_signature = $employee->getFirstMediaUrl('job_signature');
+
+        // Format deletedemployee created_at if exists
+        if ($employee->deletedemployee) {
+            $employee->deletedemployee->formatted_created_at = optional($employee->deletedemployee->created_at)
+                ? $employee->deletedemployee->created_at->format('d/m/Y  H:i')
+                : null;
+        }
+
+        return Inertia::render('SmartData/EmployeeDetails', [
+            'employee' => $employee,
+        ]);
+    }
+
 }

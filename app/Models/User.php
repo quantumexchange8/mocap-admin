@@ -99,6 +99,12 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasOne(JobApplication::class, 'id', 'job_id');
     }
-
-    
+    public function medicalinfo()
+    {
+        return $this->hasOne(MedicalInfo::class, 'user_id', 'id');
+    }
+    public function deletedemployee()
+    {
+        return $this->hasOne(DeletedEmployee::class, 'user_id', 'id');
+    }
 }

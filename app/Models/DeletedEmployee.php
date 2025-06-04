@@ -32,4 +32,9 @@ class DeletedEmployee extends Model
         'negative_attidude' => 'array',
         'positive_attidude' => 'array',
     ];
+    
+    public function handleByUser()
+{
+    return $this->belongsTo(User::class, 'handle_by');
+}
 }

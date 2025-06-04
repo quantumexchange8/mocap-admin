@@ -365,9 +365,9 @@ const BellBadge = () => {
     );
 }
 
-const LogoIcon = () => {
+const LogoIcon = (className) => {
     return (
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className={className} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_2342_14201)">
             <rect width="32" height="32" rx="16" fill="#030712"/>
             <circle cx="16.003" cy="16.003" r="12.4444" fill="white"/>
@@ -941,6 +941,16 @@ const TagSuspendedIcon = ({className}) => {
     );
 }
 
+const TagDeletedIcon = ({className}) => {
+    return (
+        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.5 11C9.26143 11 11.5 8.76143 11.5 6C11.5 3.23857 9.26143 1 6.5 1C3.73857 1 1.5 3.23857 1.5 6C1.5 8.76143 3.73857 11 6.5 11Z" fill="#FF0000" stroke="#FF0000"/>
+            <path d="M7.91436 4.58569L5.08594 7.41412" stroke="white" strokeLinecap="square"/>
+            <path d="M5.08594 4.58569L7.91436 7.41412" stroke="white" strokeLinecap="square"/>
+        </svg>
+    );
+}
+
 const EditIcon = ({className}) => {
     return (
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -1196,6 +1206,7 @@ export {
     TagActiveIcon,
     TagInvitedIcon,
     TagSuspendedIcon,
+    TagDeletedIcon,
     EditIcon,
     PhoneIcon,
     BirthdayIcon,
