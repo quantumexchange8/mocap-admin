@@ -1,11 +1,11 @@
 import Button from "@/Components/Button";
-import { Announcement, CalendarPlusIcon, DeleteIcon, GripVerticalIcon, PaperClipIcon, PinIcon, PlusIcon, SendIcon, ThumbnailIcon, UploadIcon, XIcon } from "@/Components/Icon/Outline";
+import { Announcement, CalendarPlusIcon, CommentIcon, DeleteIcon, GripVerticalIcon, LikeIcon, LogoIcon, PaperClipIcon, PinIcon, PlusIcon, SendIcon, ThumbnailIcon, UploadIcon, XIcon } from "@/Components/Icon/Outline";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
 import Pin from "@/Components/Pin/Pin1";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, usePage } from "@inertiajs/react";
 import { Breadcrumb, Checkbox, Progress, Segmented, Switch, TimePicker, TreeSelect, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
 import { Calendar } from "primereact/calendar";
@@ -15,17 +15,26 @@ import React, { useEffect, useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import dayjs from 'dayjs';
 import toast from "react-hot-toast";
+import InputError from "@/Components/InputError";
+import ConfirmDialog from "@/Components/ConfirmDialog";
+import PublishedIllus from "@/Components/Icon/Illustration/Publish";
 
 export default function CreateAnnouncement() {
 
+    const user = usePage().props.auth?.user;
+
     const [fileList, setFileList] = useState([]);
+    const [fileList2, setFileList2] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [progressPercent, setProgressPercent] = useState(0);
     const [getEmployee, setGetEmployee] = useState([]);
     const { Dragger } = Upload;
     const [treeLine, setTreeLine] = useState(true);
+    const [previewDialog, setPreviewDialog] = useState(false);
     const [scheduleDialog, setScheduleDialog] = useState(false);
-    
+    const [confirmPublish, setConfirmPublish] = useState(false);
+    let minDate = new Date();
+
     const fetchEmployee = async () => {
         setIsLoading(true);
         
@@ -49,9 +58,12 @@ export default function CreateAnnouncement() {
         recipient: [],
         subject: '',
         content_text: '',
-        pin: false,
+        pin_bool: false,
+        like: false,
+        commend: false,
         pin_type: '',
         thumbnail: null,
+        thumbnailPreview: null,
         attachment: null,
         poll_question: '',
         option: [
@@ -66,6 +78,31 @@ export default function CreateAnnouncement() {
         schedule_time: null,
     });
 
+    const onRecipientChange = (value, label, extra) => {
+        // Check if "all" is selected
+        const isSelectingAll = value.includes('all');
+    
+        // Get all department-related values to exclude
+        const allDeptValues = getEmployee
+            .find(item => item.value === 'all')?.children
+            ?.flatMap(dept => [
+                dept.value,
+                ...(dept.children?.map(emp => emp.value) || [])
+            ]) || [];
+    
+        if (isSelectingAll) {
+            // Filter out department-related values and remove any duplicate 'all'
+            const others = value.filter(v => v !== 'all' && !allDeptValues.includes(v));
+            const newValues = ['all', ...others.filter((v, i, arr) => arr.indexOf(v) === i)];
+            setData('recipient', newValues);
+        } else {
+            // If "all" was selected before but not now, remove it
+            const filtered = value.filter(v => v !== 'all');
+            setData('recipient', filtered);
+        }
+    };
+    
+
     const pinOptions = [
         { id: 'pin1', title1: 'important', title2: 'announcement', value: '1' },
         { id: 'pin2', title1: 'important', title2: 'action needed', value: '2' },
@@ -79,32 +116,39 @@ export default function CreateAnnouncement() {
         setData('pin_type', id === data.pin_type ? '' : id); // deselect on second click
     };
 
-    const onChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
-        setIsLoading(true);
-        setProgressPercent(0);
-
-        // Set the original/cropped file to form data
-        const interval = setInterval(() => {
-            setProgressPercent(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-
-                    if (newFileList.length > 0) {
-                        const file = newFileList[0].originFileObj;
-                        setData('thumbnail', file);
-                        setIsLoading(false);
-                    } else {
-                        setData('thumbnail', null);
-                        setIsLoading(false);
-                    }
-                    setIsLoading(false);
-                    return 100;
-                }
-                return prev + 5; // Simulate loading every 100ms
-            })
-        , 100});
+    const beforeUpload = (file) => {
+        const isImage = file.type.startsWith('image/');
+        if (!isImage) {
+          message.error('只能上传图片文件!');
+        }
+        return isImage;
     };
+
+    const onChangeCropImg = ({ fileList: newFileList }) => {
+        setFileList(newFileList);
+    };
+
+    const onCropComplete = async (file) => {
+        if (file) {
+          // 创建预览URL
+          const previewUrl = URL.createObjectURL(file);
+          
+          setData({
+            ...data,
+            thumbnail: file,
+            thumbnailPreview: previewUrl
+          });
+        }
+    };
+
+    React.useEffect(() => {
+        return () => {
+          if (data.thumbnailPreview) {
+            URL.revokeObjectURL(data.thumbnailPreview);
+          }
+        };
+    }, [data.thumbnailPreview]);
+    
 
     const removeThumbnail = () => {
         setIsLoading(true);
@@ -116,6 +160,7 @@ export default function CreateAnnouncement() {
                 if (prev >= 100) {
                     clearInterval(interval);
                     setData('thumbnail', null);
+                    setData('thumbnailPreview', null);
                     setFileList([]);
                     setIsLoading(false);
                     return 100;
@@ -132,10 +177,10 @@ export default function CreateAnnouncement() {
         showUploadList: false,
         beforeUpload: () => false, // prevent auto upload
         onChange({ fileList }) {
-            // Extract original file objects
             const files = fileList.map(file => file.originFileObj);
-            setData('attachment', files); // set array of files to form data
-        },
+            setData('attachment', files);
+            setFileList2(fileList); // keep Upload component in sync
+        }
     };
 
     const removeFile = (indexToRemove) => {
@@ -143,6 +188,7 @@ export default function CreateAnnouncement() {
             ...prev,
             attachment: prev.attachment.filter((_, index) => index !== indexToRemove),
         }));
+        setFileList2(prev => prev.filter((_, index) => index !== indexToRemove));
     };
 
     const attachmentList = () => {
@@ -250,6 +296,7 @@ export default function CreateAnnouncement() {
                 setIsLoading(false);
             },
             onError: (errors) => {
+                setIsLoading(false);
                 toast.error('Failed to save draft. Please try again.', {
                     title: 'Error',
                     duration: 3000,
@@ -257,7 +304,37 @@ export default function CreateAnnouncement() {
                 });
             }
         })
+    }
 
+    const openPreview = () => {
+        setPreviewDialog(true);
+    }
+    const closePreview = () => {
+        setPreviewDialog(false);
+    }
+
+    const openConfirmPublish = () => {
+        setConfirmPublish(true);
+    }
+    const closeConfirmPublish = () => {
+        setConfirmPublish(false);
+    }
+
+    const publish = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        post('/store-announcement-publish', {
+            onSuccess: () => {
+                toast.success('Announcement published successfully!', {
+                    title: 'Announcement published successfully!',
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+                reset();
+                setIsLoading(false);
+            }
+        })
     }
 
     return (
@@ -269,7 +346,7 @@ export default function CreateAnnouncement() {
                     <Breadcrumb 
                         items={[
                             {
-                                href: '/department',
+                                href: '/announcement',
                                 title: (
                                     <div className="flex items-center gap-2">
                                         <Announcement />
@@ -285,7 +362,7 @@ export default function CreateAnnouncement() {
                         ]}
                     />
                     <div className="flex items-center gap-3">
-                        <Button variant="outlined" size="sm" className='flex items-center gap-2' >
+                        <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={openPreview} >
                             <span>Preview</span>
                         </Button>
                         <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={saveDraft} >
@@ -295,7 +372,7 @@ export default function CreateAnnouncement() {
                             <CalendarPlusIcon />
                             <span>Schedule</span>
                         </Button>
-                        <Button size="sm" className='flex items-center gap-2' >
+                        <Button size="sm" className='flex items-center gap-2' onClick={openConfirmPublish} >
                             <span>Publish</span>
                             <SendIcon />
                         </Button>
@@ -310,10 +387,10 @@ export default function CreateAnnouncement() {
                             <TreeSelect
                                 treeData={getEmployee}
                                 value={data.recipient}
-                                onChange={(value) => setData('recipient', value)}
+                                onChange={onRecipientChange}
                                 treeCheckable={true}
                                 treeLine={treeLine}
-                                showCheckedStrategy={TreeSelect.SHOW_CHILD}
+                                showCheckedStrategy={TreeSelect.SHOW_PARENT}
                                 placeholder="Select recipients"
                                 allowClear
                                 multiple
@@ -321,7 +398,16 @@ export default function CreateAnnouncement() {
                                 className="w-full custom-tree-select"
                                 dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                                 treeDefaultExpandAll
+                                status={errors.recipient ? 'error' : ''}
                             />
+                            {
+                                errors.recipient ? (
+                                    <InputError message={errors.recipient} />
+                                ) : (
+                                    <span className="text-gray-500 text-xs">Only selected members will receive the announcement.</span>
+                                )
+                            }
+                            
                         </div>
 
                         {/* Content */}
@@ -347,6 +433,41 @@ export default function CreateAnnouncement() {
                                     style={{ height: '280px' }}
                                     headerTemplate={header}
                                 />
+                                <span>
+                                    <InputError message={errors.content_text} />
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Available for Like/Comment */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <LikeIcon className='w-4 h-4' />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Availability for Like</div>
+                                </div>
+                                <div className="max-w-[35px] w-full">
+                                    <Switch 
+                                        checked={data.like}
+                                        onChange={(checked) => setData('like', checked)}
+                                    />
+                                </div>
+                            </div>
+                            <div className="py-3 px-4 flex items-center gap-3 border-t border-gray-300">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <CommentIcon className='w-4 h-4' />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Availability for Comment</div>
+                                </div>
+                                <div className="max-w-[35px] w-full">
+                                    <Switch 
+                                        checked={data.commend}
+                                        onChange={(checked) => setData('commend', checked)}
+                                    />
+                                </div>
                             </div>
                         </div>
 
@@ -362,13 +483,13 @@ export default function CreateAnnouncement() {
                                 </div>
                                 <div className="max-w-[35px] w-full">
                                     <Switch 
-                                        checked={data.pin}
-                                        onChange={(checked) => setData('pin', checked)}
+                                        checked={data.pin_bool}
+                                        onChange={(checked) => setData('pin_bool', checked)}
                                     />
                                 </div>
                             </div>
                             {
-                                data.pin && (
+                                data.pin_bool && (
                                     <div className="py-8 px-4 flex flex-col items-center gap-5 border-t border-gray-300">
                                         <div className="text-gray-500 text-xs w-full text-center">Select the preset banner to display on the employee dashboard.</div>
                                         <div className="w-full overflow-x-auto scrollbar-hide">
@@ -399,6 +520,9 @@ export default function CreateAnnouncement() {
                                                 <span>Choose</span>
                                             </Button>
                                         </div>
+                                        <div className="text-left w-full">
+                                            <InputError message={errors.pin_type} />
+                                        </div>
                                     </div>
                                 )
                             }
@@ -419,7 +543,7 @@ export default function CreateAnnouncement() {
                                 <div className="text-gray-500 text-xs">Upload an image that fits the 9:16 aspect ratio for best display results. Once selected, use the crop tool to adjust the image to the correct dimensions.</div>
                                 <div className="w-full">
                                     {
-                                        data.thumbnail ? (
+                                        data.thumbnailPreview ? (
                                             <div className="flex flex-col gap-5">
                                                 <div className="flex">
                                                     <Button variant="outlined-danger" size="sm" onClick={removeThumbnail} disabled={isLoading} >
@@ -434,27 +558,26 @@ export default function CreateAnnouncement() {
                                                             {/* preview image */}
                                                             <div className="max-w-[480px] max-h-[270px]">
                                                                 <img
-                                                                    src={fileList[0]?.thumbUrl || URL.createObjectURL(data.thumbnail)}
+                                                                    src={data.thumbnailPreview}
                                                                     alt="Thumbnail Preview"
+                                                                    className="max-w-[480px] max-h-[270px]"
                                                                 />
                                                             </div>
                                                             {/* file name */}
                                                             <div className="text-sm text-gray-700">
-                                                                {fileList[0]?.name}
+                                                                {fileList[0]?.name || data.thumbnail.name}
                                                             </div>
                                                         </div>
                                                     )
                                                 }
-
-                                                
                                             </div>
                                         ) : (
                                             <div>
-                                                <ImgCrop aspect={16 / 9} quality={1}>
+                                                <ImgCrop modalTitle="Crop Image" aspect={16/9} quality={1} onModalOk={onCropComplete}>
                                                     <Upload
                                                         fileList={fileList}
-                                                        onChange={onChange}
-                                                        beforeUpload={() => false} // Prevent auto upload
+                                                        onChange={onChangeCropImg}
+                                                        beforeUpload={beforeUpload} // Prevent auto upload
                                                         maxCount={1}
                                                         accept="image/*"
                                                     >
@@ -473,7 +596,7 @@ export default function CreateAnnouncement() {
                                         )
                                     }
                                 </div>
-                                
+                                <InputError message={errors.thumbnail} />
                             </div>
                         </div>
 
@@ -489,7 +612,7 @@ export default function CreateAnnouncement() {
                                 </div>
                             </div>
                             <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
-                                <Dragger {...props} listType="picture" >
+                                <Dragger {...props} fileList={fileList2}  listType="picture" >
                                     {
                                         data.attachment && data.attachment.length > 0 ? (
                                             <div className="grid grid-cols-2 gap-3">
@@ -617,6 +740,8 @@ export default function CreateAnnouncement() {
                                                 <span>Add</span>
                                             </Button>
                                         </div>
+
+                                        <InputError message={errors["option.0.option_name"]} />
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
@@ -635,82 +760,94 @@ export default function CreateAnnouncement() {
                                     <div>
                                         {
                                             data.duration_type === 'set_end_date' && (
-                                                <Calendar 
-                                                    value={data.end_date}
-                                                    onChange={(e) => setData('end_date', e.value)} 
-                                                    className="w-full text-sm"
-                                                    placeholder="dd/mm/yyyy"
-                                                    invalid={!!errors.end_date}
-                                                    pt={{
-                                                        input: {
-                                                            className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
-                                                        },
-                                                        panel: {
-                                                            className: 'bg-white border border-gray-300 shadow-md rounded-md'
-                                                        },
-                                                        header: {
-                                                            className: 'bg-white text-gray-900 font-semibold px-4 py-3'
-                                                        },
-                                                        table: {
-                                                            className: 'w-full'
-                                                        },
-                                                        day: {
-                                                            className: 'w-10 h-10 text-center rounded-full transition-colors'
-                                                        },
-                                                        daySelected: {
-                                                            className: 'bg-gray-950 text-white font-bold rounded-full'
-                                                        },
-                                                        dayToday: {
-                                                            className: 'border border-gray-950'
-                                                        },
-                                                        month: {
-                                                            className: 'p-2 hover:bg-gray-100 rounded-md'
-                                                        },
-                                                        year: {
-                                                            className: 'p-2 hover:bg-gray-100 rounded-md'
-                                                        },
-                                                        monthPicker: {
-                                                            className: 'py-1 px-3'
-                                                        }
-                                                    }}
-                                                />
+                                                <>
+                                                    <Calendar 
+                                                        value={data.end_date}
+                                                        onChange={(e) => setData('end_date', e.value)} 
+                                                        className="w-full text-sm"
+                                                        placeholder="dd/mm/yyyy"
+                                                        invalid={!!errors.end_date}
+                                                        pt={{
+                                                            input: {
+                                                                className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                                            },
+                                                            panel: {
+                                                                className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                                            },
+                                                            header: {
+                                                                className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                                            },
+                                                            table: {
+                                                                className: 'w-full'
+                                                            },
+                                                            day: {
+                                                                className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                                            },
+                                                            daySelected: {
+                                                                className: 'bg-gray-950 text-white font-bold rounded-full'
+                                                            },
+                                                            dayToday: {
+                                                                className: 'border border-gray-950'
+                                                            },
+                                                            month: {
+                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                            },
+                                                            year: {
+                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                            },
+                                                            monthPicker: {
+                                                                className: 'py-1 px-3'
+                                                            }
+                                                        }}
+                                                    />
+                                                    <InputError message={errors.end_date} />
+                                                </>
                                             )
                                         }
                                         {
                                             data.duration_type === 'set_length' && (
-                                               <div className="w-full grid grid-cols-3 gap-5">
-                                                    <div>
-                                                        <InputNumber 
-                                                            inputId="days"
-                                                            value={data.length_day || 0} 
-                                                            onValueChange={(e) => setData('length_day', e.value)} 
-                                                            suffix=" day(s)" 
-                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                        />
+                                                <>
+                                                    <div className="w-full grid grid-cols-3 gap-5">
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="days"
+                                                                value={data.length_day || 0} 
+                                                                onValueChange={(e) => setData('length_day', e.value)} 
+                                                                suffix=" day(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="hours"
+                                                                value={data.length_hour || 0} 
+                                                                onValueChange={(e) => setData('length_hour', e.value)} 
+                                                                suffix=" hour(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                max={24}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="minutes"
+                                                                value={data.length_minute || 0} 
+                                                                onValueChange={(e) => setData('length_minute', e.value)} 
+                                                                suffix=" minute(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                max={24}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        <InputNumber 
-                                                            inputId="hours"
-                                                            value={data.length_hour || 0} 
-                                                            onValueChange={(e) => setData('length_hour', e.value)} 
-                                                            suffix=" hour(s)" 
-                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                            max={24}
-                                                        />
-                                                    </div>
-                                                    <div>
-                                                        <InputNumber 
-                                                            inputId="minutes"
-                                                            value={data.length_minute || 0} 
-                                                            onValueChange={(e) => setData('length_minute', e.value)} 
-                                                            suffix=" minute(s)" 
-                                                            className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                            max={24}
-                                                        />
-                                                    </div>
-                                               </div>
+                                                    {
+                                                        errors.length_day && (
+                                                            <InputError message='Cannot all be 0' className="mt-2" />
+                                                        )
+                                                    }
+                                                    
+                                                </>
                                             )
                                         }
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -728,7 +865,7 @@ export default function CreateAnnouncement() {
                 footer={
                     <div className="flex justify-end gap-4 w-full">
                         <Button size="sm" variant="outlined" onClick={closeScheduleDialog}>Cancel</Button>
-                        <Button size="sm" onClick={confirmSchedule} >Confirm</Button>
+                        <Button size="sm" onClick={confirmSchedule} disabled={!data.schedule_date || !data.schedule_time} >Confirm</Button>
                     </div>
                 }
             >
@@ -742,6 +879,7 @@ export default function CreateAnnouncement() {
                                 className="w-full text-sm"
                                 placeholder="dd/mm/yyyy"
                                 invalid={!!errors.schedule_date}
+                                minDate={minDate}
                                 pt={{
                                     input: {
                                         className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -786,6 +924,164 @@ export default function CreateAnnouncement() {
                     <div className="text-gray-700 text-sm">The announcement will be published at  {data.schedule_date ? dayjs(data.schedule_date).format('YYYY-MM-DD') : '-'} {data.schedule_time ? data.schedule_time : '-'}</div>
                 </div>
             </Modal>
+
+            <Modal 
+                show={previewDialog} 
+                maxWidth='lg'
+                title='Preview Announcement'
+                onClose={closePreview}
+                showFooter="hidden"
+            >
+                <div className="py-8 px-6 w-full flex justify-center">
+                    <div className="max-w-[728px] w-full flex flex-col gap-8">
+                        <div className="flex items-center gap-3">
+                            <div>
+                                {
+                                    user.profile_image ? (
+                                        <div className="relative w-8 h-8 group">
+                                            <img
+                                                src={data.profile_image}
+                                                className="w-8 h-8"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="relative w-8 h-8 group">
+                                            <LogoIcon />
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div className="flex flex-col ">
+                                <div className="text-gray-950 text-base font-semibold">{user.name}</div>
+                                <div className="text-sm text-gray-500 ">Published: dd/mm/yyyy  00:00:00</div>
+                            </div>
+                        </div>
+                        <div className="border-y border-gray-100 flex justify-between items-center text-gray-500 text-sm p-3">
+                            <div className="flex items-center gap-2">
+                                <span>To:</span>
+                                <span>
+                                    {
+                                        data.recipient && (
+                                            <>
+                                                {
+                                                    data.recipient.map((user, index) => (
+                                                        <div key={index} className="flex items-center gap-1">
+                                                            <span>{user}{index !== data.recipient.length - 1 && ','}</span>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </>
+                                        )
+                                    }
+                                </span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div><CommentIcon /></div>
+                                <div className="text-gray-700 text-sm">0</div>
+                            </div>
+                        </div>
+                        <div className="w-full flex items-center justify-center">
+                            <div className=" max-w-[640px]">
+                                <img src={data.thumbnailPreview ? data.thumbnailPreview : null} alt="" />
+                            </div>
+                        </div>
+                        <div className="text-gray-950 text-xxl font-bold">
+                            {data.subject ? data.subject : ''}
+                        </div>
+                        <div className="text-gray-950 text-lg">
+                            {data.content_text && (
+                                <div
+                                    style={{
+                                        display: '-webkit-box',
+                                        WebkitBoxOrient: 'vertical',
+                                    }}
+                                    dangerouslySetInnerHTML={{ __html: data.content_text }}
+                                />
+                            )}
+                        </div>
+                        {/* Attachment */}
+                        <div>
+                            {
+                                data.attachment && data.attachment.length > 0 ? (
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {
+                                            data.attachment.map((file, index) => (
+                                                <div key={index} className="flex items-center justify-between gap-3 border border-gray-200 rounded shadow-smShadow ">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="max-w-16 h-16">
+                                                            {
+                                                                file.type?.startsWith("image/") ? (
+                                                                    <img
+                                                                        src={URL.createObjectURL(file)}
+                                                                        alt="Preview"
+                                                                        className="w-full h-full object-cover rounded"
+                                                                    />
+                                                                ) : (
+                                                                    <div className="p-3 w-full h-full flex items-center justify-center bg-gray-100 text-xxs text-gray-950">
+                                                                        <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                            PDF
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </div>
+                                                        <div className="flex flex-col items-start gap-1">
+                                                            <div className="text-gray-950 text-sm font-medium">{file.name}</div>
+                                                            <div className="text-gray-500 text-xs">{file.size / 1000} KB</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                ) : (
+                                    null
+                                )
+                            }
+                        </div>
+                        {/* option */}
+                        <div className="flex flex-col gap-6">
+                            <div>{data.poll_question ? data.poll_question : ''}</div>
+                            <div className="flex flex-col gap-3">
+                                {
+                                    data.option.map((opt, index) => (
+                                        <div key={index} className="flex flex-col gap-2">
+                                            <div className="flex justify-between items-center">
+                                                <div className="text-gray-950 text-base">{opt.option_name}</div>
+                                                <div className="text-gray-950 text-base font-semibold">0%</div>
+                                            </div>
+                                            <div className="w-full h-1 bg-gray-100 rounded-[10px]"></div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </Modal>
+
+            <ConfirmDialog show={confirmPublish} >
+                <div className="flex flex-col items-center gap-8 p-6">
+                    <div className="flex flex-col gap-3 items-center">
+                        <div>
+                            <PublishedIllus />
+                        </div>
+                        <div className="flex flex-col gap-2 items-center">
+                            <div className="text-gray-950 text-lg font-bold">
+                                Ready to Publish?
+                            </div>
+                            <div className="text-gray-700 text-sm text-center">
+                                You're about to publish this announcement to the selected employees. Review carefully as changes cannot be made after publishing. Do you want to proceed?
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-center gap-4 w-full">
+                        <Button size="sm" variant="outlined" onClick={closeConfirmPublish}>Cancel</Button>
+                        <Button size="sm" onClick={publish}>Yes, Publish Now</Button>
+                    </div>
+                </div>
+            </ConfirmDialog>
 
         </AuthenticatedLayout>
     )

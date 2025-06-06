@@ -5,6 +5,9 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import { Segmented } from "antd";
 import React, { useState } from "react";
+import Published from "./Partials/Published";
+import Draft from "./Partials/Draft";
+import Archive from "./Partials/Archive";
 
 export default function Announcement() {
 
@@ -39,7 +42,7 @@ export default function Announcement() {
 
             <div className="flex flex-col w-full">
                 {/* Header */}
-                <div className="py-2 px-5 flex justify-between items-center">
+                <div className="py-2 px-5 sticky top-[55px] flex justify-between items-center">
                     <div>
                         <Segmented 
                             options={tabOptions}
@@ -71,6 +74,21 @@ export default function Announcement() {
                 </div>
 
                 {/* content */}
+                {
+                    viewType === 'published' && (
+                        <Published />
+                    )
+                }
+                {
+                    viewType === 'draft' && (
+                        <Draft />
+                    )
+                }
+                {
+                    viewType === 'archive' && (
+                        <Archive />
+                    )
+                }
             </div>
 
         </AuthenticatedLayout>

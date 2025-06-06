@@ -128,6 +128,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/getEmployeeTree', [AnnouncementController::class, 'getEmployeeTree'])->name('getEmployeeTree');
         Route::get('/getDepartmentUsers', [AnnouncementController::class, 'getDepartmentUsers'])->name('getDepartmentUsers');
         Route::post('/store-announcement-draft', [AnnouncementController::class, 'storeAnnouncementDraft'])->name('store-announcement-draft');
+        Route::post('/store-announcement-publish', [AnnouncementController::class, 'storeAnnouncementPublish'])->name('store-announcement-publish');
+        
+        Route::get('/getDraftAnnouncement', [AnnouncementController::class, 'getDraftAnnouncement'])->name('getDraftAnnouncement');
+        
         
     });
 

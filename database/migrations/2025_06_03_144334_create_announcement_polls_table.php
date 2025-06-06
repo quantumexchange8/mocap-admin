@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('announcement_polls', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id');
-            $table->string('option_name');
-            $table->string('duration_type');
-            $table->date('duration_date');
-            $table->integer('duration_days')->default(0);
-            $table->integer('duration_hours')->default(0);
-            $table->integer('duration_minutes')->default(0);
+            $table->string('option_name')->nullable();
+            $table->string('duration_type')->nullable();
+            $table->date('duration_date')->nullable();
+            $table->integer('duration_days')->nullable()->default(0);
+            $table->integer('duration_hours')->nullable()->default(0);
+            $table->integer('duration_minutes')->nullable()->default(0);
             $table->timestamps();
         });
     }

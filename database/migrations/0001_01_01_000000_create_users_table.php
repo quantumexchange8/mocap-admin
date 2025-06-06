@@ -43,6 +43,8 @@ return new class extends Migration
             $table->unsignedBigInteger('job_id')->nullable();
             $table->integer('handle_by')->nullable();
             $table->string('status');
+            $table->string('remarks')->nullable();
+            $table->dateTime('last_active')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

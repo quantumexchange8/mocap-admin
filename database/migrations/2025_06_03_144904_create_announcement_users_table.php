@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('announcement_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('status')->nullable();
             $table->dateTime('read_at')->nullable();
             $table->timestamps();
         });
