@@ -145,7 +145,7 @@ export default function Dashboard() {
                     <CalendarPartials />
                 </div>
                 {/*  Chart */}
-                <div className='flex flex-col xl:flex-row items-center gap-5 w-full'>
+                <div className='flex flex-col xl:grid xl:grid-cols-2 items-center gap-5 w-full'>
 
                     <EmployeePerformance />
 

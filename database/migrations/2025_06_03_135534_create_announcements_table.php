@@ -28,7 +28,9 @@ return new class extends Migration
             $table->integer('like')->nullable();
             $table->string('status')->nullable();
             $table->unsignedBigInteger('created_by');
+            $table->dateTime('published_at')->nullable();
             $table->dateTime('expired_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

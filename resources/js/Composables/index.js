@@ -59,6 +59,23 @@ const formatDate = (date, includeTime = false) => {
     return `${day}/${month}/${year}`;
 };
 
+const formatDMYTime = (utcDateString, includeTime = true) => {
+    const date = new Date(utcDateString);
+
+    const options = {
+        timeZone: 'Asia/Kuala_Lumpur',
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: includeTime ? '2-digit' : undefined,
+        minute: includeTime ? '2-digit' : undefined,
+        hour12: false,
+    };
+
+    const formatted = date.toLocaleString('en-GB', options);
+    return formatted.replace(',', '');
+};
+
 
 export {
     formatDateTime, 
@@ -66,4 +83,5 @@ export {
     formatAmount,
     formatPoint,
     formatDateOld,
+    formatDMYTime,
 };

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
@@ -10,7 +11,7 @@ class Announcement extends Model implements HasMedia
 
 {
 
-    use InteractsWithMedia;
+    use InteractsWithMedia, SoftDeletes;
 
     protected $fillable = [
         'subject',
@@ -28,6 +29,7 @@ class Announcement extends Model implements HasMedia
         'created_by',
         'like_bool',
         'comment',
+        'published_at',
     ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -43,6 +45,11 @@ class Announcement extends Model implements HasMedia
     public function announcement_comment(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(AnnouncementComment::class, 'announcement_id', 'id');
+    }
+
+    public function announcement_poll(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(AnnouncementPoll::class, 'announcement_id', 'id');
     }
 
 }

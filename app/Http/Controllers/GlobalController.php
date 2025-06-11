@@ -19,7 +19,7 @@ class GlobalController extends Controller
     public function getUserListing()
     {
 
-        $users = User::where('status', 'active')->get();
+        $users = User::where('status', 'active')->whereIn('role', ['employee', 'admin'])->get();
 
         return response()->json($users);
     }

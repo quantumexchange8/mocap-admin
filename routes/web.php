@@ -125,12 +125,30 @@ Route::middleware('auth')->group(function () {
     Route::group(['middleware' => ['permission:announcement']], function () {
         Route::get('/announcement', [AnnouncementController::class, 'announcement'])->name('announcement');
         Route::get('/create-announcement', [AnnouncementController::class, 'CreateAnnouncement'])->name('create-announcement');
-        Route::get('/getEmployeeTree', [AnnouncementController::class, 'getEmployeeTree'])->name('getEmployeeTree');
-        Route::get('/getDepartmentUsers', [AnnouncementController::class, 'getDepartmentUsers'])->name('getDepartmentUsers');
         Route::post('/store-announcement-draft', [AnnouncementController::class, 'storeAnnouncementDraft'])->name('store-announcement-draft');
         Route::post('/store-announcement-publish', [AnnouncementController::class, 'storeAnnouncementPublish'])->name('store-announcement-publish');
         
+        Route::get('/getEmployeeTree', [AnnouncementController::class, 'getEmployeeTree'])->name('getEmployeeTree');
+        Route::get('/getDepartmentUsers', [AnnouncementController::class, 'getDepartmentUsers'])->name('getDepartmentUsers');
         Route::get('/getDraftAnnouncement', [AnnouncementController::class, 'getDraftAnnouncement'])->name('getDraftAnnouncement');
+        Route::get('/getPinAnnouncement', [AnnouncementController::class, 'getPinAnnouncement'])->name('getPinAnnouncement');
+        Route::get('/getPublishedAnnouncement', [AnnouncementController::class, 'getPublishedAnnouncement'])->name('getPublishedAnnouncement');
+        Route::get('/getAnnouncementUser', [AnnouncementController::class, 'getAnnouncementUser'])->name('getAnnouncementUser');
+        Route::get('/getAnnouncementComment', [AnnouncementController::class, 'getAnnouncementComment'])->name('getAnnouncementComment');
+        Route::get('/getArchiveAnnouncement', [AnnouncementController::class, 'getArchiveAnnouncement'])->name('getArchiveAnnouncement');
+        
+        Route::get('/draft-announcement-details/{id}', [AnnouncementController::class, 'draftAnnouncementDetails'])->name('draft-announcement-details');
+        Route::get('/edit-draft-announcement/{id}', [AnnouncementController::class, 'editDraftAnnouncement'])->name('edit-draft-announcement');
+        Route::get('/published-announcment-details/{id}', [AnnouncementController::class, 'publishedAnnouncmentDetails'])->name('published-announcment-details');
+        Route::get('/archive-announcement-details/{id}', [AnnouncementController::class, 'archiveAnnouncementDetails'])->name('archive-announcement-details');
+        
+        Route::post('/update-draft-schedule', [AnnouncementController::class, 'updateDraftSchedule'])->name('update-draft-schedule');
+        Route::post('/remove-draft-announcement', [AnnouncementController::class, 'removeDraftAnnouncement'])->name('remove-draft-announcement');
+        Route::post('/archive-announcement', [AnnouncementController::class, 'archiveAnnouncement'])->name('archive-announcement');
+        Route::post('/send-comment', [AnnouncementController::class, 'sendComment'])->name('send-comment');
+        Route::post('/delete-selected-comment', [AnnouncementController::class, 'deleteSelectedComment'])->name('delete-selected-comment');
+        Route::post('/delete-announcement', [AnnouncementController::class, 'deleteAnnouncement'])->name('delete-announcement');
+        Route::post('/unarchive-announcement', [AnnouncementController::class, 'unarchiveAnnouncement'])->name('unarchive-announcement');
         
         
     });

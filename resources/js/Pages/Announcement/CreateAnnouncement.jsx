@@ -298,7 +298,7 @@ export default function CreateAnnouncement() {
             onError: (errors) => {
                 setIsLoading(false);
                 toast.error('Failed to save draft. Please try again.', {
-                    title: 'Error',
+                    title: `${errors?.schedule_date ? errors.schedule_date : 'Failed to save draft. Please try again.'}`,
                     duration: 3000,
                     variant: 'variant1',
                 });
@@ -331,8 +331,13 @@ export default function CreateAnnouncement() {
                     duration: 3000,
                     variant: 'variant1',
                 });
+                window.location.href = '/announcement';
                 reset();
                 setIsLoading(false);
+            },
+            onError: () => {
+                setIsLoading(false);
+                setConfirmPublish(false);
             }
         })
     }
@@ -374,7 +379,7 @@ export default function CreateAnnouncement() {
                         </Button>
                         <Button size="sm" className='flex items-center gap-2' onClick={openConfirmPublish} >
                             <span>Publish</span>
-                            <SendIcon />
+                            <SendIcon className='text-white' />
                         </Button>
                     </div>
                 </div>
@@ -767,6 +772,7 @@ export default function CreateAnnouncement() {
                                                         className="w-full text-sm"
                                                         placeholder="dd/mm/yyyy"
                                                         invalid={!!errors.end_date}
+                                                        minDate={minDate}
                                                         pt={{
                                                             input: {
                                                                 className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -815,6 +821,7 @@ export default function CreateAnnouncement() {
                                                                 onValueChange={(e) => setData('length_day', e.value)} 
                                                                 suffix=" day(s)" 
                                                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                min={0}
                                                             />
                                                         </div>
                                                         <div>
@@ -824,7 +831,8 @@ export default function CreateAnnouncement() {
                                                                 onValueChange={(e) => setData('length_hour', e.value)} 
                                                                 suffix=" hour(s)" 
                                                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                                max={24}
+                                                                min={0}
+                                                                max={23}
                                                             />
                                                         </div>
                                                         <div>
@@ -834,7 +842,8 @@ export default function CreateAnnouncement() {
                                                                 onValueChange={(e) => setData('length_minute', e.value)} 
                                                                 suffix=" minute(s)" 
                                                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                                max={24}
+                                                                min={0}
+                                                                max={59}
                                                             />
                                                         </div>
                                                     </div>
@@ -913,11 +922,31 @@ export default function CreateAnnouncement() {
                                     }
                                 }}
                             />
-                            <TimePicker 
-                                 format="HH:mm"
-                                 value={data.schedule_time ? dayjs(data.schedule_time, 'HH:mm') : null}
-                                 onChange={(time, timeString) => setData('schedule_time', timeString)}
-                                 allowClear
+                            <TimePicker
+                                format="HH:mm"
+                                value={data.schedule_time ? dayjs(data.schedule_time, 'HH:mm') : null}
+                                onChange={(time, timeString) => setData('schedule_time', timeString)}
+                                allowClear
+                                disabledHours={() => {
+                                    const selectedDate = data.schedule_date;
+                                    if (selectedDate && dayjs(selectedDate).isSame(dayjs(), 'day')) {
+                                        const currentHour = dayjs().hour();
+                                        return Array.from({ length: currentHour }, (_, i) => i);
+                                    }
+                                    return [];
+                                }}
+                                disabledMinutes={(selectedHour) => {
+                                    const selectedDate = data.schedule_date;
+                                    if (
+                                        selectedDate &&
+                                        dayjs(selectedDate).isSame(dayjs(), 'day') &&
+                                        selectedHour === dayjs().hour()
+                                    ) {
+                                        const currentMinute = dayjs().minute();
+                                        return Array.from({ length: currentMinute }, (_, i) => i);
+                                    }
+                                    return [];
+                                }}
                             />
                         </div>
                     </div>

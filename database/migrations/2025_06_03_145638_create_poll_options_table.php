@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('poll_id');
             $table->string('order_no');
             $table->string('votes')->default('0');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

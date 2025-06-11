@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('announcement_comments', function (Blueprint $table) {
+        Schema::create('announcement_comment_mentions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('announcement_id');
-            $table->unsignedBigInteger('user_id');
-            $table->longText('comment_text');
-            $table->unsignedBigInteger('parrent_id')->nullable();
+            $table->unsignedBigInteger('comment_id');
+            $table->unsignedBigInteger('mention_user_id');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -27,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('announcement_comments');
+        Schema::dropIfExists('announcement_comment_mentions');
     }
 };

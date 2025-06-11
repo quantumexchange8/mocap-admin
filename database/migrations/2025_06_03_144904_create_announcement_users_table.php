@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('announcement_users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('announcement_id');
+            $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->string('status')->nullable();
             $table->dateTime('read_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

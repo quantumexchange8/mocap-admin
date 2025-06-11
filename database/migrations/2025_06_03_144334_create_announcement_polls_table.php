@@ -20,6 +20,8 @@ return new class extends Migration
             $table->integer('duration_days')->nullable()->default(0);
             $table->integer('duration_hours')->nullable()->default(0);
             $table->integer('duration_minutes')->nullable()->default(0);
+            $table->dateTime('expired_at')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
