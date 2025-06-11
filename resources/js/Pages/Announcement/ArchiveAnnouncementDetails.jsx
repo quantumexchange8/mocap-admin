@@ -9,6 +9,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
 import { Breadcrumb, Progress } from "antd";
 import React, { useEffect, useState } from "react";
+import Comment from "./Partials/Comment";
 
 export default function ArchiveAnnouncementDetails({ announcements, totalVote }) {
 
@@ -18,6 +19,7 @@ export default function ArchiveAnnouncementDetails({ announcements, totalVote })
     const [openReadingDetails, setOpenReadingDetails] = useState(false);
     const [getReadUser, setGetReadUser] = useState([]);
     const [getUnreadUser, setGetUnreadUser] = useState([]);
+    const [isCommendOpen, setIsCommentOpen] = useState(false);
 
     const fetchEmployee = async () => {
         setIsLoading(true);
@@ -97,6 +99,13 @@ export default function ArchiveAnnouncementDetails({ announcements, totalVote })
     }
     const closeReadingDetails = () => {
         setOpenReadingDetails(false);
+    }
+
+    const openComment = () => {
+        setIsCommentOpen(true);
+    }
+    const closeComment = () => {
+        setIsCommentOpen(false);
     }
 
     return (
@@ -198,7 +207,7 @@ export default function ArchiveAnnouncementDetails({ announcements, totalVote })
                                     </>
                                 )}
                             </div>
-                            <div className="flex items-center gap-2 text-gray-500">
+                            <div className="flex items-center gap-2 text-gray-500 cursor-pointer" onClick={openComment}>
                                 <div><CommentIcon className='text-gray-500' /></div>
                                 <div className="text-sm">{totalVote ? totalVote : 0}</div>
                             </div>
@@ -378,6 +387,10 @@ export default function ArchiveAnnouncementDetails({ announcements, totalVote })
                     </div>
                 </div>
             </Modal>
+
+            {
+                isCommendOpen && <Comment announcements={announcements} isCommendOpen={isCommendOpen} setIsCommentOpen={setIsCommentOpen} closeComment={closeComment} />
+            }
 
         </AuthenticatedLayout>
     )

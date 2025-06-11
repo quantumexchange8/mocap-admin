@@ -6,7 +6,7 @@ import Modal from "@/Components/Modal";
 import { formatDate } from "@/Composables";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { Breadcrumb, Progress } from "antd";
+import { Breadcrumb, Image, Progress } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -20,6 +20,7 @@ export default function PublishedAnnouncementDetails({ announcements, totalVote,
     const [getReadUser, setGetReadUser] = useState([]);
     const [getUnreadUser, setGetUnreadUser] = useState([]);
     const [isCommendOpen, setIsCommentOpen] = useState(false);
+    const [visible, setVisible] = useState(false);
 
     const fetchEmployee = async () => {
         setIsLoading(true);
@@ -214,10 +215,10 @@ export default function PublishedAnnouncementDetails({ announcements, totalVote,
                                 <div className="text-sm">{totalComment ? totalComment : 0}</div>
                             </div>
                         </div>
-                        <div>
+                        <div className="flex justify-center">
                             {
                                 announcements.thumbnail && (
-                                    <img src={announcements.thumbnail} alt="thumbnail" />
+                                    <Image src={announcements.thumbnail} width={640}  />
                                 ) 
                             }
                         </div>
@@ -231,6 +232,82 @@ export default function PublishedAnnouncementDetails({ announcements, totalVote,
                             }}
                             dangerouslySetInnerHTML={{ __html: announcements.content_text }}
                         />
+                        {
+                            announcements.attachment.length > 0 && (
+                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+                                    {
+                                        announcements.attachment.map((fileUrl, index) => {
+                                            const isImage = /\.(jpeg|jpg|png|gif|webp)$/i.test(fileUrl.url);
+                                            const isPDF = /\.pdf$/i.test(fileUrl.url);
+                                        
+                                            return (
+                                                <div key={index} className="p-2 flex items-center gap-3 bg-white border border-gray-200 rounded shadow-smShadow ">
+                                                    {
+                                                        isImage && (
+                                                            <>
+                                                                <div className="flex items-center gap-3 w-full cursor-pointer" onClick={() => setVisible(true)}>
+                                                                    <img src={fileUrl.url} alt={`attachment-${index}`} className="max-h-12 rounded shadow" />
+                                                                    <div className="flex flex-col w-full">
+                                                                        <div className="text-gray-950 text-sm font-medium">{fileUrl.file_name}</div>
+                                                                        <div className="text-gray-500 text-xs">{fileUrl.size / 1000} KB</div>
+                                                                    </div>
+                                                                </div>
+                                                                <Image 
+                                                                    src={fileUrl.url} 
+                                                                    style={{ display: 'none' }}
+                                                                    preview={{
+                                                                        visible,
+                                                                        src: fileUrl.url, 
+                                                                        onVisibleChange: (value) => {
+                                                                            setVisible(value);
+                                                                        },
+                                                                    }}
+                                                                />
+                                                            </>
+                                                        )
+                                                    }
+                                            
+                                                    {
+                                                        isPDF && (
+                                                            <a
+                                                                href={fileUrl.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center gap-3"
+                                                            >
+                                                                <div className="flex items-center justify-center text-xxs text-gray-950">
+                                                                    <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                        PDF
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex flex-col gap-1 w-full">
+                                                                    <div className="text-gray-950 text-sm font-medium">{fileUrl.url.split('/').pop()}</div>
+                                                                    <div className="text-gray-500 text-xs">{fileUrl.size / 1000} KB</div>
+                                                                    
+                                                                </div>
+                                                            </a>
+                                                        )
+                                                    }
+                                            
+                                                    {
+                                                        !isImage && !isPDF && (
+                                                            <a
+                                                                href={fileUrl.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-gray-600 underline"
+                                                            >
+                                                                Download File
+                                                            </a>
+                                                        )
+                                                    }
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            )
+                        }
                         {
                             announcements.announcement_poll && (
                                 <div className="flex flex-col gap-6">

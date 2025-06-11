@@ -1,17 +1,24 @@
 import Button from "@/Components/Button";
-import { Announcement, CommentIcon, LikeIcon, PaperClipIcon, PinIcon, ThumbnailIcon } from "@/Components/Icon/Outline";
+import { Announcement, CommentIcon, DeleteIcon, GripVerticalIcon, LikeIcon, LogoIcon, PaperClipIcon, PinIcon, PlusIcon, ThumbnailIcon, XIcon } from "@/Components/Icon/Outline";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import Pin from "@/Components/Pin/Pin1";
 import TextInput from "@/Components/TextInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
-import { Breadcrumb, Progress, Switch, TreeSelect, Upload } from "antd";
+import { Head, useForm, usePage } from "@inertiajs/react";
+import { Breadcrumb, Progress, Segmented, Switch, TreeSelect, Upload } from "antd";
 import ImgCrop from "antd-img-crop";
+import Dragger from "antd/es/upload/Dragger";
 import { Editor } from "primereact/editor";
 import React, { useEffect, useState } from "react";
+import { ReactSortable } from "react-sortablejs";
+import { Calendar } from "primereact/calendar";
+import { InputNumber } from "primereact/inputnumber";
+import Modal from "@/Components/Modal";
 
 export default function EditAnnouncementDetails({ draftAnnouncements }) {
+
+    const user = usePage().props.auth?.user;
 
     const [fileList, setFileList] = useState([]);
     const [fileList2, setFileList2] = useState([]);
@@ -19,6 +26,9 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
     const [isLoading, setIsLoading] = useState(false);
     const [treeLine, setTreeLine] = useState(true);
     const [progressPercent, setProgressPercent] = useState(0);
+    const [removedExistingFiles, setRemovedExistingFiles] = useState([]);
+    const [previewDialog, setPreviewDialog] = useState(false);
+    let minDate = new Date();
 
     const fetchEmployee = async () => {
         setIsLoading(true);
@@ -39,9 +49,8 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
         fetchEmployee();
     }, []);
 
-    // console.log('draftAnnouncements', draftAnnouncements)
-
     const { data, setData, post, processing, errors, isDirty, reset } = useForm({
+        id: draftAnnouncements.id,
         recipient: [],
         subject: draftAnnouncements.subject || '',
         content_text: draftAnnouncements.content_text || '',
@@ -50,17 +59,23 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
         commend: draftAnnouncements.comment === 'no' ? false : true,
         pin_type: draftAnnouncements.pin_type || '',
         thumbnail: null,
+        removeThumbnail: false,
         thumbnailPreview: null,
         attachment: null,
-        poll_question: '',
-        option: [
-            { id: Date.now().toString() , option_name: '', order_no: 1 },
+        removeAttachment: null,
+        poll_question: draftAnnouncements?.announcement_poll?.option_name || '',
+        option: draftAnnouncements?.announcement_poll ? draftAnnouncements.announcement_poll.poll_options.map(poll => ({
+            id: poll.id.toString(), 
+            option_name: poll.option_name || '', 
+            order_no: poll.order_no || (poll.order_no === 0 ? 0 : '')
+        })) : [
+            {id: Date.now().toString() , option_name: '', order_no: 1}
         ],
-        duration_type: 'set_end_date',
-        end_date: null,
-        length_day: '',
-        length_hour: '',
-        length_minute: '',
+        duration_type: draftAnnouncements?.announcement_poll ? draftAnnouncements.announcement_poll.duration_type : 'set_end_date',
+        end_date: draftAnnouncements?.announcement_poll?.duration_date ? new Date(draftAnnouncements.announcement_poll.duration_date) : null,
+        length_day: draftAnnouncements?.announcement_poll ? draftAnnouncements.announcement_poll.duration_days : '',
+        length_hour: draftAnnouncements?.announcement_poll ? draftAnnouncements.announcement_poll.duration_hours : '',
+        length_minute: draftAnnouncements?.announcement_poll ? draftAnnouncements.announcement_poll.duration_minutes : '',
         schedule_date: null,
         schedule_time: null,
     });
@@ -100,12 +115,11 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
     
             // Add recipients based on announcement_user
             draftAnnouncements.announcement_user.forEach(item => {
-                if (item.user) {
-                    recipients.push(item.user.name); // user name was stored
-                }
     
                 if (item.department) {
                     recipients.push(item.department.name); // department name was stored
+                } else {
+                    recipients.push(item.user.name); // user name was stored
                 }
             });
     
@@ -121,7 +135,6 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
             setData('thumbnailPreview', draftAnnouncements.thumbnail);
         }
     }, [])
-    
 
     const renderHeader  = () =>{
         return (
@@ -170,6 +183,7 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                     clearInterval(interval);
                     setData('thumbnail', null);
                     setData('thumbnailPreview', null);
+                    setData('removeThumbnail', true)
                     setFileList([]);
                     setIsLoading(false);
                     return 100;
@@ -204,14 +218,137 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
         return isImage;
     };
 
+    // Attachment
+    const props = {
+        name: 'file',
+        multiple: true,
+        accept: '.pdf,.jpg,.jpeg,.png',
+        showUploadList: false,
+        beforeUpload: () => false, // prevent auto upload
+        onChange({ fileList }) {
+            const newFiles = fileList.filter(f => !f.uid.toString().startsWith('existing-'));
+            const files = newFiles.map(file => file.originFileObj);
+            setData('attachment', files);
+    
+            setFileList2(fileList);
+        }
+    };
 
-    const preview = () => {
+    useEffect(() => {
+        if (draftAnnouncements.attachment && draftAnnouncements.attachment.length > 0) {
+            
+            const existingFiles = draftAnnouncements.attachment.map((item, index) => ({
+                uid: `existing-${index}`,
+                name: item.file_name || item.url.split('/').pop(), // fallback to filename from URL
+                url: item.url,
+                type: item.file_name?.endsWith('.pdf') ? 'application/pdf' : 'image/jpeg', // adjust type as needed
+                status: 'done',
+                uuid: item.uuid,
+                size: item.size,
+            }));
+    
+            setFileList2(existingFiles);
+        }
+    }, [draftAnnouncements]);
 
+    const removeFile = (indexToRemove) => {
+        const fileToRemove = fileList2[indexToRemove];
+        const updatedList = fileList2.filter((_, index) => index !== indexToRemove);
+        setFileList2(updatedList);
+    
+        if (fileToRemove.uid.toString().startsWith('existing-')) {
+            const fileUuid = fileToRemove.uuid; // must be passed from draftAnnouncements
+    
+            if (fileUuid) {
+                setData(prev => ({
+                    ...prev,
+                    removeAttachment: [...(prev.removeAttachment || []), fileUuid]
+                }));
+            }
+        } else {
+            const updatedAttachment = data.attachment.filter((_, idx) => {
+                const newFiles = fileList2.filter(f => !f.uid.toString().startsWith('existing-'));
+                const attachmentIndex = newFiles.findIndex(f => f.uid === fileToRemove.uid);
+                return idx !== attachmentIndex;
+            });
+    
+            setData('attachment', updatedAttachment);
+        }
+    };
+
+    // Poll
+    const handleAdd = () => {
+        const newId = (Date.now()).toString(); // generate unique id
+        const newPosition = { id: newId, option_name: '', order_no: data.option.length + 1 };
+        setData(prev => ({
+            ...prev,
+            option: [...prev.option, newPosition],
+        }));
+    };
+
+    const handleSort = (order) => {
+        const newPositions = order.map((id, index) => {
+            const item = data.option.find(p => p.id === id);
+            return {
+                ...item,
+                order_no: index + 1,
+            };
+        });
+        setData(prev => ({
+            ...prev,
+            option: newPositions,
+        }));
+    };
+
+    const handleChange = (index, value) => {
+        const newPositions = [...data.option];
+        newPositions[index].option_name = value;
+        setData(prev => ({
+          ...prev,
+          option: newPositions,
+        }));
+    };
+
+    const handleRemove = (id) => {
+        const newPositions = data.option
+          .filter(item => item.id !== id)
+          .map((item, idx) => ({ ...item, order_no: idx + 1 }));
+        setData(prev => ({
+          ...prev,
+          option: newPositions,
+        }));
+    };
+
+    const openPreview = () => {
+        setPreviewDialog(true);
+    }
+    const closePreview = () => {
+        setPreviewDialog(false);
     }
 
-    const save = () => {
-        
+    const save = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        post('/update-draft-announcement', {
+            onSuccess: () => {
+                toast.success('Announcement published successfully!', {
+                    title: 'Announcement published successfully!',
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+                window.location.href = '/announcement';
+                reset();
+                setIsLoading(false);
+            },
+            onError: () => {
+                setIsLoading(false);
+                setConfirmPublish(false);
+            }
+        })
     }
+
+    
 
     return (
         <AuthenticatedLayout header="Announcement">
@@ -239,7 +376,7 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                         ]}
                     />
                     <div className="flex items-center gap-3">
-                        <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={preview} >
+                        <Button variant="outlined" size="sm" className='flex items-center gap-2' onClick={openPreview} >
                             <span>Preview</span>
                         </Button>
                         <Button size="sm" className='flex items-center gap-2' onClick={save} >
@@ -419,9 +556,13 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                                                                 />
                                                             </div>
                                                             {/* file name */}
-                                                            <div className="text-sm text-gray-700">
-                                                                {fileList[0]?.name || data.thumbnail.name}
-                                                            </div>
+                                                            {
+                                                                fileList && (
+                                                                    <div className="text-sm text-gray-700">
+                                                                        {/* {data.thumbnail.name} */}
+                                                                    </div>
+                                                                )
+                                                            }
                                                         </div>
                                                     )
                                                 }
@@ -467,12 +608,397 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                                 </div>
                             </div>
                             <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
-                                
+                                <Dragger {...props} fileList={fileList2}  listType="picture" >
+                                {
+                                    fileList2.length > 0 ? (
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {
+                                                fileList2.map((file, index) => (
+                                                    <div key={index} className="flex items-center justify-between gap-3 border border-dashed border-gray-200 rounded ">
+                                                        <div className="flex items-center gap-3">
+                                                            <div className="max-w-16 h-16">
+                                                                {
+                                                                    file.type?.startsWith("image/") ? (
+                                                                        <img
+                                                                            src={file.url ? file.url : URL.createObjectURL(file.originFileObj)}
+                                                                            alt="Preview"
+                                                                            className="w-full h-full object-cover rounded"
+                                                                        />
+                                                                    ) : (
+                                                                        <div className="p-3 w-full h-full flex items-center justify-center bg-gray-100 text-xxs text-gray-950">
+                                                                            <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                                PDF
+                                                                            </div>
+                                                                        </div>
+                                                                    )
+                                                                }
+                                                            </div>
+                                                            <div className="flex flex-col items-start gap-1">
+                                                                <div className="text-gray-950 text-sm font-medium">{file.name}</div>
+                                                                <div className="text-gray-500 text-xs">
+                                                                    {
+                                                                        file.size
+                                                                            ? `${Math.round(file.size / 1000)} KB`
+                                                                            : 'Uploaded'
+                                                                    }
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <Button variant="text" size="sm" iconOnly
+                                                                onClick={(e) => {
+                                                                    e.stopPropagation();
+                                                                    removeFile(index);
+                                                                }}
+                                                            >
+                                                                <DeleteIcon />
+                                                            </Button>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </div>
+                                    ) : (
+                                        <div className="h-20 flex flex-col gap-1 items-center justify-center">
+                                            <span className="text-sm text-gray-500">Click or drag file to this area to upload</span>
+                                            <span className="text-gray-400 text-xs">Maximum file size is 5 MB. Supported file types are .pdf, .jpg and .png.</span>
+                                        </div>
+                                    )
+                                }
+
+                                </Dragger>
                             </div>
+                        </div>
+
+                        {/* Poll */}
+                        <div className="w-full flex flex-col border border-gray-300 rounded-sm">
+                            <div className="py-3 px-4 flex items-center gap-3">
+                                <div className="max-w-7 w-full p-1.5 bg-gray-100 rounded-sm">
+                                    <PaperClipIcon />
+                                </div>
+                                <div className="w-full flex flex-col">
+                                    <div className="text-gray-950 text-sm font-medium">Poll</div>
+                                    <div className="text-gray-500 text-xs">Create a poll to gather feedback or votes from employees.</div>
+                                </div>
+                            </div>
+                            <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
+                                <div>
+                                    <TextInput 
+                                        id="poll_question"
+                                        type="text"
+                                        name="poll_question"
+                                        value={data.poll_question || ''}
+                                        className="w-full"
+                                        placeholder="Type your question..."
+                                        isFocused={false}
+                                        onChange={(e) => setData('poll_question', e.target.value)}
+                                        hasError={!!errors.poll_question}
+                                    />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <InputLabel value='Options' />
+                                    <div className="flex flex-col gap-4">
+                                        <ReactSortable
+                                            list={data.option}
+                                            setList={(newList) => {
+                                                // sort based on dragged list
+                                                handleSort(newList.map(item => item.id));
+                                            }}
+                                            animation={200}
+                                            handle=".drag-handle"
+                                            className="flex flex-col gap-4"
+                                        >
+                                            {
+                                                data.option.map((pos, index) => (
+                                                    <div key={pos.id} data-id={pos.id} className="flex items-center gap-3">
+                                                        <div className="drag-handle max-w-[38px] max-h-[38px] w-full h-full flex justify-center items-center cursor-move">
+                                                            <GripVerticalIcon />
+                                                        </div>
+                                                        <div className="w-full">
+                                                            <TextInput
+                                                                className="w-full"
+                                                                type="text"
+                                                                value={pos.option_name}
+                                                                onChange={(e) => handleChange(index, e.target.value)}
+                                                                placeholder="Enter option"
+                                                            />
+                                                        </div>
+                                                        <div className="w-full max-w-[38px] h-full max-h-[38px] flex items-center justify-center cursor-pointer hover:bg-gray-50 rounded-sm" onClick={() => handleRemove(pos.id)}>
+                                                            <XIcon />
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            }
+                                        </ReactSortable>
+
+                                        {/* Add option */}
+                                        <div className="">
+                                            <Button 
+                                                variant="text" 
+                                                size="sm" 
+                                                className="flex items-center gap-2"
+                                                onClick={handleAdd}
+                                            >
+                                                <PlusIcon />
+                                                <span>Add</span>
+                                            </Button>
+                                        </div>
+
+                                        <InputError message={errors["option.0.option_name"]} />
+                                    </div>
+                                </div>
+                                <div className="flex flex-col gap-4">
+                                    <InputLabel value='Duration' />
+                                    <div>
+                                        <Segmented 
+                                            options={[
+                                                { label: 'Set End Date', value: 'set_end_date' },
+                                                { label: 'Set Length', value: 'set_length' },
+                                            ]}
+                                            value={data.duration_type}
+                                            onChange={(value) => setData('duration_type', value)}
+                                            className="custom-segmented w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        {
+                                            data.duration_type === 'set_end_date' && (
+                                                <>
+                                                    <Calendar 
+                                                        value={data.end_date}
+                                                        onChange={(e) => setData('end_date', e.value)} 
+                                                        className="w-full text-sm"
+                                                        placeholder="dd/mm/yyyy"
+                                                        invalid={!!errors.end_date}
+                                                        minDate={minDate}
+                                                        pt={{
+                                                            input: {
+                                                                className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                                            },
+                                                            panel: {
+                                                                className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                                            },
+                                                            header: {
+                                                                className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                                            },
+                                                            table: {
+                                                                className: 'w-full'
+                                                            },
+                                                            day: {
+                                                                className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                                            },
+                                                            daySelected: {
+                                                                className: 'bg-gray-950 text-white font-bold rounded-full'
+                                                            },
+                                                            dayToday: {
+                                                                className: 'border border-gray-950'
+                                                            },
+                                                            month: {
+                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                            },
+                                                            year: {
+                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                            },
+                                                            monthPicker: {
+                                                                className: 'py-1 px-3'
+                                                            }
+                                                        }}
+                                                    />
+                                                    <InputError message={errors.end_date} />
+                                                </>
+                                            )
+                                        }
+                                        {
+                                            data.duration_type === 'set_length' && (
+                                                <>
+                                                    <div className="w-full grid grid-cols-3 gap-5">
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="days"
+                                                                value={data.length_day || 0} 
+                                                                onValueChange={(e) => setData('length_day', e.value)} 
+                                                                suffix=" day(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                min={0}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="hours"
+                                                                value={data.length_hour || 0} 
+                                                                onValueChange={(e) => setData('length_hour', e.value)} 
+                                                                suffix=" hour(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                min={0}
+                                                                max={23}
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <InputNumber 
+                                                                inputId="minutes"
+                                                                value={data.length_minute || 0} 
+                                                                onValueChange={(e) => setData('length_minute', e.value)} 
+                                                                suffix=" minute(s)" 
+                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                min={0}
+                                                                max={59}
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    {
+                                                        errors.length_day && (
+                                                            <InputError message='Cannot all be 0' className="mt-2" />
+                                                        )
+                                                    }
+                                                    
+                                                </>
+                                            )
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                                
                         </div>
                     </div>
                 </div>
             </div>
+
+            <Modal
+                show={previewDialog} 
+                maxWidth='lg'
+                title='Preview Announcement'
+                onClose={closePreview}
+                showFooter="hidden"
+            >
+                <div className="py-8 px-6 w-full flex justify-center">
+                    <div className="max-w-[728px] w-full flex flex-col gap-8">
+                        <div className="flex items-center gap-3">
+                            <div>
+                                {
+                                    user.profile_image ? (
+                                        <div className="relative w-8 h-8 group">
+                                            <img
+                                                src={data.profile_image}
+                                                className="w-8 h-8"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <div className="relative w-8 h-8 group">
+                                            <LogoIcon />
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            <div className="flex flex-col ">
+                                <div className="text-gray-950 text-base font-semibold">{user.name}</div>
+                                <div className="text-sm text-gray-500 ">Published: dd/mm/yyyy  00:00:00</div>
+                            </div>
+                        </div>
+                        <div className="border-y border-gray-100 flex justify-between items-center text-gray-500 text-sm p-3">
+                            <div className="flex items-center gap-2">
+                                <span>To:</span>
+                                <div className="flex items-center">
+                                    {
+                                        data.recipient && (
+                                            <>
+                                                {
+                                                    data.recipient.map((user, index) => (
+                                                        <div key={index} className="flex items-center gap-1">
+                                                            <span>{user}{index !== data.recipient.length - 1 && ','}</span>
+                                                        </div>
+                                                    ))
+                                                }
+                                            </>
+                                        )
+                                    }
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div><CommentIcon /></div>
+                                <div className="text-gray-700 text-sm">0</div>
+                            </div>
+                        </div>
+                        <div className="w-full flex items-center justify-center">
+                            <div className=" max-w-[640px]">
+                                <img src={data.thumbnailPreview ? data.thumbnailPreview : null} alt="" />
+                            </div>
+                        </div>
+                        <div className="text-gray-950 text-xxl font-bold">
+                            {data.subject ? data.subject : ''}
+                        </div>
+                        <div className="text-gray-950 text-lg">
+                            {data.content_text && (
+                                <div
+                                    style={{
+                                        display: '-webkit-box',
+                                        WebkitBoxOrient: 'vertical',
+                                    }}
+                                    dangerouslySetInnerHTML={{ __html: data.content_text }}
+                                />
+                            )}
+                        </div>
+                        {/* Attachment */}
+                        <div>
+                            {
+                                data.attachment && data.attachment.length > 0 ? (
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {
+                                            data.attachment.map((file, index) => (
+                                                <div key={index} className="flex items-center justify-between gap-3 border border-gray-200 rounded shadow-smShadow ">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="max-w-16 h-16">
+                                                            {
+                                                                file.type?.startsWith("image/") ? (
+                                                                    <img
+                                                                        src={URL.createObjectURL(file)}
+                                                                        alt="Preview"
+                                                                        className="w-full h-full object-cover rounded"
+                                                                    />
+                                                                ) : (
+                                                                    <div className="p-3 w-full h-full flex items-center justify-center bg-gray-100 text-xxs text-gray-950">
+                                                                        <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                            PDF
+                                                                        </div>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </div>
+                                                        <div className="flex flex-col items-start gap-1">
+                                                            <div className="text-gray-950 text-sm font-medium">{file.name}</div>
+                                                            <div className="text-gray-500 text-xs">{file.size / 1000} KB</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                ) : (
+                                    null
+                                )
+                            }
+                        </div>
+                        {/* option */}
+                        <div className="flex flex-col gap-6">
+                            <div>{data.poll_question ? data.poll_question : ''}</div>
+                            <div className="flex flex-col gap-3">
+                                {
+                                    data.option.map((opt, index) => (
+                                        <div key={index} className="flex flex-col gap-2">
+                                            <div className="flex justify-between items-center">
+                                                <div className="text-gray-950 text-base">{opt.option_name}</div>
+                                                <div className="text-gray-950 text-base font-semibold">0%</div>
+                                            </div>
+                                            <div className="w-full h-1 bg-gray-100 rounded-[10px]"></div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                            <div></div>
+                        </div>
+
+                    </div>
+                </div>
+            </Modal>
 
         </AuthenticatedLayout>
     )

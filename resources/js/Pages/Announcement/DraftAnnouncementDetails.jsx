@@ -2,21 +2,23 @@ import Button from "@/Components/Button";
 import { Announcement, CommentIcon, DeleteIcon, LogoIcon, PencilIcon, ScheduleConfigIcon, SendIcon, TrashIcon } from "@/Components/Icon/Outline";
 import InputLabel from "@/Components/InputLabel";
 import Modal from "@/Components/Modal";
-import { formatDate } from "@/Composables";
+import { formatDate, formatDMYTime } from "@/Composables";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, useForm } from "@inertiajs/react";
-import { Breadcrumb, TimePicker } from "antd";
+import { Breadcrumb, Image, Progress, TimePicker } from "antd";
 import { Calendar } from "primereact/calendar";
 import React, { useState } from "react";
 import dayjs from 'dayjs';
 import toast from "react-hot-toast";
 import ConfirmDialog from "@/Components/ConfirmDialog";
 import { DeleteIllus } from "@/Components/Icon/Illustration";
+import PublishedIllus from "@/Components/Icon/Illustration/Publish";
 
 export default function DraftAnnouncementDetails({ announcements, totalVote }) {
 
     const [isScheduleOpen, setIsScheduleOpen] = useState(false);
     const [isConfirmDeleteOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [isConfirmPublishOpen, setIsConfirmPublishOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     let minDate = new Date();
 
@@ -37,8 +39,28 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
         window.location.href = `/edit-draft-announcement/${announcements.id}`
     }
 
-    const publishDraft = () => {
+    const openConfirmPublish = () => {
+        setIsConfirmPublishOpen(true);
+    }
+    const closeConfirmPublish = () => {
+        setIsConfirmPublishOpen(false);
+    }
 
+    const publishDraft = (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        post('/publish-draft-announcement', {
+            onSuccess: () => {
+                toast.success('Announcement published successfully!', {
+                    title: 'Announcement published successfully!',
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+                window.location.href = '/announcement';
+                setIsLoading(false);
+            },
+        })
     }
 
     const openSchedular = () => {
@@ -125,7 +147,7 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
                             <PencilIcon />
                             <span>Edit</span>
                         </Button>
-                        <Button size="sm" className='flex items-center gap-2' onClick={publishDraft} >
+                        <Button size="sm" className='flex items-center gap-2' onClick={openConfirmPublish} >
                             <span>Publish</span>
                             <SendIcon className='text-white' />
                         </Button>
@@ -201,10 +223,10 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
                                 <div className="text-sm">{totalVote ? totalVote : 0}</div>
                             </div>
                         </div>
-                        <div>
+                        <div className="flex justify-center ">
                             {
                                 announcements.thumbnail && (
-                                    <img src={announcements.thumbnail} alt="thumbnail" />
+                                    <Image src={announcements.thumbnail} width={640}  />
                                 ) 
                             }
                         </div>
@@ -219,23 +241,92 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
                             dangerouslySetInnerHTML={{ __html: announcements.content_text }}
                         />
                         {
+                            announcements.attachment.length > 0 && (
+                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-3">
+                                    {
+                                        announcements.attachment.map((fileUrl, index) => {
+                                            const isImage = /\.(jpeg|jpg|png|gif|webp)$/i.test(fileUrl.url);
+                                            const isPDF = /\.pdf$/i.test(fileUrl.url);
+                                        
+                                            return (
+                                                <div key={index} className="p-2 flex items-center gap-3 bg-white border border-gray-200 rounded shadow-smShadow ">
+                                                    {
+                                                        isImage && (
+                                                            <>
+                                                                <img src={fileUrl.url} alt={`attachment-${index}`} className="max-h-12 rounded shadow" />
+                                                                <div className="flex flex-col w-full">
+                                                                    <div className="text-gray-950 text-sm font-medium">{fileUrl.file_name}</div>
+                                                                    <div className="text-gray-500 text-xs">{fileUrl.size / 1000} KB</div>
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    }
+                                            
+                                                    {
+                                                        isPDF && (
+                                                            <a
+                                                                href={fileUrl.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="flex items-center gap-3"
+                                                            >
+                                                                <div className="flex items-center justify-center text-xxs text-gray-950">
+                                                                    <div className="border border-error-400 rounded-sm rounded-tr-lg py-2.5 px-1 bg-white">
+                                                                        PDF
+                                                                    </div>
+                                                                </div>
+                                                                <div className="flex flex-col gap-1 w-full">
+                                                                    <div className="text-gray-950 text-sm font-medium">{fileUrl.url.split('/').pop()}</div>
+                                                                    <div className="text-gray-500 text-xs">{fileUrl.size / 1000} KB</div>
+                                                                    
+                                                                </div>
+                                                            </a>
+                                                        )
+                                                    }
+                                            
+                                                    {
+                                                        !isImage && !isPDF && (
+                                                            <a
+                                                                href={fileUrl.url}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className="text-gray-600 underline"
+                                                            >
+                                                                Download File
+                                                            </a>
+                                                        )
+                                                    }
+                                                </div>
+                                            );
+                                        })
+                                    }
+                                </div>
+                            )
+                        }
+                        {
                             announcements.announcement_poll && (
                                 <div className="flex flex-col gap-6">
                                     <div>{announcements.announcement_poll.option_name}</div>
                                     <div className="flex flex-col gap-3">
                                         {
                                             announcements.announcement_poll?.poll_options?.map((poll, index) => (
-                                                <div key={index} className="flex flex-col gap-2">
+                                                <div key={index} className="flex flex-col ">
                                                     <div className="flex items-center justify-between">
                                                         <div className="text-gray-950 text-base">{poll.option_name}</div>
                                                         <div className="text-base font-semibold text-gray-950">{poll.votes} vote</div>
                                                     </div>
-                                                    <div></div>
+                                                    <div>
+                                                        <Progress percent={0} showInfo={false} />
+                                                    </div>
                                                 </div>
                                             ))
                                         }
                                     </div>
-                                    <div>expires on</div>
+                                    <div className="flex items-center gap-3 text-gray-500 text-sm">
+                                        <div>{totalVote} votes</div>
+                                        <div>•</div>
+                                        <div>expires on {announcements.announcement_poll.expired_at ? formatDMYTime(announcements.announcement_poll.expired_at) : ''}</div>
+                                    </div>
                                 </div>
                             )
                         }
@@ -345,6 +436,28 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
                     <div className="flex justify-center items-center gap-4">
                         <Button variant="outlined" size="sm" onClick={closeConfirmDelete} >Cancel</Button>
                         <Button variant="danger" size="sm" onClick={confirmDelete}>Yes, Delete</Button>
+                    </div>
+                </div>
+            </ConfirmDialog>
+
+            <ConfirmDialog show={isConfirmPublishOpen} >
+                <div className="flex flex-col items-center gap-8 p-6">
+                    <div className="flex flex-col gap-3 items-center">
+                        <div>
+                            <PublishedIllus />
+                        </div>
+                        <div className="flex flex-col gap-2 items-center">
+                            <div className="text-gray-950 text-lg font-bold">
+                                Ready to Publish?
+                            </div>
+                            <div className="text-gray-700 text-sm text-center">
+                                You're about to publish this announcement to the selected employees. Review carefully as changes cannot be made after publishing. Do you want to proceed?
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex items-center justify-center gap-4 w-full">
+                        <Button size="sm" variant="outlined" onClick={closeConfirmPublish}>Cancel</Button>
+                        <Button size="sm" onClick={publishDraft}>Yes, Publish Now</Button>
                     </div>
                 </div>
             </ConfirmDialog>

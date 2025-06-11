@@ -9,7 +9,14 @@ class AnnouncementUser extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [];
+    protected $fillable = [
+        'status', 
+        'announcement_id',
+        'department_id',
+        'user_id',
+        'status',
+        'read_at'
+    ];
 
     public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

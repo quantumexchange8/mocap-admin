@@ -149,6 +149,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/delete-selected-comment', [AnnouncementController::class, 'deleteSelectedComment'])->name('delete-selected-comment');
         Route::post('/delete-announcement', [AnnouncementController::class, 'deleteAnnouncement'])->name('delete-announcement');
         Route::post('/unarchive-announcement', [AnnouncementController::class, 'unarchiveAnnouncement'])->name('unarchive-announcement');
+        Route::post('/publish-draft-announcement', [AnnouncementController::class, 'publishDraftAnnouncement'])->name('publish-draft-announcement');
+        Route::post('/update-draft-announcement', [AnnouncementController::class, 'updateDraftAnnouncement'])->name('update-draft-announcement');
         
         
     });
