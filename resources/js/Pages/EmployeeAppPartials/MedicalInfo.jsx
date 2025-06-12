@@ -184,61 +184,59 @@ export default function MedicalInfo({ data, setData, errors }) {
                         <InputLabel htmlFor="pregnant_delivery_date" value={<div className="flex gap-1">
                             <span>If you are pregnant, when is your expected date of delivery? </span>
                         </div>} />
-                        <div className="max-w-[220px]">
-                            <div className="relative ">
-                                <Calendar 
-                                    value={data.pregnant_delivery_date} 
-                                    onChange={(e) => setData('pregnant_delivery_date', e.value)} 
-                                    className="text-sm"
-                                    placeholder="dd/mm/yyyy"
-                                    invalid={!!errors.pregnant_delivery_date}
-                                    disabled={data.pregnant_type === 'No' || data.gender === 'male'}
-                                    pt={{
-                                        input: {
-                                            className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
-                                        },
-                                        panel: {
-                                            className: 'bg-white border border-gray-300 shadow-md rounded-md'
-                                        },
-                                        header: {
-                                            className: 'bg-white text-gray-900 font-semibold px-4 py-3'
-                                        },
-                                        table: {
-                                            className: 'w-full'
-                                        },
-                                        day: {
-                                            className: 'w-10 h-10 text-center rounded-full transition-colors'
-                                        },
-                                        daySelected: {
-                                            className: 'bg-gray-950 text-white font-bold rounded-full'
-                                        },
-                                        dayToday: {
-                                            className: 'border border-gray-950'
-                                        },
-                                        month: {
-                                            className: 'p-2 hover:bg-gray-100 rounded-md'
-                                        },
-                                        year: {
-                                            className: 'p-2 hover:bg-gray-100 rounded-md'
-                                        },
-                                        monthPicker: {
-                                            className: 'py-1 px-3'
-                                        }
-                                    }}
-                                    readOnlyInput
-                                />
-                                <div className="absolute right-4 top-1/2 transform -translate-y-1/2">
-                                    {
-                                        data.pregnant_delivery_date === null ? (
-                                            <DatePickerIcon />
-                                        ) : (
-                                            <span className="cursor-pointer" onClick={clearDate}>
-                                                <ClearIcon />
-                                            </span>
-                                        )
-                                    }
-                                </div>
-                            </div>
+                        <div className="max-w-[220px] relative">
+                            <Calendar 
+                                value={data.pregnant_delivery_date} 
+                                onChange={(e) => setData('pregnant_delivery_date', e.value)} 
+                                className="text-sm w-full"
+                                placeholder="dd/mm/yyyy"
+                                invalid={!!errors.pregnant_delivery_date}
+                                disabled={data.pregnant_type === 'No' || data.gender === 'male'}
+                                pt={{
+                                input: {
+                                    className: 'w-full py-3 px-4 pr-10 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                },
+                                panel: {
+                                    className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                },
+                                header: {
+                                    className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                },
+                                table: {
+                                    className: 'w-full'
+                                },
+                                day: {
+                                    className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                },
+                                daySelected: {
+                                    className: 'bg-gray-950 text-white font-bold rounded-full'
+                                },
+                                dayToday: {
+                                    className: 'border border-gray-950'
+                                },
+                                month: {
+                                    className: 'p-2 hover:bg-gray-100 rounded-md'
+                                },
+                                year: {
+                                    className: 'p-2 hover:bg-gray-100 rounded-md'
+                                },
+                                monthPicker: {
+                                    className: 'py-1 px-3'
+                                }
+                                }}
+                                readOnlyInput
+                            />
+                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10">
+                                {
+                                data.pregnant_delivery_date === null ? (
+                                    <DatePickerIcon />
+                                ) : (
+                                    <span className="cursor-pointer" onClick={clearDate}>
+                                    <ClearIcon />
+                                    </span>
+                                )
+                                }
+                            </div>  
                         </div>
                         <InputError message={errors.pregnant_delivery_date} />
                     </div>

@@ -2,12 +2,19 @@ import { EmployeeApplicationIlls, JobApplicationIlls, LoginIlls } from "@/Compon
 import { MocapLogo, Onboarding2Logo, OnboardingLogo } from "@/Components/Icon/Logo";
 import { LangIcon } from "@/Components/Icon/Outline";
 import { Link } from "@inertiajs/react";
+import { Dropdown } from "antd";
 import { motion, AnimatePresence } from "framer-motion";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Onboarding() {
 
     const [isLoading, setIsLoading] = useState(true);
+    const { t, i18n } = useTranslation();
+
+    const changeLanguage = (lng) => {
+        i18n.changeLanguage(lng); // 使用 'en' 或 'cn'
+    };
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -16,6 +23,25 @@ export default function Onboarding() {
     
         return () => clearTimeout(timer); // cleanup
     }, []);
+
+    const items = [
+        {
+            key: '1', 
+            label: (
+                <div onClick={() => changeLanguage('en')} >
+                    English
+                </div>
+            )
+        },
+        {
+            key: '2', 
+            label: (
+                <div onClick={() => changeLanguage('cn')} >
+                    中文
+                </div>
+            )
+        }
+    ]
 
     return (
         <div className="w-full relative min-h-screen">
@@ -42,15 +68,20 @@ export default function Onboarding() {
                                 <div><Onboarding2Logo /></div>
                                 <div><MocapLogo /></div>
                             </div>
-                            <div className="p-[9px] hover:bg-gray-50 rounded-full cursor-pointer">
-                                <LangIcon />
+                            <div className="p-[14px] hover:bg-gray-50 rounded-full cursor-pointer">
+                                <Dropdown menu={{ items }} placement="bottomRight" arrow trigger={['click']} >
+                                    <span>
+                                        <LangIcon />
+                                    </span>
+                                </Dropdown>
+                                
                             </div>
                         </div>
                         <div className="w-full flex items-center justify-center min-h-[90vh]">
                             <div className="w-full flex flex-col gap-12 max-w-[728px] max-h-[666px]">
                                 <div className="flex flex-col gap-3">
-                                    <div className="text-gray-950 text-xxl font-bold">Welcome to Motion Capture !</div>
-                                    <div className="text-gray-700 text-base">Choose what you’d like to do next: manage job applications, add employees, or access admin tools.</div>
+                                    <div className="text-gray-950 text-xxl font-bold">{t('welcome')}!</div>
+                                    <div className="text-gray-700 text-base">{t('choose_what_to_do')}.</div>
                                 </div>
                                 <div className="grid grid-cols-3 items-center gap-5">
                                     {/* Job Application Form */}
@@ -58,8 +89,8 @@ export default function Onboarding() {
                                         <div className="p-5 flex flex-col gap-2 border border-gray-200 bg-white rounded-sm h-[300px] relative overflow-hidden hover:border-gray-950 hover:shadow-toast cursor-pointer
                                             transition-transform duration-300 ease-in-out hover:-translate-y-2"
                                         >
-                                            <div className="text-gray-950 text-sm font-bold">Job Application Form</div>
-                                            <div className="text-gray-500 text-xs">Invite candidates to fill out their details before the interview. Simplify your hiring process!</div>
+                                            <div className="text-gray-950 text-sm font-bold">{t('job_application_form')}</div>
+                                            <div className="text-gray-500 text-xs">{t('invite_candidates')}!</div>
                                             
                                             <JobApplicationIlls className='absolute right-1 bottom-0' />
                                         </div>

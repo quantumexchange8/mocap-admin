@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Console\Scheduling\Schedule;
 use Inertia\Inertia;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -26,6 +27,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
+    })
+    ->withSchedule(function(Schedule $schedule) {
+        $schedule->command('run:schedule-announcement')->everyFiveMinutes();
     })
     ->withExceptions(function (Exceptions $exceptions) {
         // $exceptions->respond(function (Response $response, Throwable $exception, Request $request) {

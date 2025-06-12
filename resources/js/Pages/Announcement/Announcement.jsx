@@ -42,7 +42,7 @@ export default function Announcement() {
 
             <div className="flex flex-col w-full">
                 {/* Header */}
-                <div className="py-2 px-5 sticky top-[55px] flex justify-between items-center">
+                <div className="py-2 px-5 sticky top-[55px] flex justify-between items-center bg-white">
                     <div>
                         <Segmented 
                             options={tabOptions}

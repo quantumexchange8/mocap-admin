@@ -63,11 +63,11 @@ export default function Draft() {
                                                 <div className="flex items-center gap-3">
                                                     {
                                                         draft.user.profile_image ? (
-                                                            <div className="relative w-40 h-40 group">
+                                                            <div className="w-40 h-40 group">
                                                                 <img src={draft.user.profile_image} alt="profile_image" />
                                                             </div>
                                                         ) : (
-                                                            <div className="relative w-8 h-8 group">
+                                                            <div className="w-8 h-8 group">
                                                                 <LogoIcon />
                                                             </div>
                                                         )

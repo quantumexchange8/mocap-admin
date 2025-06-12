@@ -26,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
             $this->app['request']->server->set('HTTPS', true);
         }
 
+        app()->setLocale(session('locale', config('app.locale')));
+
         Vite::prefetch(concurrency: 3);
     }
 }

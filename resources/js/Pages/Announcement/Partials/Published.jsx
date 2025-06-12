@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Calendar } from "primereact/calendar";
 import { CalendarIcon, DatePickerIcon, LogoIcon, PinIcon, PinIcon2, XIcon } from "@/Components/Icon/Outline";
 import { Select } from "antd";
 import { AnimatePresence, motion } from "framer-motion";
 import { formatDate, formatDateTime, formatDMYTime } from "@/Composables";
 import { DepartmentIllus } from "@/Components/Icon/Illustration";
+import { ReactSortable } from "react-sortablejs";
+import Pin2 from "@/Components/Pin/Pin2";
 
 export default function Published() {
 
@@ -66,6 +68,29 @@ export default function Published() {
         window.location.href = `/published-announcment-details/${id}`
     }
 
+    const sortUpdateTimer = useRef(null);
+
+    const handleSort = (sortedList) => {
+        setGetPinAnnouncement(sortedList);
+
+        const updatedOrder = sortedList.map((item, index) => ({
+            id: item.id,
+            order_no: index + 1,
+        }));
+
+        // add 5 sec only update to backend
+        // if (sortUpdateTimer.current) {
+        //     clearTimeout(sortUpdateTimer.current);
+        // }
+        // sortUpdateTimer.current = setTimeout(() => {
+        //     axios
+        //         .post("/update-pin-order", { updatedOrder })
+        //         .then(() => console.log("Order updated"))
+        //         .catch((err) => console.error(err));
+        // }, 5000); // 5 seconds
+            
+    };
+
     return (
         <AnimatePresence mode="wait">
             {
@@ -91,17 +116,34 @@ export default function Published() {
                             getPublishedAnnouncement.length > 0 ? (
                                 <div className="p-5 flex flex-col gap-5">
                                     {/* Pin announcement */}
-                                    <div className="flex flex-col bg-gray-100 rounded-sm">
-                                        <div className="pt-5 px-5 flex flex-col">
-                                            <div className="text-gray-950 text-base font-semibold">Pin Announcement</div>
-                                            <div className="text-gray-700 text-sm">
-                                                Drag to reorder pinned announcements. These will display in the employee app in the same order. Maximum of 5 pinned announcements.
+                                    {
+                                        getPinAnnouncement.length > 0 && (
+                                            <div className="flex flex-col bg-gray-100 rounded-sm">
+                                                <div className="pt-5 px-5 flex flex-col">
+                                                    <div className="text-gray-950 text-base font-semibold">Pin Announcement</div>
+                                                    <div className="text-gray-700 text-sm">
+                                                        Drag to reorder pinned announcements. These will display in the employee app in the same order. Maximum of 5 pinned announcements.
+                                                    </div>
+                                                </div>
+                                                <div className="p-5 overflow-auto">
+                                                    <ReactSortable
+                                                        list={getPinAnnouncement}
+                                                        setList={handleSort}
+                                                        className="flex items-center gap-5"
+                                                    >
+                                                        {
+                                                            getPinAnnouncement.map(pinned => (
+                                                                <Pin2 
+                                                                    key={pinned.id}
+                                                                    pin_type={pinned.pin_type}
+                                                                />
+                                                            ))
+                                                        }
+                                                    </ReactSortable>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="p-5 overflow-auto">
-
-                                        </div>
-                                    </div>
+                                        )
+                                    }
                                     {/* filter row */}
                                     <div className="flex items-center justify-between ">
                                         <div className="relative">

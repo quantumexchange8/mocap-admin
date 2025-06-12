@@ -152,6 +152,17 @@ class AnnouncementController extends Controller
         // check schedule time will conflict poll end date
         $this->pollAndScheduleConflict($request);
 
+        $orderNo = null;
+
+        if ($request->boolean('pin_bool')) {
+            // Count how many pinned & published announcements already exist
+            $latestOrderNo = Announcement::where('pin', 1)
+                ->max('order_no');
+        
+            // Assign next available order_no
+            $orderNo = $latestOrderNo ? $latestOrderNo + 1 : 1;
+        }
+
         // Main Announcement
         $announcement = Announcement::create([
             'subject' => $request->subject,
@@ -163,6 +174,7 @@ class AnnouncementController extends Controller
             'schedule_time' => $request->schedule_time ? Carbon::parse($request->schedule_time)->timezone('Asia/Kuala_Lumpur')->format('H:i:s') : null,
             'status' => 'draft',
             'created_by' => $auth->id,
+            'order_no' => $orderNo,
          ]);
 
         //  send to all user // selected user
@@ -473,6 +485,17 @@ class AnnouncementController extends Controller
 
         $now = Carbon::now()->timezone('Asia/Kuala_Lumpur');
 
+        $orderNo = null;
+
+        if ($request->boolean('pin_bool')) {
+            // Count how many pinned & published announcements already exist
+            $latestOrderNo = Announcement::where('pin', 1)
+                ->max('order_no');
+        
+            // Assign next available order_no
+            $orderNo = $latestOrderNo ? $latestOrderNo + 1 : 1;
+        }
+
         $announcement = Announcement::create([
             'subject' => $request->subject,
             'content_title' => $request->subject,
@@ -482,6 +505,7 @@ class AnnouncementController extends Controller
             'status' => 'published',
             'created_by' => $auth->id,
             'published_at' => $now,
+            'order_no' => $orderNo,
         ]);
 
          //  send to all user // selected user
@@ -670,6 +694,8 @@ class AnnouncementController extends Controller
         $pinAnnouncement = Announcement::where('status', 'published')
             ->where('pin', 1)
             ->with(['user', 'announcement_user', 'announcement_comment'])
+            ->orderBy('order_no', 'desc') // lower order_no = higher priority
+            ->take(5) // limit to 5
             ->get();
 
         return response()->json($pinAnnouncement);
@@ -1116,6 +1142,19 @@ class AnnouncementController extends Controller
         $announcement = Announcement::find($request->id);
 
         $now = Carbon::now()->timezone('Asia/Kuala_Lumpur');
+
+        $orderNo = null;
+
+        if ($announcement->pin == 0) {
+            if ($request->boolean('pin_bool')) {
+                // Count how many pinned & published announcements already exist
+                $latestOrderNo = Announcement::where('pin', 1)
+                    ->max('order_no');
+            
+                // Assign next available order_no
+                $orderNo = $latestOrderNo ? $latestOrderNo + 1 : 1;
+            }
+        }
 
         $announcement->update([
             'subject' => $request->subject,

@@ -6,6 +6,7 @@ import { Calendar } from 'primereact/calendar';
 import { CalendarIcon, ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
 import InputError from "@/Components/InputError";
 import { Select } from "antd";
+import { InputNumber } from "primereact/inputnumber";
 
 export default function PersonalInfo({ data, setData, errors }) {
     
@@ -160,17 +161,15 @@ export default function PersonalInfo({ data, setData, errors }) {
                         <div className="flex gap-1">
                             <InputLabel htmlFor="expected_salary" value="Expected Salary" /><div className="text-sm text-error-600">*</div>
                         </div>
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput
-                                id="expected_salary"
-                                type="number"
-                                name="expected_salary"
-                                value={data.expected_salary}
-                                className="pl-10 w-full"
-                                placeholder="0"
-                                onChange={(e) => setData('expected_salary', e.target.value)}
-                                hasError={!!errors.expected_salary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.expected_salary || 0} 
+                                onValueChange={(e) => setData('expected_salary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.expected_salary}
                             />
                         </div>
                         <InputError message={errors.expected_salary}  />
