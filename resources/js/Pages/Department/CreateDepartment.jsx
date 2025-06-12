@@ -196,6 +196,26 @@ export default function CreateDepartment() {
                     <button className="ql-underline" />
                 </span>
                 <span className="ql-formats">
+                    <select className="ql-color" defaultValue="">
+                        <option value="black"></option>
+                        <option value="red"></option>
+                        <option value="green"></option>
+                        <option value="blue"></option>
+                        <option value="orange"></option>
+                        <option value="violet"></option>
+                        <option value="#d0d1d2"></option>
+                        <option value="" />
+                    </select>
+                    <select className="ql-background" defaultValue="">
+                        <option value="black"></option>
+                        <option value="red"></option>
+                        <option value="green"></option>
+                        <option value="blue"></option>
+                        <option value="orange"></option>
+                        <option value="violet"></option>
+                    </select>
+                </span>
+                <span className="ql-formats">
                     <button className="ql-list" value="ordered" />
                     <button className="ql-list" value="bullet" />
                 </span>
@@ -203,6 +223,9 @@ export default function CreateDepartment() {
                     <button className="ql-align" value="" />
                     <button className="ql-align" value="center" />
                     <button className="ql-align" value="right" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-clean" />
                 </span>
             </>
         )

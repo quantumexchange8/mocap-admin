@@ -118,6 +118,25 @@ export default function PersonalInfo({
         }
     }, [data.nationality, getNationality]);
 
+    const closePersonalInfoDialog = () => {
+        if (user_details) {
+            setData({
+                id: user_details.id || '',
+                nationality: user_details.nationality || '',
+                identity_no: user_details.identity_no || '',
+                gender: user_details.gender || '',
+                race: user_details.race || '',
+                religion: user_details.religion || '',
+                place_of_birth: user_details.place_of_birth || '',
+                marital_status: user_details.maritial_status || '',
+                postcode: user_details.postcode || '',
+                city: user_details.city || '',
+                state: user_details.state || '',
+            });
+        }
+        closePersonalInfo();
+    }
+
     const submit = (e) => {
         e.preventDefault();
         setIsLoading(true)
@@ -147,10 +166,10 @@ export default function PersonalInfo({
                 show={isPersonalInfoOpen}
                 maxWidth='md'
                 title='Personal Information'
-                onClose={closePersonalInfo}
+                onClose={closePersonalInfoDialog}
                 footer={
                     <div className="flex items-center justify-end gap-4 w-full">
-                        <Button variant="outlined" size="sm" onClick={closePersonalInfo}>Cancel</Button>
+                        <Button variant="outlined" size="sm" onClick={closePersonalInfoDialog}>Cancel</Button>
                         <Button size="sm" onClick={submit} >Save Changes</Button>
                     </div>
                 }
@@ -309,7 +328,6 @@ export default function PersonalInfo({
                             <div className="flex flex-col gap-2">
                                 <InputLabel htmlFor="marital_status" value={<div className="flex gap-1">
                                     <span>Marital Status </span>
-                                    <span className="text-error-600">*</span>
                                 </div>} />
                                 <Dropdown 
                                     value={data.marital_status} 
@@ -337,9 +355,8 @@ export default function PersonalInfo({
                                 <InputError message={errors.marital_status}  />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <InputLabel htmlFor="postcode" value={<div className="flex gap-1">
-                                    <span>Postcode</span>
-                                    <span className="text-error-600">*</span>
+                                <InputLabel htmlFor="postcode" value={<div className="flex items-center gap-1">
+                                    <span>Postcode </span><span className="text-gray-500 text-xs">(Current)</span>
                                 </div>} />
                                 <TextInput 
                                     id="postcode"
@@ -355,9 +372,9 @@ export default function PersonalInfo({
                                 <InputError message={errors.postcode}  />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <InputLabel htmlFor="city" value={<div className="flex gap-1">
+                                <InputLabel htmlFor="city" value={<div className="flex items-center gap-1">
                                     <span>City</span>
-                                    <span className="text-error-600">*</span>
+                                    <span className="text-gray-500 text-xs">(Current)</span>
                                 </div>} />
                                 <TextInput 
                                     id="city"
@@ -373,9 +390,9 @@ export default function PersonalInfo({
                                 <InputError message={errors.city}  />
                             </div>
                             <div className="flex flex-col gap-2">
-                                <InputLabel htmlFor="state" value={<div className="flex gap-1">
+                                <InputLabel htmlFor="state" value={<div className="flex items-center gap-1">
                                     <span>State</span>
-                                    <span className="text-error-600">*</span>
+                                    <span className="text-gray-500 text-xs">(Current)</span>
                                 </div>} />
                                 <Dropdown 
                                     value={data.state} 

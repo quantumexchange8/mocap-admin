@@ -48,6 +48,11 @@ export default function BankInfo({isBankInfoOpen, setIsBankInfoOpen, closeBankIn
         fetchBank();
     }, []);
 
+    const closeBankInfoDialog = () => {
+        reset();
+        closeBankInfo();
+    }
+
     const submit = (e) => {
         e.preventDefault();
         setIsLoading(true)
@@ -77,10 +82,10 @@ export default function BankInfo({isBankInfoOpen, setIsBankInfoOpen, closeBankIn
                 show={isBankInfoOpen}
                 maxWidth='md'
                 title='Bank and Contribution Information'
-                onClose={closeBankInfo}
+                onClose={closeBankInfoDialog}
                 footer={
                     <div className="flex items-center justify-end gap-4 w-full">
-                        <Button variant="outlined" size="sm" onClick={closeBankInfo}>Cancel</Button>
+                        <Button variant="outlined" size="sm" onClick={closeBankInfoDialog}>Cancel</Button>
                         <Button size="sm" onClick={submit} >Save Changes</Button>
                     </div>
                 }

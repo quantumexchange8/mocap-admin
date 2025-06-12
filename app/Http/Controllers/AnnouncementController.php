@@ -431,10 +431,6 @@ class AnnouncementController extends Controller
         $conditionalRules = [
             'pin_type' => 'required_if:pin_bool,true',
             'poll_question' => 'nullable|string',
-            'option' => 'required_with:poll_question',
-            'option.*.option_name' => 'required|string',
-            'duration_type' => 'required_with:poll_question',
-            'end_date' => 'required_if:duration_type,set_end_date|nullable|date|after:now',
         ];
 
         // 合并验证规则
@@ -1116,10 +1112,6 @@ class AnnouncementController extends Controller
         $conditionalRules = [
             'pin_type' => 'required_if:pin_bool,true',
             'poll_question' => 'nullable|string',
-            'option' => 'required_with:poll_question',
-            'option.*.option_name' => 'required|string',
-            'duration_type' => 'required_with:poll_question',
-            'end_date' => 'required_if:duration_type,set_end_date|nullable|date|after:now',
         ];
 
         // 合并验证规则
@@ -1205,26 +1197,30 @@ class AnnouncementController extends Controller
 
             if ($request->duration_type === 'set_end_date') {
 
-                $poll->update([
-                    'option_name' => $request->poll_question,
-                    'duration_type' => $request->duration_type,
-                    'duration_date' => $request->end_date ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay() : null,
-                    'expired_at' => $request->end_date ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay(): $now,
-                ]);
+                if ($poll) {
+                    $poll->update([
+                        'option_name' => $request->poll_question,
+                        'duration_type' => $request->duration_type,
+                        'duration_date' => $request->end_date ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay() : null,
+                        'expired_at' => $request->end_date ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay(): $now,
+                    ]);
+                }
             }
             if ($request->duration_type === 'set_length') {
 
-                $poll->update([
-                    'option_name' => $request->poll_question,
-                    'duration_type' => $request->duration_type,
-                    'duration_days' => $request->length_day ?? null, // int
-                    'duration_hours' => $request->length_hour ?? null, // int
-                    'duration_minutes' => $request->length_minute ?? null, //int
-                    'expired_at' => $now->copy()
-                            ->addDays((int) $request->length_day ?? 0)
-                            ->addHours((int) $request->length_hour ?? 0)
-                            ->addMinutes((int) $request->length_minute ?? 0),
-                ]);
+                if ($poll) {
+                    $poll->update([
+                        'option_name' => $request->poll_question,
+                        'duration_type' => $request->duration_type,
+                        'duration_days' => $request->length_day ?? null, // int
+                        'duration_hours' => $request->length_hour ?? null, // int
+                        'duration_minutes' => $request->length_minute ?? null, //int
+                        'expired_at' => $now->copy()
+                                ->addDays((int) $request->length_day ?? 0)
+                                ->addHours((int) $request->length_hour ?? 0)
+                                ->addMinutes((int) $request->length_minute ?? 0),
+                    ]);
+                }
             }
 
             DB::table('poll_options')->where('poll_id', $poll->id)->delete();

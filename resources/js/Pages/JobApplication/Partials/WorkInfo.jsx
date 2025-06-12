@@ -13,8 +13,8 @@ export default function WorkInfo({data, setData, errors}) {
     const [isLoading, setIsLoading] = useState(false);
 
     const handleForm = (e) => {
-        const hasExperience = !e.target.checked;
-        setDisabled(e.target.checked);
+        const hasExperience = e.target.checked;
+        setDisabled(hasExperience);
         setData('experience', hasExperience)
     };
 
@@ -47,6 +47,7 @@ export default function WorkInfo({data, setData, errors}) {
                 </div>
                 <label className="flex p-5 items-center gap-4 self-stretch">
                     <Checkbox
+                    checked={data.experience}
                     onChange={handleForm}
                     />
                     <div className="text-gray-950 cursor-pointer">I do not have any work experience</div>

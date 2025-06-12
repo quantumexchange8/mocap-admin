@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdministratorController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\AuthEmployeeController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\EmployeeController;
@@ -115,6 +116,15 @@ Route::middleware('auth')->group(function () {
         Route::get('/getAnouncement', [DashboardController::class, 'getAnouncement'])->name('getAnouncement');
         Route::get('/getTotalEmployee', [DashboardController::class, 'getTotalEmployee'])->name('getTotalEmployee');
         
+    });
+
+    /**
+     * ==============================
+     *           Calendar
+     * ==============================
+    */
+    Route::group(['middleware' => ['permission:calendar']], function () {
+        Route::get('/calendar', [CalendarController::class, 'calendar'])->name('calendar');
     });
 
     /**

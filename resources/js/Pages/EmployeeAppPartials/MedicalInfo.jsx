@@ -18,6 +18,7 @@ export default function MedicalInfo({ data, setData, errors }) {
         {value: 'AB-', label: 'AB-'},
         {value: 'O+', label: 'O+'},
         {value: 'O-', label: 'O-'},
+        {value: 'no', label: 'Not sure'},
     ]
 
     const clearDate = () => {
@@ -41,7 +42,7 @@ export default function MedicalInfo({ data, setData, errors }) {
                             value={data.blood_type}
                             onChange={(e) => setData('blood_type', e.target.value)}
                             options={bloodType}
-                            className="py-3 flex gap-x-4"
+                            className="py-3 flex gap-x-2"
                         />
                         <InputError message={errors.blood_type} />
                     </div>

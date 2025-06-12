@@ -178,7 +178,7 @@ export default function ProfileInfo({
                             showUploadList={false}
                             onChange={handleImageChange}
                         >
-                            <Button variant="outlined" size="sm">Change</Button>
+                            <Button variant="outlined" size="sm">Upload</Button>
                         </Upload>
                     </div>
                     <div>
@@ -217,7 +217,7 @@ export default function ProfileInfo({
                         <InputError message={errors.username}  />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="dob" value='Preferred Name' />
+                        <InputLabel htmlFor="dob" value='Date of birth' />
                         <div className="relative">
                             <Calendar 
                                 value={data.dob}

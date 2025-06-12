@@ -68,7 +68,7 @@ export default function JobApplication() {
         skills: '',
 
         //work experience
-        experience: true,
+        experience: false,
         job1_title: '',
         job1_period: null,
         job1_company: '',

@@ -145,6 +145,26 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                     <button className="ql-underline" />
                 </span>
                 <span className="ql-formats">
+                    <select className="ql-color" defaultValue="">
+                        <option value="black"></option>
+                        <option value="red"></option>
+                        <option value="green"></option>
+                        <option value="blue"></option>
+                        <option value="orange"></option>
+                        <option value="violet"></option>
+                        <option value="#d0d1d2"></option>
+                        <option value="" />
+                    </select>
+                    <select className="ql-background" defaultValue="">
+                        <option value="black"></option>
+                        <option value="red"></option>
+                        <option value="green"></option>
+                        <option value="blue"></option>
+                        <option value="orange"></option>
+                        <option value="violet"></option>
+                    </select>
+                </span>
+                <span className="ql-formats">
                     <button className="ql-list" value="ordered" />
                     <button className="ql-list" value="bullet" />
                 </span>
@@ -152,6 +172,9 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                     <button className="ql-align" value="" />
                     <button className="ql-align" value="center" />
                     <button className="ql-align" value="right" />
+                </span>
+                <span className="ql-formats">
+                    <button className="ql-clean" />
                 </span>
             </>
         )
@@ -343,7 +366,6 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
             },
             onError: () => {
                 setIsLoading(false);
-                setConfirmPublish(false);
             }
         })
     }
@@ -978,23 +1000,27 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                             }
                         </div>
                         {/* option */}
-                        <div className="flex flex-col gap-6">
-                            <div>{data.poll_question ? data.poll_question : ''}</div>
-                            <div className="flex flex-col gap-3">
-                                {
-                                    data.option.map((opt, index) => (
-                                        <div key={index} className="flex flex-col gap-2">
-                                            <div className="flex justify-between items-center">
-                                                <div className="text-gray-950 text-base">{opt.option_name}</div>
-                                                <div className="text-gray-950 text-base font-semibold">0%</div>
-                                            </div>
-                                            <div className="w-full h-1 bg-gray-100 rounded-[10px]"></div>
-                                        </div>
-                                    ))
-                                }
-                            </div>
-                            <div></div>
-                        </div>
+                        {
+                            data.poll_question && (
+                                <div className="flex flex-col gap-6">
+                                    <div>{data.poll_question ? data.poll_question : ''}</div>
+                                    <div className="flex flex-col gap-3">
+                                        {
+                                            data.option.map((opt, index) => (
+                                                <div key={index} className="flex flex-col gap-2">
+                                                    <div className="flex justify-between items-center">
+                                                        <div className="text-gray-950 text-base">{opt.option_name}</div>
+                                                        <div className="text-gray-950 text-base font-semibold">0%</div>
+                                                    </div>
+                                                    <div className="w-full h-1 bg-gray-100 rounded-[10px]"></div>
+                                                </div>
+                                            ))
+                                        }
+                                    </div>
+                                    <div></div>
+                                </div>
+                            )
+                        }
 
                     </div>
                 </div>

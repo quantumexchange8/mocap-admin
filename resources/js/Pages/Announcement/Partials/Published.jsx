@@ -129,7 +129,7 @@ export default function Published() {
                                                     <ReactSortable
                                                         list={getPinAnnouncement}
                                                         setList={handleSort}
-                                                        className="flex items-center gap-5"
+                                                        className="flex items-center gap-5 cursor-grab"
                                                     >
                                                         {
                                                             getPinAnnouncement.map(pinned => (
