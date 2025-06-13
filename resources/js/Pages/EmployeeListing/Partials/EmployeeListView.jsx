@@ -134,7 +134,7 @@ export default function EmployeeListView({ getEmployeeListing, fetchEmployee, is
                         <div className="max-w-8 min-w-8 w-full h-8">
                             {
                                 record.profile_image ? (
-                                    <img src="https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c001/oAfOa6PAAACEAugW6GDACmQZzIALKx9fWFAAGA~tplv-dy-aweme-images:q75.webp?biz_tag=aweme_images&from=327834062&lk3s=138a59ce&s=PackSourceEnum_SEARCH&sc=image&se=false&x-expires=1749913200&x-signature=8ldN187mrrYJJqeL%2BC%2FwLbAM%2Bmk%3D" alt="" className="rounded-full" />
+                                    <img src={record.profile_image} alt="profile_image" className="object-cover w-full h-full rounded-full" />
                                 ) : (
                                     <div>
                                         {
