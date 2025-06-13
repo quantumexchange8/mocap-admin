@@ -66,6 +66,7 @@ export default function TransportInfo({data, setData, errors}) {
                                     onValueChange={(e) => setData('approximate_hours', e.value)} 
                                     suffix=" hour(s)" 
                                     className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                    
                                     max={24}
                                 />
                                 <InputError message={errors.approximate_hours} />
@@ -73,10 +74,11 @@ export default function TransportInfo({data, setData, errors}) {
                             <div className="flex flex-col gap-2 w-full ">
                                 <InputNumber 
                                     inputId="approximate_minutes"
-                                    value={data.approximate_minutes || 0.0} 
+                                    value={data.approximate_minutes || 0} 
                                     onValueChange={(e) => setData('approximate_minutes', e.value)} 
                                     suffix=" minutes(s)" 
                                     className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                    min={0}
                                     max={59}
                                 />
                                 <InputError message={errors.approximate_minutes} />

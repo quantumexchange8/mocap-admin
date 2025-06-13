@@ -4,6 +4,7 @@ import { Radio } from "antd";
 import React from "react";
 import { Checkbox } from 'antd';
 import { InputNumber } from 'primereact/inputnumber';
+import { EditIcon, PencilIcon } from "@/Components/Icon/Outline";
 
 
 export default function EmployeeInfo({employee, contentRef}) {
@@ -518,8 +519,9 @@ export default function EmployeeInfo({employee, contentRef}) {
 
         {/* Transport Info */}
         <div className="flex max-w-[728px] w-full flex-col border border-gray-200 bg-white rounded-sm shadow-smShadow">
-            <div className="flex flex-col py-4 px-5 border-b border-gray-200">
+            <div className="flex justify-between items-center py-4 px-5 border-b border-gray-200">
                 <div className="text-gray-950 text-base font-semibold">Transportation and Location</div>
+                <div className=""><EditIcon /></div>
             </div>
             <div className="p-5 flex flex-col gap-5">
                 <div className="flex flex-col gap-2">

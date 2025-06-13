@@ -35,7 +35,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="investigate_type" value="Are you currently under investigation by the authorities?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('investigate_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        investigate_type: value,
+                                        investigate_remark: value === 'No' ? '' : prev.investigate_remark,
+                                    }));
+                                }}
                                 value={data.investigate_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -61,7 +69,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="convicted_type" value="Have you been convicted by any court or law in any country?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('convicted_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        convicted_type: value,
+                                        convicted_remark: value === 'No' ? '' : prev.convicted_remark,
+                                    }));
+                                }}
                                 value={data.convicted_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -86,7 +102,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="bankrupt_type" value="Are you currently declared bankrupt?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('bankrupt_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        bankrupt_type: value,
+                                        bankrupt_remark: value === 'No' ? '' : prev.bankrupt_remark,
+                                    }));
+                                }}
                                 value={data.bankrupt_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -111,7 +135,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="suspended_type" value="Have you ever been dismissed or suspended from any position? "/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('suspended_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        suspended_type: value,
+                                        suspended_remark: value === 'No' ? '' : prev.suspended_remark,
+                                    }));
+                                }}
                                 value={data.suspended_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -136,7 +168,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="directorship_type" value="Are you holding a directorship or other appointment in any company?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('directorship_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        directorship_type: value,
+                                        directorship_remark: value === 'No' ? '' : prev.directorship_remark,
+                                    }));
+                                }}
                                 value={data.directorship_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -161,7 +201,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="relative_type" value="Do you have friends or relatives in this company?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('relative_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        relative_type: value,
+                                        relative_remark: value === 'No' ? '' : prev.relative_remark,
+                                    }));
+                                }}
                                 value={data.relative_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -186,7 +234,15 @@ export default function AdditionalInfo({data, setData, errors}) {
                         <InputLabel htmlFor="health_type" value="Do you suffer from or are you being treated for any medical (including mental health) condition?"/>
                         <div className="flex justify-between items-center self-stretch">
                             <Radio.Group
-                                onChange={(e) => setData('health_type', e.target.value)}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                            
+                                    setData((prev) => ({
+                                        ...prev,
+                                        health_type: value,
+                                        health_remark: value === 'No' ? '' : prev.health_remark,
+                                    }));
+                                }}
                                 value={data.health_type}
                                 options={['No', 'Yes']}
                                 className="py-3"
@@ -225,7 +281,7 @@ export default function AdditionalInfo({data, setData, errors}) {
                                     name="find_job_remark"
                                     value={data.find_job_remark}
                                     className="flex flex-col items-start gap-2 w-full"
-                                    placeholder="If yes, please specify"
+                                    placeholder="please specify"
                                     disabled={!data.find_job_type?.includes('Other')}
                                     onChange={(e) => setData('find_job_remark', e.target.value)}
                                     hasError={!!errors.find_job_remark}

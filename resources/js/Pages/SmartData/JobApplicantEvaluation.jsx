@@ -149,6 +149,8 @@ export default function JobApplicantEvaluation({ jobApplicant, checkEvaluated })
 
                 // 🔁 Refresh only user_details prop from the backend
                 router.reload({ only: ['user_details', 'checkEvaluated'] });
+
+                window.location.href = `/smart-data`
             },
             onError: () => {
                 isSubmittingRef.current = false;

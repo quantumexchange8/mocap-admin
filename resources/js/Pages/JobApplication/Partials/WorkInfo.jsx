@@ -6,6 +6,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
 import InputError from '@/Components/InputError';
+import { InputNumber } from 'primereact/inputnumber';
 
 export default function WorkInfo({data, setData, errors}) {
     const [disabled, setDisabled] = useState(false);
@@ -14,9 +15,11 @@ export default function WorkInfo({data, setData, errors}) {
 
     const handleForm = (e) => {
         const hasExperience = e.target.checked;
-        setDisabled(hasExperience);
-        setData('experience', hasExperience)
+    
+        // Toggle experience value based on checkbox
+        setData('experience', hasExperience ? 'no' : 'yes');
     };
+    
 
     const fetchPhoneCode = async  () => {
         setIsLoading(true);
@@ -47,8 +50,8 @@ export default function WorkInfo({data, setData, errors}) {
                 </div>
                 <label className="flex p-5 items-center gap-4 self-stretch">
                     <Checkbox
-                    checked={data.experience}
-                    onChange={handleForm}
+                        checked={data.experience === 'no'} // checked if experience is 'no'
+                        onChange={handleForm}
                     />
                     <div className="text-gray-950 cursor-pointer">I do not have any work experience</div>
                 </label >
@@ -224,19 +227,15 @@ export default function WorkInfo({data, setData, errors}) {
                         <div className="flex gap-1">
                             <InputLabel htmlFor="job1_startsalary" value="Starting Salary" /><div className="text-sm text-error-600">*</div>
                         </div>
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job1_startsalary"
-                                type="number"
-                                name="job1_startsalary"
-                                value={data.job1_startsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job1_startsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job1_startsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job1_startsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job1_startsalary || 0} 
+                                onValueChange={(e) => setData('job1_startsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job1_startsalary}
                             />
                         </div>
                         <InputError message={errors.job1_startsalary} />
@@ -245,19 +244,15 @@ export default function WorkInfo({data, setData, errors}) {
                         <div className="flex gap-1">
                             <InputLabel htmlFor="job1_endsalary" value="Ending Salary" /><div className="text-sm text-error-600">*</div>
                         </div>
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job1_endsalary"
-                                type="number"
-                                name="job1_endsalary"
-                                value={data.job1_endsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job1_endsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job1_endsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job1_endsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job1_endsalary || 0} 
+                                onValueChange={(e) => setData('job1_endsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job1_endsalary}
                             />
                         </div>
                         <InputError message={errors.job1_endsalary} />
@@ -421,38 +416,30 @@ export default function WorkInfo({data, setData, errors}) {
 
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_startsalary" value="Starting Salary" />
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job2_startsalary"
-                                type="number"
-                                name="job2_startsalary"
-                                value={data.job2_startsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job2_startsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job2_startsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job2_startsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job2_startsalary || 0} 
+                                onValueChange={(e) => setData('job2_startsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job2_startsalary}
                             />
                         </div>
                         <InputError message={errors.job2_startsalary} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job2_endsalary" value="Ending Salary" />
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job2_endsalary"
-                                type="number"
-                                name="job2_endsalary"
-                                value={data.job2_endsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job2_endsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job2_endsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job2_endsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job2_endsalary || 0} 
+                                onValueChange={(e) => setData('job2_endsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job2_endsalary}
                             />
                         </div>
                         <InputError message={errors.job2_endsalary} />
@@ -615,38 +602,30 @@ export default function WorkInfo({data, setData, errors}) {
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_startsalary" value="Starting Salary" />
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job3_startsalary"
-                                type="number"
-                                name="job3_startsalary"
-                                value={data.job3_startsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job3_startsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job3_startsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job3_startsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job3_startsalary || 0} 
+                                onValueChange={(e) => setData('job3_startsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job3_startsalary}
                             />
                         </div>
                         <InputError message={errors.job3_startsalary} />
                     </div>
                     <div className="flex min-w-[300px] max-w-[334px] flex-col items-start gap-2 flex-[1_0_0]">
                         <InputLabel htmlFor="job3_endsalary" value="Ending Salary" />
-                        <div className="relative flex items-center gap-3 self-stretch">
-                            <span className="absolute left-4 text-sm text-gray-950">RM</span>
-                            <TextInput 
-                                id="job3_endsalary"
-                                type="number"
-                                name="job3_endsalary"
-                                value={data.job3_endsalary}
-                                className="pl-10 w-full"
-                                autoComplete="job3_endsalary"
-                                placeholder="0.00"
-                                onChange={(e) => setData('job3_endsalary', e.target.value)}
-                                disabled={disabled}
-                                hasError={!!errors.job3_endsalary}
+                        <div className="flex items-center gap-3 self-stretch">
+                            <InputNumber 
+                                inputId="rm"
+                                value={data.job3_endsalary || 0} 
+                                onValueChange={(e) => setData('job3_endsalary', e.value)} 
+                                prefix="RM " 
+                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                min={0}
+                                invalid={!!errors.job3_endsalary}
                             />
                         </div>
                         <InputError message={errors.job3_endsalary} />

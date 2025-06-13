@@ -20,6 +20,7 @@ export default function PersonalInfo({
         {name: 'Malay'},
         {name: 'Chinese'},
         {name: 'Indian'},
+        {name: 'Others'},
     ];
 
     const religions = [

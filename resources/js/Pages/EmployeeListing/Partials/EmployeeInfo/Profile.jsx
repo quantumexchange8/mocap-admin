@@ -10,6 +10,8 @@ import BeneficiaryInfo from "./BeneficiaryInfo";
 import UrgentInfo from "./UrgentInfo";
 import Education from "./Education";
 import WorkInfo from "./WorkInfo";
+import MedicalInfo from "./MedicalInfo";
+import TransportInfo from "./TransportInfo";
 
 export default function Profile({ user_details, id }) {
 
@@ -18,9 +20,11 @@ export default function Profile({ user_details, id }) {
     const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);
     const [isBankInfoOpen, setIsBankInfoOpen] = useState(false);
     const [isBeneficiaryInfoOpen, setIsBeneficiaryInfoOpen] = useState(false);
+    const [isMedicalInfoOpen, setIsMedicalInfoOpen] = useState(false);
     const [isUrgentInfoOpen, setIsUrgentInfoOpen] = useState(false);
     const [isEducationOpen, setIsEducationOpen] = useState(false);
     const [isWorkInfoOpen, setIsWorkInfoOpen] = useState(false);
+    const [isTransportOpen, setIsTransportInfoOpen] = useState(false);
 
     const fetchEduBg = async  () => {
         setIsLoading(true);
@@ -66,6 +70,13 @@ export default function Profile({ user_details, id }) {
         setIsBeneficiaryInfoOpen(false);
     }
 
+    const openMedicalInfo = () => {
+        setIsMedicalInfoOpen(true)
+    }
+    const closeMedicalInfo = () => {
+        setIsMedicalInfoOpen(false)
+    }
+
     const openUrgentInfo = () => {
         setIsUrgentInfoOpen(true);
     }
@@ -87,13 +98,19 @@ export default function Profile({ user_details, id }) {
         setIsWorkInfoOpen(false);
     }
 
+    const openTransportInfo = () => {
+        setIsTransportInfoOpen(true)
+    }
+    const closeTransportInfo = () => {
+        setIsTransportInfoOpen(false)
+    }
+
     const formatToMonthYear = (dateString) => {
         const date = new Date(dateString);
         const month = String(date.getMonth() + 1).padStart(2, '0'); // Ensure 2-digit month
         const year = date.getFullYear();
         return `${month}/${year}`;
     };
-
 
     return (
         <>
@@ -225,22 +242,56 @@ export default function Profile({ user_details, id }) {
                                 </div>
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Personal Insurance</div>
+                                    <div className="text-gray-950 text-sm w-full flex flex-wrap gap-1">
+                                        {user_details.beneficiaryinfo.insurance_id.join(', ')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Medical Info */}
+                        <div className="border border-gray-200 shadow-smShadow rounded-sm flex flex-col">
+                            <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
+                                <div className="text-gray-950 text-base font-semibold">Medical Information</div>
+                                <div>
+                                    <Button variant="text" size="sm" iconOnly onClick={openMedicalInfo}>
+                                        <EditIcon />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 p-5">
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Blood Type</div>
+                                    <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.blood_type}</div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Food Allergic</div>
                                     <div className="text-gray-950 text-sm w-full">
+                                        {user_details.medicalinfo.allergic_type}
                                         {
-                                            user_details.beneficiaryinfo.insurance_id ? (
-                                                <>
-                                                    {
-                                                        user_details.beneficiaryinfo.insurance_id.map((insurance, index) => (
-                                                            <div key={index}>
-                                                                {user_details.beneficiaryinfo.insurance_id.join(', ')}
-                                                            </div>
-                                                        ))
-                                                    }
-                                                </>
-                                            ) : null
+                                            user_details.medicalinfo.allergic_type === 'Yes' && (
+                                                <span className="text-gray-500"> ({user_details.medicalinfo.allergic_remark})</span>
+                                            )
                                         }
                                     </div>
                                 </div>
+                                {
+                                    user_details.gender === 'female' && (
+                                        <>
+                                            <div className="flex items-center">
+                                                <div className="text-gray-500 text-sm w-full">Pregnancy</div>
+                                                <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.pregnant_type}</div>
+                                            </div>
+                                            {
+                                                user_details.medicalinfo.pregnant_type === 'Yes' && (
+                                                    <div className="flex items-center">
+                                                        <div className="text-gray-500 text-sm w-full">Expected Date of Delivery</div>
+                                                        <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.pregnant_type}</div>
+                                                    </div>
+                                                )
+                                            }
+                                        </>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
@@ -316,7 +367,7 @@ export default function Profile({ user_details, id }) {
                                                 </div>
                                             ) : (
                                                 <div className="flex flex-col items-center gap-3 py-10 px-[60px]">
-                                                    No data available
+                                                    No education background
                                                 </div>
                                             )
                                         }
@@ -358,13 +409,55 @@ export default function Profile({ user_details, id }) {
                                                 </div>
                                             ) : (
                                                 <div className="flex flex-col items-center gap-3 py-10 px-[60px]">
-                                                    No data available
+                                                    No work experiences
                                                 </div>
                                             )
                                         }
                                     </>
                                 )
                             }
+                        </div>
+                        {/* Transportation Info */}
+                        <div className="border border-gray-200 shadow-smShadow rounded-sm flex flex-col">
+                            <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
+                                <div className="text-gray-950 text-base font-semibold">Transportation and Location Information</div>
+                                <div>
+                                    <Button variant="text" size="sm" iconOnly onClick={openTransportInfo}>
+                                        <EditIcon />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-3 p-5">
+                                {/* <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Own Transportation</div>
+                                    <div className="text-gray-950 text-sm w-full">{user_details.transportinfo.own_transport.join(', ')}</div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Driving's license</div>
+                                    <div className="text-gray-950 text-sm w-full">
+                                        {user_details.transportinfo.license_id.join(', ')}
+                                    </div>
+                                </div> */}
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Transportation Used to Work</div>
+                                    <div className="text-gray-950 text-sm w-full">
+                                        {user_details.transportinfo.work_transportation.join(', ')}
+                                    </div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Approximate Distance to Company</div>
+                                    <div className="text-gray-950 text-sm w-full">
+                                        {user_details.transportinfo.approximate_distance} Km
+                                    </div>
+                                </div>
+                                <div className="flex items-center">
+                                    <div className="text-gray-500 text-sm w-full">Approximate Time to Company</div>
+                                    <div className="text-gray-950 text-sm w-full">
+                                        {user_details.transportinfo.approximate_hours} hours {user_details.transportinfo.approximate_minutes} minutes
+                                    </div>
+                                </div>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -380,6 +473,18 @@ export default function Profile({ user_details, id }) {
                 isBankInfoOpen={isBankInfoOpen}
                 setIsBankInfoOpen={setIsBankInfoOpen}
                 closeBankInfo={closeBankInfo}
+                user_details={user_details}
+            />
+            <MedicalInfo 
+                isMedicalInfoOpen={isMedicalInfoOpen}
+                setIsMedicalInfoOpen={setIsMedicalInfoOpen}
+                closeMedicalInfo={closeMedicalInfo}
+                user_details={user_details}
+            />
+            <TransportInfo 
+                isTransportOpen={isTransportOpen}
+                setIsTransportInfoOpen={setIsTransportInfoOpen}
+                closeTransportInfo={closeTransportInfo}
                 user_details={user_details}
             />
             {

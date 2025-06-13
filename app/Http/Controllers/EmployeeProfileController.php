@@ -7,6 +7,8 @@ use App\Models\EmergencyInfo;
 use App\Models\EmployeeBank;
 use App\Models\JobEducation;
 use App\Models\JobExperience;
+use App\Models\MedicalInfo;
+use App\Models\Transport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -98,6 +100,54 @@ class EmployeeProfileController extends Controller
         return redirect()->back();
     }
 
+    public function updateMedicalInfo(Request $request)
+    {
+
+        $medicalInfo = MedicalInfo::find($request->id);
+
+        $validated = $request->validate([
+            'allergic_type' => ['required'],
+            'allergic_remark' => ['required_if:allergic_type,Yes'],
+
+            'medical_type' => ['required'],  // No / Yes
+            'medical_remark' => ['required_if:medical_type,Yes'], // if medical_type === 'Yes' this required
+
+            'medication_type' => ['required'],
+            'medication_remark' => ['required_if:medication_type,Yes'],
+
+            // if gender === 'male' this all not required else female is required
+            'pregnant_type' => ['required_if:gender,male'], // No / Yes
+            'pregnant_remark' => ['required_if:pregnant_type,Yes'], // if pregnant_type === 'Yes' this required
+
+            'pregnant_delivery_date' => ['required_if:pregnant_type,Yes'], // if pregnant_type === 'Yes' this required
+
+            'pregnancy_medication_type' => ['required_if:pregnant_type,Yes'], // No / Yes
+            'pregnancy_medication_remark' => ['required_if:pregnancy_medication_type,Yes'], // if pregnancy_medication_type === 'Yes' this required
+
+            'gynaecological_type' => ['required_if:pregnant_type,Yes'], // No / Yes
+            'gynaecological_remark' => ['required_if:gynaecological_type,Yes'], // if gynaecological_type === 'Yes' this required
+        ]);
+
+        $medicalInfo->update([
+            'blood_type' => $request->blood_type,
+            'allergic_type' => $request->allergic_type,
+            'allergic_remark' => $request->allergic_remark ?? null,
+            'medical_type' => $request->medical_type,
+            'medical_remark' => $request->medical_remark ?? null,
+            'medication_type' => $request->medication_type,
+            'medication_remark' => $request->medication_remark ?? null,
+            'pregnant_type' => $request->pregnant_type ?? null,
+            'pregnant_remark' => $request->pregnant_remark ?? null,
+            'pregnant_delivery_date' => Carbon::parse($request->pregnant_delivery_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+            'pregnancy_medication_type' => $request->pregnancy_medication_type ?? null,
+            'pregnancy_medication_remark' => $request->pregnancy_medication_remark ?? null,
+            'gynaecological_type' => $request->gynaecological_type ?? null,
+            'gynaecological_remark' => $request->gynaecological_remark ?? null,
+        ]);
+
+        return redirect()->back();
+    }
+
     public function updateUrgentInfo(Request $request){
 
         $validated = $request->validate([
@@ -180,6 +230,31 @@ class EmployeeProfileController extends Controller
                 'company_name'=> $work['company_name'],
             ]);
         }
+
+        return redirect()->back();
+    }
+
+    public function updateTransportInfo(Request $request)
+    {
+
+        $transportInfo = Transport::find($request->id);
+
+        $validated = $request->validate([
+            'own_transport' => ['required', 'array', 'min:1'],
+            'license_id' => ['required', 'array', 'max:255'],
+            'work_transportation' => ['required', 'array', 'max:255'],
+            'approximate_distance' => ['required'],
+            'approximate_minutes' => ['required', 'min:1'],
+        ]);
+
+        $transportInfo->update([
+            'own_transport' => $request->own_transport,
+            'license_id' => $request->license_id,
+            'work_transportation' => $request->work_transportation,
+            'approximate_distance' => $request->approximate_distance,
+            'approximate_hours' => $request->approximate_hours ?? null,
+            'approximate_minutes' => $request->approximate_minutes  ?? null,
+        ]);
 
         return redirect()->back();
     }

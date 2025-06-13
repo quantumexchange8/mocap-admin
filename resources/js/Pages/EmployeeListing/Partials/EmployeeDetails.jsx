@@ -12,6 +12,7 @@ import ProfileInfo from "./EmployeeInfo/ProfileInfo";
 import Profile from "./EmployeeInfo/Profile";
 import Company from "./EmployeeInfo/Company";
 import Documents from "./EmployeeInfo/Documents";
+import { FemaleAvatar, MaleAvatar } from "@/Components/Icon/ProfilePhoto";
 
 export default function EmployeeDetails({user_details}) {
 
@@ -62,13 +63,30 @@ export default function EmployeeDetails({user_details}) {
 
                 <div className="flex shadow-smShadow border border-gray-200">
                     <div className="max-w-60 min-w-60 w-full h-60 ">
-                        <Image 
-                            width={240}
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRX-6Wi3i1iTyPXaKenHPXvyc89PNv5-nHBYw&s"
-                            preview={{
-                                movable: false
-                            }}
-                        />
+                        {
+                            user_details.profile_image ? (
+                                <Image 
+                                    width="100%"
+                                    height="100%"
+                                    className="object-contain w-full h-full"
+                                    src={user_details.profile_image}
+                                    preview={{
+                                        movable: false
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    {
+                                        user_details.gender === 'male' ? (
+                                            <MaleAvatar className='w-60 h-60' />
+                                        ) : (
+                                            <FemaleAvatar className='w-60 h-60' />
+                                        )
+                                    }
+                                </>
+                            )
+                        }
+                        
                     </div>
                     <div className="flex flex-col justify-between p-5 w-full">
                         <div className="flex gap-5">

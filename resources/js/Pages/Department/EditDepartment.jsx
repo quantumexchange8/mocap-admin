@@ -161,8 +161,8 @@ export default function EditDepartment({ department }) {
                 setIsLoading(false);
                 isSubmittingRef.current = false;
                 reset();
-                toast.success('Succesfully Created Department.', {
-                    title: 'Succesfully Created Department.',
+                toast.success('Succesfully Updated Department.', {
+                    title: 'Succesfully Updated Department.',
                     duration: 3000,
                     variant: 'variant1',
                 });

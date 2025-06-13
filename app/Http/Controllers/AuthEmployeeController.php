@@ -38,6 +38,7 @@ class AuthEmployeeController extends Controller
             'transportinfo',
             'beneficiaryinfo',
             'department',
+            'medicalinfo'
         ])->find($id);
 
         $user_details->profile_image = $user_details->getFirstMediaUrl('profile_image') ?? null;

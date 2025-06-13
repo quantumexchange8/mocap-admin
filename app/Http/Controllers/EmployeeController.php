@@ -126,8 +126,7 @@ class EmployeeController extends Controller
             'license_id' => ['required', 'array', 'max:255'],
             'work_transportation' => ['required', 'array', 'max:255'],
             'approximate_distance' => ['required'],
-            'approximate_hours' => ['required'],
-            'approximate_minutes' => ['required'],
+            'approximate_minutes' => ['required', 'min:1'],
         ];
 
         $messages = [

@@ -326,7 +326,7 @@ export default function JobApplicants() {
                         {
                             record.status === 'rejected' && (
                                 <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
-                                    <span>Hired</span>
+                                    <span>Rejected</span>
                                 </Tag>
                             )
                         }

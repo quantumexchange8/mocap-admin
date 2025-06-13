@@ -14,6 +14,7 @@ export default function PersonalInfo({ data, setData, errors }) {
         {name: 'Malay'},
         {name: 'Chinese'},
         {name: 'Indian'},
+        {name: 'Others'},
     ];
 
     const religions = [
@@ -37,6 +38,7 @@ export default function PersonalInfo({ data, setData, errors }) {
     const [getPhoneCode, setGetPhoneCode] = useState([]);
     const [getStates, setGetStates] = useState([]);
     const [getPosition, setGetPosition] = useState([]);
+    let minDate = new Date();
 
     const fetchPosition = async  () => {
         setIsLoading(true);
@@ -141,8 +143,9 @@ export default function PersonalInfo({ data, setData, errors }) {
                     <div className="flex flex-col min-w-[300px] max-w-[334px] items-start gap-2 flex-[1_0_0]">
                         <div className="flex gap-1">
                             <InputLabel htmlFor="position" value="Position Apply For" /><div className="text-sm text-error-600">*</div>
-                        </div>   
+                        </div>
                         <Select 
+                            value={data.position}
                             showSearch
                             placeholder="Select"
                             className="antd-select-custom focus:ring-offset-transparent"
@@ -184,6 +187,7 @@ export default function PersonalInfo({ data, setData, errors }) {
                                 onChange={(e) => setData('start_date', e.value)} 
                                 className="w-full text-sm"
                                 placeholder="dd/mm/yyyy"
+                                minDate={minDate}
                                 pt={{
                                     input: {
                                         className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -504,7 +508,7 @@ export default function PersonalInfo({ data, setData, errors }) {
                         </div>                        
                         <TextInput 
                             id="postcode"
-                            type="text"
+                            type="number"
                             name="postcode"
                             value={data.postcode}
                             className="w-full"

@@ -24,7 +24,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.investigate_type}
-                                    onChange={(e) => setData('investigate_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            investigate_type: value,
+                                            investigate_remark: value === 'No' ? '' : prev.investigate_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
@@ -57,7 +65,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.convicted_type}
-                                    onChange={(e) => setData('convicted_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            convicted_type: value,
+                                            convicted_remark: value === 'No' ? '' : prev.convicted_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
@@ -90,7 +106,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.bankrupt_type}
-                                    onChange={(e) => setData('bankrupt_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            bankrupt_type: value,
+                                            bankrupt_remark: value === 'No' ? '' : prev.bankrupt_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
@@ -123,7 +147,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.suspended_type}
-                                    onChange={(e) => setData('suspended_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            suspended_type: value,
+                                            suspended_remark: value === 'No' ? '' : prev.suspended_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
@@ -156,7 +188,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.directorship_type}
-                                    onChange={(e) => setData('directorship_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            directorship_type: value,
+                                            directorship_remark: value === 'No' ? '' : prev.directorship_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />
@@ -189,7 +229,15 @@ export default function AdditionalInfo({ data, setData, errors }) {
                             <div className="flex items-center justify-between">
                                 <Radio.Group 
                                     value={data.relative_type}
-                                    onChange={(e) => setData('relative_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            relative_type: value,
+                                            relative_remark: value === 'No' ? '' : prev.relative_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
                                     className="py-3"
                                 />

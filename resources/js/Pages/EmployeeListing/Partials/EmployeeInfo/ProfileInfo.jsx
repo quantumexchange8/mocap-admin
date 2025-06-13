@@ -103,8 +103,8 @@ export default function ProfileInfo({
                 // 🔁 Refresh only user_details prop from the backend
                 router.reload({ only: ['user_details'] });
 
-                toast.success('Succesfully Created Department.', {
-                    title: 'Succesfully Created Department.',
+                toast.success(`Profile information updated successfully for ${user_details.username}.`, {
+                    title: `Profile information updated successfully for ${user_details.username}.`,
                     duration: 3000,
                     variant: 'variant1',
                 });

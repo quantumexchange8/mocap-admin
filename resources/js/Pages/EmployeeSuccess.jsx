@@ -4,6 +4,7 @@ import { LangIcon } from "@/Components/Icon/Outline";
 import { Link } from "@inertiajs/react";
 import React from "react";
 import { motion } from "framer-motion";
+import Button from "@/Components/Button";
 
 export default function EmployeeSuccess() {
 
@@ -33,13 +34,21 @@ export default function EmployeeSuccess() {
                     <EmployeeSuccessIllus />
                 </motion.div>
                 <motion.div
-                    className="flex flex-col items-center gap-2"
+                    className="flex flex-col items-center gap-5"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                    <div className="text-gray-950 text-xl font-bold">Employee Information Submitted!</div>
-                    <div className="text-gray-700 text-base">The employee details have been successfully added to the system. You’re all set!</div>
+                    <div className="flex flex-col items-center gap-2">
+                        <div className="text-gray-950 text-xl font-bold">Employee Information Submitted!</div>
+                        <div className="text-gray-700 text-base">The employee details have been successfully added to the system. You’re all set!</div>
+                    </div>
+                    {/* return onboarding */}
+                    <div className="w-full flex justify-center items-start">
+                        <Link href={'/'}>
+                            <Button size="sm">Back to Main Page</Button>
+                        </Link>
+                    </div>
                 </motion.div>
             </div>
             {/* can add animation */}

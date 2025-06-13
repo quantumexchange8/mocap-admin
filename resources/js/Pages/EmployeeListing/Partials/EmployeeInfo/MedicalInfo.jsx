@@ -1,13 +1,21 @@
-import React from "react";
-import InputLabel from "@/Components/InputLabel";
-import { DatePicker, Radio, Select } from "antd";
-import TextInput from "@/Components/TextInput";
+import Button from "@/Components/Button";
 import { ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
-import { Calendar } from "primereact/calendar";
 import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import Modal from "@/Components/Modal";
+import TextInput from "@/Components/TextInput";
+import { router, useForm } from "@inertiajs/react";
+import { Radio } from "antd";
+import { Calendar } from "primereact/calendar";
+import React, { useState }  from "react";
+import toast from "react-hot-toast";
 
-export default function MedicalInfo({ data, setData, errors }) {
-
+export default function MedicalInfo({
+    isMedicalInfoOpen,
+    setIsMedicalInfoOpen,
+    closeMedicalInfo,
+    user_details,
+}) {
 
     const bloodType = [
         {value: 'A+', label: 'A+'},
@@ -19,40 +27,90 @@ export default function MedicalInfo({ data, setData, errors }) {
         {value: 'O+', label: 'O+'},
         {value: 'O-', label: 'O-'},
         {value: 'no', label: 'Unknown'},
-    ]
+    ];
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const { data, setData, errors, post, reset } = useForm({
+        id: user_details.medicalinfo.id || '',
+        blood_type: user_details.medicalinfo.blood_type || '',
+        allergic_type: user_details.medicalinfo.allergic_type || '',
+        allergic_remark: user_details.medicalinfo.allergic_remark || '',
+        medical_type: user_details.medicalinfo.medical_type || '',
+        medical_remark: user_details.medicalinfo.medical_remark || '',
+        medication_type: user_details.medicalinfo.medication_type || '',
+        medication_remark: user_details.medicalinfo.medication_remark || '',
+        pregnant_type: user_details.medicalinfo.pregnant_type || '',
+        pregnant_remark: user_details.medicalinfo.pregnant_remark || '',
+        pregnant_delivery_date: user_details.medicalinfo.pregnant_delivery_date || '',
+        pregnancy_medication_type: user_details.medicalinfo.pregnancy_medication_type || '',
+        pregnancy_medication_remark: user_details.medicalinfo.pregnancy_medication_remark || '',
+        gynaescological_type: user_details.medicalinfo.gynaecological_type || '',
+        gynaecological_remark: user_details.medicalinfo.gynaecological_remark || '',
+    });
+
+
+    const closeMedicalInfoDialog = () => {
+        reset();
+        closeMedicalInfo();
+    }
 
     const clearDate = () => {
         setData('pregnant_delivery_date', null);
     }
 
+    const submit = (e) => {
+        e.preventDefault();
+        setIsLoading(true)
+
+        post('/update-medical-info', {
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsLoading(false);
+                closeMedicalInfoDialog();
+                reset();
+
+                // 🔁 Refresh only user_details prop from the backend
+                router.reload({ only: ['user_details'] });
+
+                toast.success(`Medical Information updated successfully for ${user_details.username}.`, {
+                    title: `Medical Information updated successfully for ${user_details.username}.`,
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+            },
+        })
+    }
+
     return (
         <>
-            {/* Medical Information */}
-            <div className="flex flex-col border border-gray-200 bg-white rounded-sm">
-                <div className="flex flex-col py-4 px-5 border-b border-gray-200">
-                    <div className="text-gray-950 text-base font-semibold">Medical Information</div>
-                    <div className="text-gray-500 text-sm">Mention any medical conditions or allergies we should be aware of to ensure your safety at work.</div>
-                </div>
-                <div className="flex flex-col gap-5 p-5">
+            <Modal
+                show={isMedicalInfoOpen}
+                maxWidth='lg'
+                title='Medical Information'
+                onClose={closeMedicalInfoDialog}
+                footer={
+                    <div className="flex items-center justify-end gap-4 w-full">
+                        <Button variant="outlined" size="sm" onClick={closeMedicalInfoDialog}>Cancel</Button>
+                        <Button size="sm" onClick={submit} >Save Changes</Button>
+                    </div>
+                }
+            >
+                <div className="flex flex-col gap-5 py-3 px-6">
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="blood_type" value={<div className="flex gap-1">
-                            <span>What is your blood type? </span>
-                        </div>} />
+                        <InputLabel value="What is your blood type?" />
                         <Radio.Group 
                             value={data.blood_type}
                             onChange={(e) => setData('blood_type', e.target.value)}
                             options={bloodType}
-                            className="py-3 flex gap-x-2"
+                            className="py-3 flex gap-x-3"
                         />
-                        <InputError message={errors.blood_type} />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="allergic_type" value={<div className="flex gap-1">
-                            <span>Are you allergic to any food? </span>
-                        </div>} />
+                        <InputLabel value="Are you allergic to any food?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
+                                 <Radio.Group 
                                     value={data.allergic_type}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -64,9 +122,9 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         }));
                                     }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="allergic_remark"
                                         type="text"
@@ -83,17 +141,15 @@ export default function MedicalInfo({ data, setData, errors }) {
                             </div>
                             <div className="flex items-center justify-between">
                                 <div className=""></div>
-                                <InputError message={errors.allergic_remark} className="w-full max-w-[500px]" />
+                                <InputError message={errors.allergic_remark} className="w-full max-w-[550px]" />
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="medical_type" value={<div className="flex gap-1">
-                            <span>Are you being treated for any medical (including mental health) condition? </span>
-                        </div>} />
+                        <InputLabel value="Are you being treated for any medical (including mental health) condition?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
+                                 <Radio.Group 
                                     value={data.medical_type}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -105,9 +161,9 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         }));
                                     }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="medical_remark"
                                         type="text"
@@ -121,21 +177,18 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         hasError={!!errors.medical_remark}
                                     />
                                 </div>
-                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className=""></div>
-                            <InputError message={errors.medical_remark} className="w-full max-w-[500px]" />
+                            <InputError message={errors.medical_remark} className="w-full max-w-[550px]" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="medication_type" value={<div className="flex gap-1">
-                            <span>Are you currently taking any medications? </span>
-                        </div>} />
+                        <InputLabel value="Are you currently taking any medications?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
+                                 <Radio.Group 
                                     value={data.medication_type}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -147,9 +200,9 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         }));
                                     }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="medication_remark"
                                         type="text"
@@ -163,21 +216,18 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         hasError={!!errors.medication_remark}
                                     />
                                 </div>
-                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className=""></div>
-                            <InputError message={errors.medication_remark} className="w-full max-w-[500px]" />
+                            <InputError message={errors.medication_remark} className="w-full max-w-[550px]" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="pregnant_type" value={<div className="flex gap-1">
-                            <span>Are you currently pregnant? </span>
-                        </div>} />
+                        <InputLabel value="Are you currently pregnant?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
+                                 <Radio.Group 
                                     value={data.pregnant_type}
                                     onChange={(e) => {
                                         const value = e.target.value;
@@ -190,10 +240,10 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         }));
                                     }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="pregnant_remark"
                                         type="text"
@@ -202,7 +252,7 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         className="disabled:cursor-not-allowed"
                                         placeholder="If yes, please specify"
                                         autoComplete="pregnant_remark"
-                                        disabled={data.pregnant_type === 'No' || data.gender === 'male'}
+                                        disabled={data.pregnant_type === 'No'}
                                         onChange={(e) => setData('pregnant_remark', e.target.value)}
                                         hasError={!!errors.pregnant_remark}
                                     />
@@ -211,13 +261,11 @@ export default function MedicalInfo({ data, setData, errors }) {
                         </div>
                         <div className="flex items-center justify-between">
                             <div className=""></div>
-                            <InputError message={errors.pregnant_remark} className="w-full max-w-[500px]" />
+                            <InputError message={errors.pregnant_remark} className="w-full max-w-[550px]" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="pregnant_delivery_date" value={<div className="flex gap-1">
-                            <span>If you are pregnant, when is your expected date of delivery? </span>
-                        </div>} />
+                        <InputLabel value="If you are pregnant, when is your expected date of delivery?" />
                         <div className="max-w-[220px] relative">
                             <Calendar 
                                 value={data.pregnant_delivery_date} 
@@ -275,19 +323,25 @@ export default function MedicalInfo({ data, setData, errors }) {
                         <InputError message={errors.pregnant_delivery_date} />
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="pregnancy_medication_type" value={<div className="flex gap-1">
-                            <span>If you are pregnant, are you taking any pregnancy medications? </span>
-                        </div>} />
+                        <InputLabel value="If you are pregnant, are you taking any pregnancy medications?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
+                                 <Radio.Group 
                                     value={data.pregnancy_medication_type}
-                                    onChange={(e) => setData('pregnancy_medication_type', e.target.value)}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            pregnancy_medication_type: value,
+                                            pregnancy_medication_remark: value === 'No' ? '' : prev.pregnancy_medication_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="pregnancy_medication_remark"
                                         type="text"
@@ -301,28 +355,33 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         hasError={!!errors.pregnancy_medication_remark}
                                     />
                                 </div>
-                                
                             </div>
                         </div>
                         <div className="flex items-center justify-between">
                             <div className=""></div>
-                            <InputError message={errors.pregnancy_medication_remark} className="w-full max-w-[500px]" />
+                            <InputError message={errors.pregnancy_medication_remark} className="w-full max-w-[550px]" />
                         </div>
                     </div>
                     <div className="flex flex-col gap-2">
-                        <InputLabel htmlFor="gynaecological_type" value={<div className="flex gap-1">
-                            <span>Do you suffer from any gynaecological diseases? </span>
-                        </div>} />
+                        <InputLabel value="Do you suffer from any gynaecological diseases?" />
                         <div className="flex flex-col gap-2">
                             <div className="flex items-center justify-between">
-                                <Radio.Group 
-                                    value={data.gynaecological_type}
-                                    onChange={(e) => setData('gynaecological_type', e.target.value)}
+                                 <Radio.Group 
+                                    value={data.gynaescological_type}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                
+                                        setData((prev) => ({
+                                            ...prev,
+                                            gynaescological_type: value,
+                                            gynaecological_remark: value === 'No' ? '' : prev.gynaecological_remark,
+                                        }));
+                                    }}
                                     options={['No', 'Yes']}
-                                    className="py-3"
+                                    className="py-3 flex gap-x-3"
                                     disabled={data.gender === 'male'}
                                 />
-                                <div className="w-full max-w-[500px]">
+                                <div className="w-full max-w-[550px]">
                                     <TextInput 
                                         id="gynaecological_remark"
                                         type="text"
@@ -331,7 +390,7 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         className="disabled:cursor-not-allowed"
                                         placeholder="If yes, please specify"
                                         autoComplete="gynaecological_remark"
-                                        disabled={data.gynaecological_type === 'No' || data.gender === 'male'}
+                                        disabled={data.gynaescological_type === 'No' || data.gender === 'male'}
                                         onChange={(e) => setData('gynaecological_remark', e.target.value)}
                                         hasError={!!errors.gynaecological_remark}
                                     />
@@ -340,11 +399,11 @@ export default function MedicalInfo({ data, setData, errors }) {
                         </div>
                         <div className="flex items-center justify-between">
                             <div className=""></div>
-                            <InputError message={errors.gynaecological_remark} className="w-full max-w-[500px]" />
+                            <InputError message={errors.gynaecological_remark} className="w-full max-w-[550px]" />
                         </div>
                     </div>
                 </div>
-            </div>
+            </Modal>
         </>
     )
 }

@@ -125,17 +125,19 @@ class JobApplicationController extends Controller
     }
 
     public function workValidation(Request $request){
+
         $rules = [
-            'job1_title' => ['required_if:experience, false'],
-            'job1_period' => ['required_if:experience, false'],
-            'job1_company' => ['required_if:experience, false'],
-            'job1_address' => ['required_if:experience, false'],
-            'job1_supervisor' => ['required_if:experience, false'],
-            'job1_dailcode' => ['required_if:experience, false'],
-            'job1_phonecode' => ['required_if:experience, false'],
-            'job1_reason' => ['required_if:experience, false'],
-            'job1_startsalary' => ['required_if:experience, false'],
-            'job1_endsalary' => ['required_if:experience, false'],
+            'experience' => ['required'],
+            'job1_title' => ['required_if:experience,yes'],
+            'job1_period' => ['required_if:experience,yes'],
+            'job1_company' => ['required_if:experience,yes'],
+            'job1_address' => ['required_if:experience,yes'],
+            'job1_supervisor' => ['required_if:experience,yes'],
+            'job1_dailcode' => ['required_if:experience,yes'],
+            'job1_phonecode' => ['required_if:experience,yes'],
+            'job1_reason' => ['required_if:experience,yes'],
+            'job1_startsalary' => ['required_if:experience,yes'],
+            'job1_endsalary' => ['required_if:experience,yes'],
 
             'job2_title' => ['required_with:job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
             'job2_period' => ['required_with:job2_title,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
@@ -207,17 +209,17 @@ class JobApplicationController extends Controller
             'refer1_phoneno' => ['required', 'regex:/^\d{9,10}$/'],
             'refer1_email' => ['required', 'string', 'max:255'],
 
-            'refer2_name' => ['required_with:refer2_relation,refer2_dailcode,refer2_phoneno,refer2_email'],
-            'relation2' => ['required_with:refer2_name,refer2_dailcode,refer2_phoneno,refer2_email'],
+            'refer2_name' => ['required_with:refer2_relation,refer2_phoneno,refer2_email'],
+            'relation2' => ['required_with:refer2_name,refer2_phoneno,refer2_email'],
             'refer2_dailcode' => ['required_with:refer2_name,refer2_relation,refer2_phoneno,refer2_email'],
-            'refer2_phoneno' => ['required_with:refer2_name,refer2_relation,refer2_dailcode,refer2_email'],
-            'refer2_email' => ['required_with:refer2_name,refer2_relation,refer2_dailcode,refer2_phoneno'],
+            'refer2_phoneno' => ['required_with:refer2_name,refer2_relation,refer2_email'],
+            'refer2_email' => ['required_with:refer2_name,refer2_relation,refer2_phoneno'],
             
-            'refer3_name' => ['required_with:refer3_relation,refer3_dailcode,refer3_phoneno,refer3_email'],
-            'relation3' => ['required_with:refer3_name,refer3_dailcode,refer3_phoneno,refer3_email'],
+            'refer3_name' => ['required_with:refer3_relation,refer3_phoneno,refer3_email'],
+            'relation3' => ['required_with:refer3_name,refer3_phoneno,refer3_email'],
             'refer3_dailcode' => ['required_with:refer3_name,refer3_relation,refer3_phoneno,refer3_email'],
-            'refer3_phoneno' => ['required_with:refer3_name,refer3_relation,refer3_dailcode,refer3_email'],
-            'refer3_email' => ['required_with:refer3_name,refer3_relation,refer3_dailcode,refer3_phoneno'],
+            'refer3_phoneno' => ['required_with:refer3_name,refer3_relation,refer3_email'],
+            'refer3_email' => ['required_with:refer3_name,refer3_relation,refer3_phoneno'],
         ];
 
         $messages = [
@@ -285,8 +287,7 @@ class JobApplicationController extends Controller
         $rules = [
             'transport' => ['required', 'array', 'min:1'],
             'approximate_distance' => ['required'],
-            'approximate_hours' => ['required'],
-            'approximate_minutes' => ['required'],
+            'approximate_minutes' => ['required', 'min:1'],
         ];
 
         $messages = [
@@ -305,19 +306,19 @@ class JobApplicationController extends Controller
         $rules = [
             'overtime_type' => ['required'], 
             'investigate_type' => ['required'],
-            'investigate_remark' => ['required_if:investigate_type,Yes'],
+            'investigate_remark' => ['required_if:investigate_type,1'],
             'convicted_type' => ['required'], 
-            'convicted_remark' => ['required_if:convicted_type,Yes'], 
+            'convicted_remark' => ['required_if:convicted_type,1'], 
             'bankrupt_type' => ['required'],
-            'bankrupt_remark' => ['required_if:bankrupt_type,Yes'],
+            'bankrupt_remark' => ['required_if:bankrupt_type,1'],
             'suspended_type' => ['required'],
-            'suspended_remark' => ['required_if:suspended_type,Yes'],
+            'suspended_remark' => ['required_if:suspended_type,1'],
             'directorship_type' => ['required'],
-            'directorship_remark' => ['required_if:directorship_type,Yes'],
+            'directorship_remark' => ['required_if:directorship_type,1'],
             'relative_type' => ['required'],
-            'relative_remark' => ['required_if:relative_type,Yes'],
+            'relative_remark' => ['required_if:relative_type,1'],
             'health_type' => ['required'],
-            'health_remark' => ['required_if:health_type,Yes'],
+            'health_remark' => ['required_if:health_type,1'],
             
             'find_job_type' => ['required', 'array', 'min:1'],
             'find_job_type.*' => ['string'], // Validate each array element
@@ -427,7 +428,7 @@ class JobApplicationController extends Controller
             ]);
         }
 
-        if ($request->experience == 0) {
+        if ($request->experience === 'yes') {
             
             $period1 = $request->job1_period;
             $experience1 = JobExperience::create([

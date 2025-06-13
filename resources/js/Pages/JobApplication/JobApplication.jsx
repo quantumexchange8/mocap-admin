@@ -68,7 +68,7 @@ export default function JobApplication() {
         skills: '',
 
         //work experience
-        experience: false,
+        experience: 'yes',
         job1_title: '',
         job1_period: null,
         job1_company: '',
@@ -108,12 +108,12 @@ export default function JobApplication() {
         refer1_email: '',
         refer2_name: '',
         relation2: '',
-        refer2_dailcode: '',
+        refer2_dailcode: '+60',
         refer2_phoneno: '',
         refer2_email: '',
         refer3_name: '',
         relation3: '',
-        refer3_dailcode: '',
+        refer3_dailcode: '+60',
         refer3_phoneno: '',
         refer3_email: '',
 
@@ -135,8 +135,8 @@ export default function JobApplication() {
         // transport
         transport: '',
         approximate_distance: '',
-        approximate_hours: '',
-        approximate_minutes: '',
+        approximate_hours: '0',
+        approximate_minutes: '1',
 
         // additional info
         overtime_type: 'No',
