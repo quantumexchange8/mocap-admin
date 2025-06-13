@@ -12,6 +12,7 @@ use App\Http\Controllers\GlobalController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SmartDataController;
+use App\Http\Controllers\ExternalMemberController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -206,6 +207,23 @@ Route::middleware('auth')->group(function () {
         Route::post('/validate-department', [DepartmentController::class, 'validateDepartment'])->name('validate-department');
         Route::post('/delete-department', [DepartmentController::class, 'deleteDepartment'])->name('delete-department');
         Route::post('/update-department', [DepartmentController::class, 'updateDepartment'])->name('update-department');
+    });
+
+    /**
+     * ==============================
+     *        External Members
+     * ==============================
+    */
+    Route::group(['middleware' => ['permission:external_member']], function () {
+        Route::get('/external-members', [ExternalMemberController::class, 'externalMember'])->name('external-members');
+        Route::get('/getExternalMembers', [ExternalMemberController::class, 'getExternalMembers'])->name('getExternalMembers');
+        Route::post('/create-member', [ExternalMemberController::class, 'createMember'])->name('create-member');
+        Route::post('/update-member', [ExternalMemberController::class, 'updateMember'])->name('update-member');
+        Route::post('/suspend-member', [ExternalMemberController::class, 'suspendMember'])->name('suspend-member');
+        Route::post('/restore-member', [ExternalMemberController::class, 'restoreMember'])->name('restore-member');
+        Route::post('/delete-member', [ExternalMemberController::class, 'deleteMember'])->name('delete-member');
+        Route::post('/reset-member-pw', [ExternalMemberController::class, 'resetMemberPw'])->name('reset-member-pw');
+        Route::post('/reset-pw-email', [ExternalMemberController::class, 'resetMemberEmail'])->name('reset-pw-email');
     });
     
 
