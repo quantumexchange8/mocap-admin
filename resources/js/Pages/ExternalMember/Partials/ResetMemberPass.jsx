@@ -50,7 +50,6 @@ export default function ResetMemberPass ({
                 reset_type: pwVal,
                 password: inputPw,
             });
-            console.log(pwVal)
             
             if (response.status === 200) {
 
