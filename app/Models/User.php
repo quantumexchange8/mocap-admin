@@ -50,6 +50,8 @@ class User extends Authenticatable implements HasMedia
         'job_id',
         'handle_by',
         'status',
+        'remarks',
+        'last_active',
     ];
 
     /**
@@ -107,5 +109,9 @@ class User extends Authenticatable implements HasMedia
     public function deletedemployee()
     {
         return $this->hasOne(DeletedEmployee::class, 'user_id', 'id');
+    }
+    public function handleBy()
+    {
+        return $this->belongsTo(User::class, 'handle_by');
     }
 }
