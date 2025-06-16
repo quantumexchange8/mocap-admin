@@ -37,7 +37,11 @@ export default function Published() {
         
         try {
             
-            const response = await axios.get('/getPublishedAnnouncement');
+            const response = await axios.get('/getPublishedAnnouncement', {
+                params: {
+                    filterSort: filterSort,
+                }
+            });
 
             setGetPublishedAnnouncement(response.data);
 
@@ -54,7 +58,7 @@ export default function Published() {
 
     useEffect(() => {
         fetchPublishedAnnouncement();
-    }, []);
+    }, [filterSort]);
 
     const removeDateFilter = () => {
         setFilterDate(null)
@@ -272,16 +276,17 @@ export default function Published() {
                                                                                                 announcement.announcement_user && (
                                                                                                     <div className="flex items-center gap-1">
                                                                                                         {
-                                                                                                            announcement.announcement_user.map((ann_user, index) => (
-                                                                                                                <div key={index} className="flex items-center gap-1">
-                                                                                                                    <span>{ann_user.department_id ? ann_user.department?.name : ann_user.user.name}{index !== announcement.announcement_user.length - 1 && ','}</span>
-                                                                                                                </div>
+                                                                                                            [...new Set(announcement.announcement_user.map(ann_user => 
+                                                                                                                ann_user.department_id ? ann_user.department?.name : ann_user.user?.name
+                                                                                                            ))].map((name, index, arr) => (
+                                                                                                                <span key={index}>
+                                                                                                                    {name}{index !== arr.length - 1 && ','}
+                                                                                                                </span>
                                                                                                             ))
                                                                                                         }
                                                                                                     </div>
                                                                                                 )
                                                                                             }
-                                                                                            
                                                                                         </>
                                                                                     )}
                                                                                 </div>

@@ -174,14 +174,14 @@ class SmartDataController extends Controller
             'deletedemployee.handleByUser'
         ])->find($id);
 
-        $employee->digital_signature = $employee->getFirstMediaUrl('job_signature');
+        $employee->user_signature = $employee->getFirstMediaUrl('user_signature');
 
         // Format deletedemployee created_at if exists
-        if ($employee->deletedemployee) {
-            $employee->deletedemployee->formatted_created_at = optional($employee->deletedemployee->created_at)
-                ? $employee->deletedemployee->created_at->format('d/m/Y  H:i')
-                : null;
-        }
+        // if ($employee->deletedemployee) {
+        //     $employee->deletedemployee->formatted_created_at = optional($employee->deletedemployee->created_at)
+        //         ? $employee->deletedemployee->created_at->format('d/m/Y  H:i')
+        //         : null;
+        // }
 
         return Inertia::render('SmartData/EmployeeDetails', [
             'employee' => $employee,

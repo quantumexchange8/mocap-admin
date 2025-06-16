@@ -255,13 +255,16 @@ Route::middleware('auth')->group(function () {
         
         Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
         Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
+
+        Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
+        Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
+
+        Route::get('/getEmployeeInfo', [SmartDataController::class, 'getEmployeeInfo'])->name('getEmployeeInfo');
+        Route::get('/employee-info/{id}', [SmartDataController::class, 'employeeInfo'])->name('employeeInfo');
+        
     });
     
-    Route::post('/evaluation-job-applicant-signature', [SmartDataController::class, 'evaluationJobApplicantSignature'])->name('evaluation-job-applicant-signature');
-    Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
-
-    Route::get('/getEmployeeInfo', [SmartDataController::class, 'getEmployeeInfo'])->name('getEmployeeInfo');
-    Route::get('/employee-info/{id}', [SmartDataController::class, 'employeeInfo'])->name('employeeInfo');
+    
 
     /**
      * ==============================

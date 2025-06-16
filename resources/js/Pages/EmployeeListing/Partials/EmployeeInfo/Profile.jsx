@@ -261,7 +261,7 @@ export default function Profile({ user_details, id }) {
                             <div className="flex flex-col gap-3 p-5">
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Blood Type</div>
-                                    <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.blood_type}</div>
+                                    <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.blood_type === 'no' ? 'Not sure' : user_details.medicalinfo.blood_type}</div>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Food Allergic</div>
@@ -453,7 +453,7 @@ export default function Profile({ user_details, id }) {
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Approximate Time to Company</div>
                                     <div className="text-gray-950 text-sm w-full">
-                                        {user_details.transportinfo.approximate_hours} hours {user_details.transportinfo.approximate_minutes} minutes
+                                        {user_details.transportinfo.approximate_hours ? user_details.transportinfo.approximate_hours : 0} hours {user_details.transportinfo.approximate_minutes} minutes
                                     </div>
                                 </div>
                                 

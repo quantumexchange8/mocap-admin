@@ -70,7 +70,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job1_title"
                             onChange={(e) => setData('job1_title', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job1_title}
                         />
                         <InputError message={errors.job1_title}  />
@@ -88,7 +88,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 selectionMode="range"
                                 dateFormat="dd/mm/yy"
                                 readOnlyInput
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 invalid={!!errors.job1_period}
                                 pt={{
                                     input: {
@@ -122,7 +122,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job1_company"
                             onChange={(e) => setData('job1_company', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job1_company}
                         />
                         <InputError message={errors.job1_company} />
@@ -139,7 +139,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job1_address"
                             onChange={(e) => setData('job1_address', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job1_address}
                         />
                         <InputError message={errors.job1_address} />
@@ -156,7 +156,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job1_supervisor"
                             onChange={(e) => setData('job1_supervisor', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job1_supervisor}
                         />
                         <InputError message={errors.job1_supervisor} />
@@ -177,7 +177,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 optionLabel="label"
                                 placeholder="Select"
                                 className="w-full max-w-[100px] text-sm"
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200 cursor' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -199,7 +199,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="Phone Number"
                                 autoComplete="job1_phonecode"
                                 onChange={(e) => setData('job1_phonecode', e.target.value)}
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 hasError={!!errors.job1_phonecode}
                             />
                         </div>
@@ -218,7 +218,7 @@ export default function WorkInfo({data, setData, errors}) {
                             placeholder=" "
                             autoComplete="job1_reason"
                             onChange={(e) => setData('job1_reason', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job1_reason}
                         />
                         <InputError message={errors.job1_reason} />
@@ -236,6 +236,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job1_startsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job1_startsalary} />
@@ -253,6 +254,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job1_endsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job1_endsalary} />
@@ -272,7 +274,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job2_title"
                             onChange={(e) => setData('job2_title', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job2_title}
                         />
                         <InputError message={errors.job2_title} />
@@ -288,7 +290,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 selectionMode="range"
                                 dateFormat="dd/mm/yy"
                                 readOnlyInput
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 invalid={!!errors.job2_period}
                                 pt={{
                                     input: {
@@ -320,7 +322,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job2_company"
                             onChange={(e) => setData('job2_company', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job2_company}
                         />
                         <InputError message={errors.job2_company} />
@@ -335,7 +337,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job2_address"
                             onChange={(e) => setData('job2_address', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job2_address}
                         />
                         <InputError message={errors.job2_address} />
@@ -350,7 +352,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job2_supervisor"
                             onChange={(e) => setData('job2_supervisor', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job2_supervisor}
                         />
                         <InputError message={errors.job2_supervisor} />
@@ -369,7 +371,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 optionLabel="label"
                                 placeholder="Select "
                                 className="w-full max-w-[100px] text-sm"
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -391,7 +393,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="Phone Number"
                                 autoComplete="job2_phonecode"
                                 onChange={(e) => setData('job2_phonecode', e.target.value)}
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 hasError={!!errors.job2_phonecode}
                             />
                         </div>
@@ -408,7 +410,7 @@ export default function WorkInfo({data, setData, errors}) {
                             placeholder=" "
                             autoComplete="job2_reason"
                             onChange={(e) => setData('job2_reason', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job2_reason}
                         />
                         <InputError message={errors.job2_reason} />
@@ -425,6 +427,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job2_startsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job2_startsalary} />
@@ -440,6 +443,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job2_endsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job2_endsalary} />
@@ -459,7 +463,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job3_title"
                             onChange={(e) => setData('job3_title', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job3_title}
                         />
                         <InputError message={errors.job3_title} />
@@ -475,7 +479,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 selectionMode="range"
                                 dateFormat="dd/mm/yy"
                                 readOnlyInput
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 invalid={!!errors.job3_period}
                                 pt={{
                                     input: {
@@ -507,7 +511,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job3_company"
                             onChange={(e) => setData('job3_company', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job3_company}
                         />
                         <InputError message={errors.job3_company} />
@@ -522,7 +526,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job3_address"
                             onChange={(e) => setData('job3_address', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job3_address}
                         />
                         <InputError message={errors.job3_address} />
@@ -537,7 +541,7 @@ export default function WorkInfo({data, setData, errors}) {
                             className="w-full"
                             autoComplete="job3_supervisor"
                             onChange={(e) => setData('job3_supervisor', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job3_supervisor}
                         />
                         <InputError message={errors.job3_supervisor} />
@@ -556,7 +560,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 optionLabel="label"
                                 placeholder="Select "
                                 className="w-full max-w-[100px] text-sm"
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 pt={{
                                     root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
                                     panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
@@ -578,7 +582,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 placeholder="Phone Number"
                                 autoComplete="job3_phonecode"
                                 onChange={(e) => setData('job3_phonecode', e.target.value)}
-                                disabled={disabled}
+                                disabled={data.experience === 'no'}
                                 hasError={!!errors.job3_phonecode}
                             />
                         </div>
@@ -595,7 +599,7 @@ export default function WorkInfo({data, setData, errors}) {
                             placeholder=" "
                             autoComplete="job3_reason"
                             onChange={(e) => setData('job3_reason', e.target.value)}
-                            disabled={disabled}
+                            disabled={data.experience === 'no'}
                             hasError={!!errors.job3_reason}
                         />
                         <InputError message={errors.job3_reason} />
@@ -611,6 +615,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job3_startsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job3_startsalary} />
@@ -626,6 +631,7 @@ export default function WorkInfo({data, setData, errors}) {
                                 className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
                                 min={0}
                                 invalid={!!errors.job3_endsalary}
+                                disabled={data.experience === 'no'}
                             />
                         </div>
                         <InputError message={errors.job3_endsalary} />

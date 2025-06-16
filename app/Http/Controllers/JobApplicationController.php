@@ -139,27 +139,25 @@ class JobApplicationController extends Controller
             'job1_startsalary' => ['required_if:experience,yes'],
             'job1_endsalary' => ['required_if:experience,yes'],
 
-            'job2_title' => ['required_with:job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_period' => ['required_with:job2_title,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_company' => ['required_with:job2_title,job2_period,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_address' => ['required_with:job2_title,job2_period,job2_company,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_supervisor' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_dailcode' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_phonecode' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_reason,job2_startsalary,job2_endsalary'],
-            'job2_reason' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_startsalary,job2_endsalary'],
-            'job2_startsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_endsalary'],
-            'job2_endsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_dailcode,job2_phonecode,job2_reason,job2_startsalary'],
+            'job2_title' => ['required_with:job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_period' => ['required_with:job2_title,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_company' => ['required_with:job2_title,job2_period,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_address' => ['required_with:job2_title,job2_period,job2_company,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_supervisor' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_phonecode' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_reason,job2_startsalary,job2_endsalary'],
+            'job2_reason' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_startsalary,job2_endsalary'],
+            'job2_startsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_endsalary'],
+            'job2_endsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary'],
             
-            'job3_title' => ['required_with:job3_period,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_period' => ['required_with:job3_title,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_company' => ['required_with:job3_title,job3_period,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_address' => ['required_with:job3_title,job3_period,job3_company,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_supervisor' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_dailcode' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_phonecode' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_reason,job3_startsalary,job3_endsalary'],
-            'job3_reason' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_startsalary,job3_endsalary'],
-            'job3_startsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_endsalary'],
-            'job3_endsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_dailcode,job3_phonecode,job3_reason,job3_startsalary'],
+            'job3_title' => ['required_with:job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_period' => ['required_with:job3_title,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_company' => ['required_with:job3_title,job3_period,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_address' => ['required_with:job3_title,job3_period,job3_company,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_supervisor' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_phonecode' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_reason,job3_startsalary,job3_endsalary'],
+            'job3_reason' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_startsalary,job3_endsalary'],
+            'job3_startsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_endsalary'],
+            'job3_endsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary'],
         ];
 
         $messages = [
@@ -370,7 +368,8 @@ class JobApplicationController extends Controller
         ], 200);
     }
 
-    public function storeApplication(Request $request){
+    public function storeApplication(Request $request)
+    {
 
         $application = JobApplication::create([
             'position' => $request->position,

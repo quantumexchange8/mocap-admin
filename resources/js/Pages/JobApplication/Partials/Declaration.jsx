@@ -4,7 +4,7 @@ import InputLabel from "@/Components/InputLabel";
 import React, { useRef } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export default function Declaration({data, setData, sigCanvas}) {
+export default function Declaration({data, setData, sigCanvas, handleSignatureChange}) {
     return(
         <div className="flex w-full px-0 flex-col items-center gap-5">
             <div className="flex w-[728px] flex-col items-center border border-gray-200 rounded-sm">
@@ -42,6 +42,7 @@ export default function Declaration({data, setData, sigCanvas}) {
                             <SignatureCanvas
                                 ref={sigCanvas}
                                 penColor="black"
+                                onEnd={handleSignatureChange}
                                 canvasProps={{ className: 'border border-gray-300 rounded w-full h-80' }}
                             />
 

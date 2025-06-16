@@ -34,7 +34,7 @@ class AnnouncementController extends Controller
 
     public function getEmployeeTree()
     {
-        $departments = Department::with(['users' => fn ($q) => $q->whereIn('role', ['employee', 'admin'])])->get();
+        $departments = Department::with(['users' => fn ($q) => $q->whereIn('role', ['employee', 'admin'])->whereNot('status', 'deleted')])->get();
 
         $departmentNodes = [];
 
@@ -85,34 +85,41 @@ class AnnouncementController extends Controller
         $auth = Auth::user();
 
         if($request->schedule_date || $request->schedule_time) {
+
             $validated = $request->validate([
                 'schedule_date' => 'required_with:schedule_time',
                 'schedule_time' => 'required_with:schedule_date',
                 'recipient' => 'required',
                 'subject' => 'required',
                 'content_text' => 'required',
+                'pin_bool' => 'required',
                 'pin_type' => 'required_if:pin_bool,true',
                 'thumbnail' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'poll_question' => 'nullable|string',
-                'option' => 'required_with:poll_question',
-                'option.*.option_name' => 'required|string',
-                'duration_type' => 'required_with:poll_question',
-                'end_date' => 'required_if:duration_type,set_end_date|nullable|date',
             ]);
 
-            Validator::make($request->all(), [])->after(function ($validator) use ($request) {
-                if ($request->duration_type === 'set_length') {
-                    $day = (int) $request->length_day;
-                    $hour = (int) $request->length_hour;
-                    $minute = (int) $request->length_minute;
-            
-                    if ($day === 0 && $hour === 0 && $minute === 0) {
-                        $validator->errors()->add('length_day', 'Duration cannot be all zero.');
-                        $validator->errors()->add('length_hour', 'Duration cannot be all zero.');
-                        $validator->errors()->add('length_minute', 'Duration cannot be all zero.');
+            if ($request->poll) {
+                $validated = $request->validate([
+                    'poll_question' => 'nullable|string',
+                    'option' => 'required_with:poll_question|array|min:1',
+                    'option.*.option_name' => 'required_with:poll_question|string',
+                    'duration_type' => 'required_with:poll_question',
+                    'end_date' => 'required_if:duration_type,set_end_date|nullable|date',
+                ]);
+
+                Validator::make($request->all(), [])->after(function ($validator) use ($request) {
+                    if ($request->duration_type === 'set_length') {
+                        $day = (int) $request->length_day;
+                        $hour = (int) $request->length_hour;
+                        $minute = (int) $request->length_minute;
+                
+                        if ($day === 0 && $hour === 0 && $minute === 0) {
+                            $validator->errors()->add('length_day', 'Duration cannot be all zero.');
+                            $validator->errors()->add('length_hour', 'Duration cannot be all zero.');
+                            $validator->errors()->add('length_minute', 'Duration cannot be all zero.');
+                        }
                     }
-                }
-            })->validate();
+                })->validate();
+            }
         }
 
         $validated = $request->validate([
@@ -150,8 +157,10 @@ class AnnouncementController extends Controller
         }
 
         // check schedule time will conflict poll end date
-        $this->pollAndScheduleConflict($request);
-
+        if ($request->poll) {
+            $this->pollAndScheduleConflict($request);
+        }
+        
         $orderNo = null;
 
         if ($request->boolean('pin_bool')) {
@@ -373,17 +382,19 @@ class AnnouncementController extends Controller
         $expired_at = null;
 
         // Calculate expiry time
-        if ($request->duration_type === 'set_end_date') {
-            $expired_at = $request->end_date
-                ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay()
-                : $now;
-        }
-
-        if ($request->duration_type === 'set_length') {
-            $expired_at = $now->copy()
-                ->addDays((int) ($request->length_day ?? 0))
-                ->addHours((int) ($request->length_hour ?? 0))
-                ->addMinutes((int) ($request->length_minute ?? 0));
+        if ($request->poll) {
+            if ($request->duration_type === 'set_end_date') {
+                $expired_at = $request->end_date
+                    ? Carbon::parse($request->end_date)->timezone('Asia/Kuala_Lumpur')->endOfDay()
+                    : $now;
+            }
+    
+            if ($request->duration_type === 'set_length') {
+                $expired_at = $now->copy()
+                    ->addDays((int) ($request->length_day ?? 0))
+                    ->addHours((int) ($request->length_hour ?? 0))
+                    ->addMinutes((int) ($request->length_minute ?? 0));
+            }
         }
 
         // Check for conflict only if schedule_datetime is set
@@ -451,7 +462,10 @@ class AnnouncementController extends Controller
         $validator->validate();
 
         // check schedule time will conflict poll end date
-        $this->pollAndScheduleConflict($request);
+        if ($request->poll) {
+            $this->pollAndScheduleConflict($request);
+        }
+        
 
         // publish
         $this->publishAnnouncement($request);
@@ -699,11 +713,27 @@ class AnnouncementController extends Controller
 
     public function getPublishedAnnouncement(Request $request)
     {
-        $pubAnnouncement = Announcement::where('status', 'published')
-            ->with(['user', 'announcement_user', 'announcement_user.user', 'announcement_comment'])
-            ->get();
+        $pubAnnouncement = Announcement::with([
+            'user',
+            'announcement_user',
+            'announcement_user.user',
+            'announcement_user.department',
+            'announcement_comment'
+        ])->where('status', 'published');
+        
+        // Sort logic
+        if ($request->filterSort === 'latest') {
+            $pubAnnouncement->latest(); // created_at DESC
+        } elseif ($request->filterSort === 'oldest') {
+            $pubAnnouncement->oldest(); // created_at ASC
+        } elseif ($request->filterSort === 'most_comment') {
+            $pubAnnouncement->withCount('announcement_comment')
+                            ->orderBy('announcement_comment_count', 'desc');
+        }
+        
+        $result = $pubAnnouncement->get();
 
-        return response()->json($pubAnnouncement);
+        return response()->json($result);
     }
 
     public function draftAnnouncementDetails($id)

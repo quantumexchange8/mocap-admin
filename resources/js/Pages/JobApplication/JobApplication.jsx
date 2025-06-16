@@ -84,7 +84,7 @@ export default function JobApplication() {
         job2_company: '',
         job2_address: '',
         job2_supervisor: '',
-        job2_dailcode: '',
+        job2_dailcode: '+60',
         job2_phonecode: '',
         job2_reason: '',
         job2_startsalary: '',
@@ -94,7 +94,7 @@ export default function JobApplication() {
         job3_company: '',
         job3_address: '',
         job3_supervisor: '',
-        job3_dailcode: '',
+        job3_dailcode: '+60',
         job3_phonecode: '',
         job3_reason: '',
         job3_startsalary: '',
@@ -161,6 +161,18 @@ export default function JobApplication() {
         digital_signature: null,
     });
 
+    const handleSignatureChange = async () => {
+        if (sigCanvas.current && !sigCanvas.current.isEmpty()) {
+            const dataUrl = sigCanvas.current.toDataURL('image/png');
+            const blob = await (await fetch(dataUrl)).blob();
+            const file = new File([blob], 'signature.png', { type: 'image/png' });
+    
+            setData('digital_signature', file);
+        } else {
+            setData('digital_signature', null);
+        }
+    }
+
     const steps = [
         {
             content: <PersonalInfo data={data} setData={setData} errors={errors}/>,
@@ -191,7 +203,7 @@ export default function JobApplication() {
             icon: <JobApplicationIcon7/>,
         },
         {
-            content: <Declaration data={data} setData={setData} errors={errors} sigCanvas={sigCanvas}/>,
+            content: <Declaration data={data} setData={setData} errors={errors} sigCanvas={sigCanvas} handleSignatureChange={handleSignatureChange} />,
             icon: <JobApplicationIcon8/>,
         },
     ];
@@ -399,33 +411,6 @@ export default function JobApplication() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Check and upload signature if present
-        if (sigCanvas.current && !sigCanvas.current.isEmpty()) {
-            const dataUrl = sigCanvas.current.toDataURL("image/png");
-            const blob = dataURLtoBlob(dataUrl);
-            setSign(blob);
-            setData("digital_signature", blob);
-
-            try {
-                const formData = new FormData();
-                formData.append('digital_signature', blob, 'signature.png');
-
-                const response = await axios.post('/job-check-signature', formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    }
-                });
-
-                if (response.status !== 200) {
-                    // Handle signature check failure (optional)
-                    return;
-                }
-            } catch (error) {
-                console.error('error', error);
-                return;
-            }
-        }
-
         // Submit the form
         post('/store-application', {
             preserveScroll: true,
@@ -435,24 +420,6 @@ export default function JobApplication() {
             }
         });
     };
-
-    useEffect(() => {
-        if (data.digital_signature !== null) {
-            setData('digital_signature', sign)
-        }
-    }, []);
-    
-    function dataURLtoBlob(dataurl) {
-        const arr = dataurl.split(",");
-        const mime = arr[0].match(/:(.*?);/)[1];
-        const bstr = atob(arr[1]);
-        let n = bstr.length;
-        const u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], { type: mime });
-    }
 
     const variants = {
         enter: (direction) => ({

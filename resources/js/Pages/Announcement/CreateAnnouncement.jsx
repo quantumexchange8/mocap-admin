@@ -65,6 +65,7 @@ export default function CreateAnnouncement() {
         thumbnail: null,
         thumbnailPreview: null,
         attachment: null,
+        poll: false,
         poll_question: '',
         option: [
             { id: Date.now().toString() , option_name: '', order_no: 1 },
@@ -705,184 +706,194 @@ export default function CreateAnnouncement() {
                                     <div className="text-gray-950 text-sm font-medium">Poll</div>
                                     <div className="text-gray-500 text-xs">Create a poll to gather feedback or votes from employees.</div>
                                 </div>
-                            </div>
-                            <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
                                 <div>
-                                    <TextInput 
-                                        id="poll_question"
-                                        type="text"
-                                        name="poll_question"
-                                        value={data.poll_question || ''}
-                                        className="w-full"
-                                        placeholder="Type your question..."
-                                        isFocused={false}
-                                        onChange={(e) => setData('poll_question', e.target.value)}
-                                        hasError={!!errors.poll_question}
+                                    <Switch 
+                                        checked={data.poll}
+                                        onChange={(checked) => setData('poll', checked)}
                                     />
                                 </div>
-                                <div className="flex flex-col gap-2">
-                                    <InputLabel value='Options' />
-                                    <div className="flex flex-col gap-4">
-                                        <ReactSortable
-                                            list={data.option}
-                                            setList={(newList) => {
-                                                // sort based on dragged list
-                                                handleSort(newList.map(item => item.id));
-                                            }}
-                                            animation={200}
-                                            handle=".drag-handle"
-                                            className="flex flex-col gap-4"
-                                        >
-                                            {
-                                                data.option.map((pos, index) => (
-                                                    <div key={pos.id} data-id={pos.id} className="flex items-center gap-3">
-                                                        <div className="drag-handle max-w-[38px] max-h-[38px] w-full h-full flex justify-center items-center cursor-move">
-                                                            <GripVerticalIcon />
-                                                        </div>
-                                                        <div className="w-full">
-                                                            <TextInput
-                                                                className="w-full"
-                                                                type="text"
-                                                                value={pos.option_name}
-                                                                onChange={(e) => handleChange(index, e.target.value)}
-                                                                placeholder="Enter option"
-                                                            />
-                                                        </div>
-                                                        <div className="w-full max-w-[38px] h-full max-h-[38px] flex items-center justify-center cursor-pointer hover:bg-gray-50 rounded-sm" onClick={() => handleRemove(pos.id)}>
-                                                            <XIcon />
-                                                        </div>
-                                                    </div>
-                                                ))
-                                            }
-                                        </ReactSortable>
-
-                                        {/* Add option */}
-                                        <div className="">
-                                            <Button 
-                                                variant="text" 
-                                                size="sm" 
-                                                className="flex items-center gap-2"
-                                                onClick={handleAdd}
-                                            >
-                                                <PlusIcon />
-                                                <span>Add</span>
-                                            </Button>
-                                        </div>
-
-                                        <InputError message={errors["option.0.option_name"]} />
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-4">
-                                    <InputLabel value='Duration' />
-                                    <div>
-                                        <Segmented 
-                                            options={[
-                                                { label: 'Set End Date', value: 'set_end_date' },
-                                                { label: 'Set Length', value: 'set_length' },
-                                            ]}
-                                            value={data.duration_type}
-                                            onChange={(value) => setData('duration_type', value)}
-                                            className="custom-segmented w-full"
-                                        />
-                                    </div>
-                                    <div>
-                                        {
-                                            data.duration_type === 'set_end_date' && (
-                                                <>
-                                                    <Calendar 
-                                                        value={data.end_date}
-                                                        onChange={(e) => setData('end_date', e.value)} 
-                                                        className="w-full text-sm"
-                                                        placeholder="dd/mm/yyyy"
-                                                        invalid={!!errors.end_date}
-                                                        minDate={minDate}
-                                                        pt={{
-                                                            input: {
-                                                                className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
-                                                            },
-                                                            panel: {
-                                                                className: 'bg-white border border-gray-300 shadow-md rounded-md'
-                                                            },
-                                                            header: {
-                                                                className: 'bg-white text-gray-900 font-semibold px-4 py-3'
-                                                            },
-                                                            table: {
-                                                                className: 'w-full'
-                                                            },
-                                                            day: {
-                                                                className: 'w-10 h-10 text-center rounded-full transition-colors'
-                                                            },
-                                                            daySelected: {
-                                                                className: 'bg-gray-950 text-white font-bold rounded-full'
-                                                            },
-                                                            dayToday: {
-                                                                className: 'border border-gray-950'
-                                                            },
-                                                            month: {
-                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
-                                                            },
-                                                            year: {
-                                                                className: 'p-2 hover:bg-gray-100 rounded-md'
-                                                            },
-                                                            monthPicker: {
-                                                                className: 'py-1 px-3'
-                                                            }
-                                                        }}
-                                                    />
-                                                    <InputError message={errors.end_date} />
-                                                </>
-                                            )
-                                        }
-                                        {
-                                            data.duration_type === 'set_length' && (
-                                                <>
-                                                    <div className="w-full grid grid-cols-3 gap-5">
-                                                        <div>
-                                                            <InputNumber 
-                                                                inputId="days"
-                                                                value={data.length_day || 0} 
-                                                                onValueChange={(e) => setData('length_day', e.value)} 
-                                                                suffix=" day(s)" 
-                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                                min={0}
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            <InputNumber 
-                                                                inputId="hours"
-                                                                value={data.length_hour || 0} 
-                                                                onValueChange={(e) => setData('length_hour', e.value)} 
-                                                                suffix=" hour(s)" 
-                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                                min={0}
-                                                                max={23}
-                                                            />
-                                                        </div>
-                                                        <div>
-                                                            <InputNumber 
-                                                                inputId="minutes"
-                                                                value={data.length_minute || 0} 
-                                                                onValueChange={(e) => setData('length_minute', e.value)} 
-                                                                suffix=" minute(s)" 
-                                                                className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
-                                                                min={0}
-                                                                max={59}
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                    {
-                                                        errors.length_day && (
-                                                            <InputError message='Cannot all be 0' className="mt-2" />
-                                                        )
-                                                    }
-                                                    
-                                                </>
-                                            )
-                                        }
-                                        
-                                    </div>
-                                </div>
                             </div>
+                            {
+                                data.poll && (
+                                    <div className="py-8 px-4 flex flex-col gap-5 border-t border-gray-300">
+                                        <div>
+                                            <TextInput 
+                                                id="poll_question"
+                                                type="text"
+                                                name="poll_question"
+                                                value={data.poll_question || ''}
+                                                className="w-full"
+                                                placeholder="Type your question..."
+                                                isFocused={false}
+                                                onChange={(e) => setData('poll_question', e.target.value)}
+                                                hasError={!!errors.poll_question}
+                                            />
+                                        </div>
+                                        <div className="flex flex-col gap-2">
+                                            <InputLabel value='Options' />
+                                            <div className="flex flex-col gap-4">
+                                                <ReactSortable
+                                                    list={data.option}
+                                                    setList={(newList) => {
+                                                        // sort based on dragged list
+                                                        handleSort(newList.map(item => item.id));
+                                                    }}
+                                                    animation={200}
+                                                    handle=".drag-handle"
+                                                    className="flex flex-col gap-4"
+                                                >
+                                                    {
+                                                        data.option.map((pos, index) => (
+                                                            <div key={pos.id} data-id={pos.id} className="flex items-center gap-3">
+                                                                <div className="drag-handle max-w-[38px] max-h-[38px] w-full h-full flex justify-center items-center cursor-move">
+                                                                    <GripVerticalIcon />
+                                                                </div>
+                                                                <div className="w-full">
+                                                                    <TextInput
+                                                                        className="w-full"
+                                                                        type="text"
+                                                                        value={pos.option_name}
+                                                                        onChange={(e) => handleChange(index, e.target.value)}
+                                                                        placeholder="Enter option"
+                                                                    />
+                                                                </div>
+                                                                <div className="w-full max-w-[38px] h-full max-h-[38px] flex items-center justify-center cursor-pointer hover:bg-gray-50 rounded-sm" onClick={() => handleRemove(pos.id)}>
+                                                                    <XIcon />
+                                                                </div>
+                                                            </div>
+                                                        ))
+                                                    }
+                                                </ReactSortable>
+
+                                                {/* Add option */}
+                                                <div className="">
+                                                    <Button 
+                                                        variant="text" 
+                                                        size="sm" 
+                                                        className="flex items-center gap-2"
+                                                        onClick={handleAdd}
+                                                    >
+                                                        <PlusIcon />
+                                                        <span>Add</span>
+                                                    </Button>
+                                                </div>
+
+                                                <InputError message={errors["option.0.option_name"]} />
+                                            </div>
+                                        </div>
+                                        <div className="flex flex-col gap-4">
+                                            <InputLabel value='Duration' />
+                                            <div>
+                                                <Segmented 
+                                                    options={[
+                                                        { label: 'Set End Date', value: 'set_end_date' },
+                                                        { label: 'Set Length', value: 'set_length' },
+                                                    ]}
+                                                    value={data.duration_type}
+                                                    onChange={(value) => setData('duration_type', value)}
+                                                    className="custom-segmented w-full"
+                                                />
+                                            </div>
+                                            <div>
+                                                {
+                                                    data.duration_type === 'set_end_date' && (
+                                                        <>
+                                                            <Calendar 
+                                                                value={data.end_date}
+                                                                onChange={(e) => setData('end_date', e.value)} 
+                                                                className="w-full text-sm"
+                                                                placeholder="dd/mm/yyyy"
+                                                                invalid={!!errors.end_date}
+                                                                minDate={minDate}
+                                                                pt={{
+                                                                    input: {
+                                                                        className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
+                                                                    },
+                                                                    panel: {
+                                                                        className: 'bg-white border border-gray-300 shadow-md rounded-md'
+                                                                    },
+                                                                    header: {
+                                                                        className: 'bg-white text-gray-900 font-semibold px-4 py-3'
+                                                                    },
+                                                                    table: {
+                                                                        className: 'w-full'
+                                                                    },
+                                                                    day: {
+                                                                        className: 'w-10 h-10 text-center rounded-full transition-colors'
+                                                                    },
+                                                                    daySelected: {
+                                                                        className: 'bg-gray-950 text-white font-bold rounded-full'
+                                                                    },
+                                                                    dayToday: {
+                                                                        className: 'border border-gray-950'
+                                                                    },
+                                                                    month: {
+                                                                        className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                                    },
+                                                                    year: {
+                                                                        className: 'p-2 hover:bg-gray-100 rounded-md'
+                                                                    },
+                                                                    monthPicker: {
+                                                                        className: 'py-1 px-3'
+                                                                    }
+                                                                }}
+                                                            />
+                                                            <InputError message={errors.end_date} />
+                                                        </>
+                                                    )
+                                                }
+                                                {
+                                                    data.duration_type === 'set_length' && (
+                                                        <>
+                                                            <div className="w-full grid grid-cols-3 gap-5">
+                                                                <div>
+                                                                    <InputNumber 
+                                                                        inputId="days"
+                                                                        value={data.length_day || 0} 
+                                                                        onValueChange={(e) => setData('length_day', e.value)} 
+                                                                        suffix=" day(s)" 
+                                                                        className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                        min={0}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <InputNumber 
+                                                                        inputId="hours"
+                                                                        value={data.length_hour || 0} 
+                                                                        onValueChange={(e) => setData('length_hour', e.value)} 
+                                                                        suffix=" hour(s)" 
+                                                                        className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                        min={0}
+                                                                        max={23}
+                                                                    />
+                                                                </div>
+                                                                <div>
+                                                                    <InputNumber 
+                                                                        inputId="minutes"
+                                                                        value={data.length_minute || 0} 
+                                                                        onValueChange={(e) => setData('length_minute', e.value)} 
+                                                                        suffix=" minute(s)" 
+                                                                        className="w-full border-gray-300 hover:border-gray-400 focus:border-gray-950"
+                                                                        min={0}
+                                                                        max={59}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            {
+                                                                errors.length_day && (
+                                                                    <InputError message='Cannot all be 0' className="mt-2" />
+                                                                )
+                                                            }
+                                                            
+                                                        </>
+                                                    )
+                                                }
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }
                         </div>
                     </div>
                 </div>
@@ -950,27 +961,35 @@ export default function CreateAnnouncement() {
                                 value={data.schedule_time ? dayjs(data.schedule_time, 'HH:mm') : null}
                                 onChange={(time, timeString) => setData('schedule_time', timeString)}
                                 allowClear
-                                disabledHours={() => {
-                                    const selectedDate = data.schedule_date;
-                                    if (selectedDate && dayjs(selectedDate).isSame(dayjs(), 'day')) {
-                                        const currentHour = dayjs().hour();
-                                        return Array.from({ length: currentHour }, (_, i) => i);
+                                showNow={false}
+                                disabledTime={() => {
+                                    const now = dayjs();
+                                    const selectedDate = dayjs(data.schedule_date);
+
+                                    // Only apply time restriction if selected date is today
+                                    if (!data.schedule_date || !selectedDate.isSame(now, 'day')) {
+                                        return {};
                                     }
-                                    return [];
-                                }}
-                                disabledMinutes={(selectedHour) => {
-                                    const selectedDate = data.schedule_date;
-                                    if (
-                                        selectedDate &&
-                                        dayjs(selectedDate).isSame(dayjs(), 'day') &&
-                                        selectedHour === dayjs().hour()
-                                    ) {
-                                        const currentMinute = dayjs().minute();
-                                        return Array.from({ length: currentMinute }, (_, i) => i);
-                                    }
-                                    return [];
+
+                                    const minTime = now.add(15, 'minute');
+                                    const minHour = minTime.hour();
+                                    const minMinute = minTime.minute();
+
+                                    return {
+                                        disabledHours: () =>
+                                            Array.from({ length: 24 }, (_, hour) =>
+                                                hour < minHour ? hour : null
+                                            ).filter((v) => v !== null),
+                                        disabledMinutes: (selectedHour) => {
+                                            if (selectedHour === minHour) {
+                                                return Array.from({ length: minMinute }, (_, m) => m);
+                                            }
+                                            return [];
+                                        },
+                                    };
                                 }}
                             />
+
                         </div>
                     </div>
                     <div className="text-gray-700 text-sm">The announcement will be published at  {data.schedule_date ? dayjs(data.schedule_date).format('YYYY-MM-DD') : '-'} {data.schedule_time ? data.schedule_time : '-'}</div>

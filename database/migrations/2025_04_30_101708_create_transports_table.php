@@ -17,9 +17,9 @@ return new class extends Migration
             $table->json('own_transport');
             $table->json('license_id');
             $table->json('work_transportation');
-            $table->double('approximate_distance');
-            $table->integer('approximate_hours');
-            $table->integer('approximate_minutes');
+            $table->double('approximate_distance')->nullable()->default(0.0);
+            $table->integer('approximate_hours')->nullable()->default(0);
+            $table->integer('approximate_minutes')->nullable()->default(0);
             $table->timestamps();
         });
     }

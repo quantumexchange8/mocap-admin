@@ -278,7 +278,9 @@ class EmployeeController extends Controller
 
     public function checkSignature(Request $request)
     {
-
+        $request->validate([
+            'digital_signature' => 'required|image|mimes:png,jpg,jpeg|max:2048',
+        ]);
 
         return response()->json([
             'message' => 'success'
@@ -311,10 +313,6 @@ class EmployeeController extends Controller
 
     public function storeEmployee(Request $request)
     {
-
-        // $request->validate([
-        //     'digital_signature' => 'required|image|mimes:png,jpg,jpeg|max:2048',
-        // ]);
 
         $generateRandomPw = Str::random(8);
 
