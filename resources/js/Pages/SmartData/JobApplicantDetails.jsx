@@ -342,6 +342,119 @@ export default function JobApplicantDetails({ jobApplicant }) {
                             </div>
                         </div>
 
+                        {/* Education Background */}
+                        <div className="flex flex-col border border-gray-200 shadow-smShadow ">
+                            <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
+                                Education Background
+                            </div>
+                            {
+                                jobApplicant.education.length > 0 ? (
+                                    <>
+                                        {
+                                            jobApplicant.education.map((edu, index) => (
+                                                <div key={index} className="p-5 flex flex-col gap-5" >
+                                                    <div className="text-gray-950 text-base font-semibold">
+                                                        Education {index + 1}
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-5">
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='From' />
+                                                            <TextInput 
+                                                                id="from_date"
+                                                                type="text"
+                                                                name="from_date"
+                                                                value={edu.from_date}
+                                                                className="w-full"
+                                                                autoComplete="from_date"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='To' />
+                                                            <TextInput 
+                                                                id="to_date"
+                                                                type="text"
+                                                                name="to_date"
+                                                                value={edu.to_date}
+                                                                className="w-full"
+                                                                autoComplete="to_date"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='School Name' />
+                                                            <TextInput 
+                                                                id="school_name"
+                                                                type="text"
+                                                                name="school_name"
+                                                                value={edu.school_name}
+                                                                className="w-full"
+                                                                autoComplete="school_name"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='Address/City/State' />
+                                                            <TextInput 
+                                                                id="address"
+                                                                type="text"
+                                                                name="address"
+                                                                value={edu.address}
+                                                                className="w-full"
+                                                                autoComplete="address"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='Qualification' />
+                                                            <TextInput 
+                                                                id="qualification"
+                                                                type="text"
+                                                                name="qualification"
+                                                                value={edu.qualification}
+                                                                className="w-full"
+                                                                autoComplete="qualification"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+                                                        <div className="flex flex-col gap-2">
+                                                            <InputLabel value='Course Name/Major Subject' />
+                                                            <TextInput 
+                                                                id="course_name"
+                                                                type="text"
+                                                                name="course_name"
+                                                                value={edu.course_name}
+                                                                className="w-full"
+                                                                autoComplete="course_name"
+                                                                isFocused={false}
+                                                                onChange={(e) => setData('', e.target.value)}
+                                                                readOnly={true}
+                                                            />
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            ))
+                                        }
+                                    </>
+                                ) : (
+                                    <div>
+
+                                    </div>
+                                )
+                            }
+                        </div>
+
                         {/* Work Experience */}
                         <div className="flex flex-col border border-gray-200 shadow-smShadow ">
                             <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
@@ -457,6 +570,20 @@ export default function JobApplicantDetails({ jobApplicant }) {
                                                                 />
                                                             </div>
                                                         </div>
+                                                    </div>
+                                                    <div className="col-span-2 flex flex-col gap-2">
+                                                        <InputLabel value='Reason for leaving' />
+                                                        <TextInput 
+                                                            id="reason_leaving"
+                                                            type="text"
+                                                            name="reason_leaving"
+                                                            value={experience.reason_leaving}
+                                                            className="w-full "
+                                                            autoComplete="reason_leaving"
+                                                            isFocused={false}
+                                                            onChange={(e) => setData('', e.target.value)}
+                                                            readOnly={true}
+                                                        />
                                                     </div>
                                                     <div className="flex flex-col gap-2">
                                                         <InputLabel value='Starting Salary' />

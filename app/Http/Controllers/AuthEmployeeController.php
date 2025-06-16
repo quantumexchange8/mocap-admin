@@ -24,7 +24,7 @@ class AuthEmployeeController extends Controller
     public function getEmployeeListing()
     {
 
-        $employees = User::whereNot('role', 'superadmin')->whereNot('status', 'deleted')->with(['department'])->get();
+        $employees = User::whereIn('role', ['admin', 'employee'])->whereNot('status', 'deleted')->with(['department'])->get();
 
         $employees->each(function($employee) {
             $employee->profile_image = $employee->getFirstMediaUrl('profile_image');

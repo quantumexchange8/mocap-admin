@@ -86,7 +86,7 @@ export default function EmployeeOffboarding({employee, contentRef}) {
                 <div className="text-gray-950 text-base font-semibold">Confirmation of Employee Actions</div>
             </div>
             <div className="flex p-5 items-start gap-5 self-stretch">
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-5">
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="reason_deletion" value="Reason for Deletion"/>
                         <TextInput 

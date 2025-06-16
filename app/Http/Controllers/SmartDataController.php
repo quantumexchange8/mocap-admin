@@ -47,6 +47,7 @@ class SmartDataController extends Controller
 
         $jobApplicant = JobApplication::with([
             'work_experience',
+            'education',
             'job_reference',
             'job_language',
             'job_transport',

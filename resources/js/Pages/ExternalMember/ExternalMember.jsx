@@ -140,7 +140,7 @@ export default function ExternalMember(member) {
                         <div className="max-w-8 min-w-8 w-full h-8">
                             {
                                 record.profile_image ? (
-                                    <img src="https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c001/oAfOa6PAAACEAugW6GDACmQZzIALKx9fWFAAGA~tplv-dy-aweme-images:q75.webp?biz_tag=aweme_images&from=327834062&lk3s=138a59ce&s=PackSourceEnum_SEARCH&sc=image&se=false&x-expires=1749913200&x-signature=8ldN187mrrYJJqeL%2BC%2FwLbAM%2Bmk%3D" alt="" className="rounded-full" />
+                                    <img src={record.profile_image} alt="" className="rounded-full" />
                                 ) : (
                                     <div>
                                         <MaleAvatar className="rounded-full w-8 h-8" />
@@ -262,7 +262,7 @@ export default function ExternalMember(member) {
             render: (_, record) => {
                 return (
                     <div className="flex flex-col">
-                        {formatDate(record.last_active) || ''}
+                        {record.last_active ? formatDate(record.last_active) : '-'}
                     </div>
                 )
             },
@@ -271,7 +271,13 @@ export default function ExternalMember(member) {
             key: 'remarks',
             dataIndex: 'remarks',
             width: 121,
-            // sort
+            render: (_, record) => {
+                return (
+                    <div className="flex flex-col">
+                        {record.remarks ? record.remarks : '-'}
+                    </div>
+                )
+            },
         }, {
             title: '',
             key: 'action',

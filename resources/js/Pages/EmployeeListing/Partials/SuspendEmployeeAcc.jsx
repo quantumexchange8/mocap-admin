@@ -1,4 +1,5 @@
 import Button from "@/Components/Button";
+import { FemaleAvatar, MaleAvatar } from "@/Components/Icon/ProfilePhoto";
 import Modal from "@/Components/Modal";
 import React from "react";
 import toast from "react-hot-toast";
@@ -48,9 +49,23 @@ export default function SuspendEmployeeAcc({
                 employmentDetails && (
                     <div className="py-3 px-6 flex flex-col gap-8">
                         <div className="flex items-center gap-3">
-                            <div className="max-w-12 min-w-12 w-full h-12 rounded-full">
-                                <img src="https://p3-pc-sign.douyinpic.com/tos-cn-i-0813c001/oAfOa6PAAACEAugW6GDACmQZzIALKx9fWFAAGA~tplv-dy-aweme-images:q75.webp?biz_tag=aweme_images&from=327834062&lk3s=138a59ce&s=PackSourceEnum_SEARCH&sc=image&se=false&x-expires=1749913200&x-signature=8ldN187mrrYJJqeL%2BC%2FwLbAM%2Bmk%3D" alt="" className="rounded-full w-12 h-12" />
-                            </div>
+                            {
+                                employmentDetails.profile_image ? (
+                                    <div className="max-w-12 min-w-12 w-full h-12 rounded-full">
+                                        <img src={employmentDetails.profile_image} alt="" className="rounded-full w-12 h-12" />
+                                    </div>
+                                ) : (
+                                    <div className="rounded-full w-12 h-12">
+                                        {
+                                            employmentDetails.gender === 'male' ? (
+                                                <MaleAvatar className='w-12 h-12 rounded-full' />
+                                            ) : (
+                                                <FemaleAvatar className='w-12 h-12 rounded-full' />
+                                            )
+                                        }
+                                    </div>
+                                )
+                            }
                             <div className="flex flex-col gap-1">
                                 <div className="text-gray-950 text-base font-semibold">{employmentDetails.name}</div>
                                 <div className="text-gray-500 text-sm">CTID: {employmentDetails.employee_id}</div>
