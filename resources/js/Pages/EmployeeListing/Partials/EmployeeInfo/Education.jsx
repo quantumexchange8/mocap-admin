@@ -9,25 +9,32 @@ import toast from "react-hot-toast";
 import { Calendar } from 'primereact/calendar';
 import { ClearIcon, DatePickerIcon } from "@/Components/Icon/Outline";
 
-export default function Education({isEducationOpen, setIsEducationOpen, closeEducation, user_details, education}) {
+export default function Education({isEducationOpen, setIsEducationOpen, closeEducation, user_details, getEduBg, fetchEduBg }) {
    
     const [isLoading, setIsLoading] = useState(false);
     
     const { data, setData, errors, post, reset } = useForm({
-        education: [{
-            id: '',
-            from_date: '',
-            to_date: '',
-            school_name: '',
-            course_name: '',
-        }]
+        id: '',
+        education: [],
     });
 
     useEffect(() => {
-        if (education) {
-            setData('education', education);
+        if (getEduBg) {
+            setData('id', getEduBg.id)
+
+            if (getEduBg?.education?.length > 0) {
+                // Deep copy to avoid mutating props
+                const initialEducation = getEduBg.education.map(edu => ({
+                    id: edu.id || '',
+                    from_date: edu.from_date || '',
+                    to_date: edu.to_date || '',
+                    school_name: edu.school_name || '',
+                    course_name: edu.course_name || '',
+                }));
+                setData('education', initialEducation);
+            }
         }
-    }, [education]);
+    }, [getEduBg]);
 
     const formatDateToString = (date) => {
         const year = date.getFullYear();
@@ -43,6 +50,7 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
             preserveScroll: true,
             onSuccess: () => {
                 setIsLoading(false);
+                fetchEduBg();
                 closeEducation();
                 reset();
 
@@ -73,10 +81,10 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                 }
             >
                 {
-                    education && (
+                    getEduBg.education.length > 0 ? (
                         <div className="py-3 px-6 flex flex-col gap-8">
                             {
-                                data.education.map((edu, index) => (
+                                getEduBg.education.map((edu, index) => (
                                     <div key={index} className="flex flex-col gap-5">
                                         <div className="flex flex-col col-span-2 text-gray-950 font-semibold">Education {index + 1}</div>
                                         <div className="grid grid-cols-2 gap-5">
@@ -84,12 +92,13 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                                                 <InputLabel htmlFor="from_date" value="From" />
                                                 <div className="flex items-center self-stretch relative">
                                                    <Calendar 
-                                                        value={edu.from_date ? new Date(edu.from_date) : null}
+                                                        value={data.education[index]?.from_date ? new Date(data.education[index].from_date) : null}
                                                         onChange={(e) => {
-                                                        const updated = [...data.education];
-                                                            updated[index].from_date = formatDateToString(e.value);
+                                                            const updated = data.education.map((item, i) =>
+                                                              i === index ? { ...item, from_date: formatDateToString(e.value) } : item
+                                                            );
                                                             setData('education', updated);
-                                                        }}  
+                                                        }} 
                                                         className="w-full text-sm"
                                                         placeholder="mm/yyyy"
                                                         view="month" 
@@ -146,17 +155,19 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                                                         }
                                                     </div>
                                                 </div>
-                                            <InputError message={errors[`education.${index}.from_date`]} />                                            </div>
+                                                <InputError message={errors[`education.${index}.from_date`]} />                                            
+                                            </div>
                                             <div className="flex flex-col gap-2">
                                                 <InputLabel htmlFor="to_date" value="To" />
                                                 <div className="flex items-center self-stretch relative">
                                                     <Calendar
-                                                        value={edu.to_date ? new Date(edu.to_date) : null}
+                                                        value={data.education[index]?.to_date ? new Date(data.education[index].to_date) : null}
                                                         onChange={(e) => {
-                                                        const updated = [...data.education];
-                                                            updated[index].to_date = formatDateToString(e.value);
+                                                            const updated = data.education.map((item, i) =>
+                                                              i === index ? { ...item, to_date: formatDateToString(e.value) } : item
+                                                            );
                                                             setData('education', updated);
-                                                        }}  
+                                                        }} 
                                                         className="w-full text-sm"
                                                         placeholder="mm/yyyy"
                                                         view="month" 
@@ -188,7 +199,7 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                                                 <TextInput 
                                                     id="school_name"
                                                     type="text"
-                                                    value={edu.school_name}
+                                                    value={data.education[index]?.school_name}
                                                     className="w-full"
                                                     placeholder=" "
                                                     onChange={(e) => {
@@ -206,7 +217,7 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                                                     id="course_name"
                                                     type="text"
                                                     name="course_name"
-                                                    value={edu.course_name}
+                                                    value={data.education[index]?.course_name}
                                                     className="w-full"
                                                     placeholder="e.g. Bachelor of Computer Science (Hons)"
                                                     onChange={(e) => {
@@ -223,6 +234,8 @@ export default function Education({isEducationOpen, setIsEducationOpen, closeEdu
                                 ))
                             }
                         </div>
+                    ) : (
+                        null
                     )
                 }
             </Modal>

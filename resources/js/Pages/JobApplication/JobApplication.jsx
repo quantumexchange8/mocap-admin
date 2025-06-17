@@ -482,6 +482,9 @@ export default function JobApplication() {
                             animate="center"
                             exit="exit"
                             className="w-full h-full flex flex-col gap-5"
+                            onAnimationComplete={() => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                            }}                        
                         >
                             {steps[current].content}
                         </motion.div>

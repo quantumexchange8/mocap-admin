@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class JobApplicationController extends Controller
 {
@@ -125,11 +126,11 @@ class JobApplicationController extends Controller
     }
 
     public function workValidation(Request $request){
-
+        // dd($request->all());
         $rules = [
             'experience' => ['required'],
             'job1_title' => ['required_if:experience,yes'],
-            'job1_period' => ['required_if:experience,yes'],
+            'job1_period' => ['required_if:experience,yes', 'array', 'size:2'],
             'job1_company' => ['required_if:experience,yes'],
             'job1_address' => ['required_if:experience,yes'],
             'job1_supervisor' => ['required_if:experience,yes'],
@@ -163,6 +164,7 @@ class JobApplicationController extends Controller
         $messages = [
             'job1_title.required_if' => 'Job Title is required',
             'job1_period.required_if' => 'Period is required',
+            'job1_period.size' => 'The job1_period must contain a start and end date.',
             'job1_company.required_if' => 'Company Name is required',
             'job1_address.required_if' => 'Address is required',
             'job1_supervisor.required_if' => 'Supervisor Name is required',
@@ -195,7 +197,20 @@ class JobApplicationController extends Controller
             'job3_endsalary.required_with' => 'Ending Salary is required',
         ];
 
-        $validated = $request->validate($rules, $messages);
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        $validator->after(function ($validator) use ($request) {
+            if ($request->experience === 'yes') {
+                $job1Period = $request->input('job1_period');
+    
+                if (empty($job1Period[1])) {
+                    $validator->errors()->add('job1_period', 'End date is required.');
+                }
+            }
+        });
+    
+        $validator->validate();
+
         return redirect()->back();
     }
 

@@ -535,6 +535,9 @@ export default function EmployeeApplication() {
                                             }}
                                             transition={{ type: "spring", stiffness: 250, damping: 20 }}
                                             className="p-3 border rounded-full cursor-pointer shadow-sm"
+                                            onAnimationComplete={() => {
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            }}
                                         >
                                             {item.icon}
                                         </motion.div>

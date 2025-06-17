@@ -55,7 +55,7 @@ class EmployeeProfileController extends Controller
 
     public function updateBankInfo(Request $request){
         
-        $employeeBank = EmployeeBank::find($request->id);
+        $employeeBank = EmployeeBank::where('user_id', $request->id);
 
         $validated = $request->validate([
             'bank_name' => 'required',
@@ -77,7 +77,7 @@ class EmployeeProfileController extends Controller
     
     public function updateBeneficiaryInfo(Request $request){
 
-        $beneficiaryInfo = BeneficiaryInfo::find($request->id);
+        $beneficiaryInfo = BeneficiaryInfo::where('user_id', $request->id);
 
         $validated = $request->validate([
             'full_name' => 'required',
@@ -103,7 +103,7 @@ class EmployeeProfileController extends Controller
     public function updateMedicalInfo(Request $request)
     {
 
-        $medicalInfo = MedicalInfo::find($request->id);
+        $medicalInfo = MedicalInfo::where('user_id', $request->id);
 
         $validated = $request->validate([
             'allergic_type' => ['required'],
@@ -124,7 +124,7 @@ class EmployeeProfileController extends Controller
             'pregnancy_medication_type' => ['required_if:pregnant_type,Yes'], // No / Yes
             'pregnancy_medication_remark' => ['required_if:pregnancy_medication_type,Yes'], // if pregnancy_medication_type === 'Yes' this required
 
-            'gynaecological_type' => ['required_if:pregnant_type,Yes'], // No / Yes
+            'gynaescological_type' => ['required_if:pregnant_type,Yes'], // No / Yes
             'gynaecological_remark' => ['required_if:gynaecological_type,Yes'], // if gynaecological_type === 'Yes' this required
         ]);
 
@@ -165,7 +165,7 @@ class EmployeeProfileController extends Controller
         ]);
         
         foreach ($request->emergency_infos as $info) {
-            $emergencyInfo = EmergencyInfo::findOrFail($info['id']);
+            $emergencyInfo = EmergencyInfo::where('user_id', $info['id']);
             $emergencyInfo->update([
                 'full_name' => $info['full_name'],
                 'relationship' =>$info['relationship'],

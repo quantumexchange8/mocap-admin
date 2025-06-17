@@ -255,7 +255,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                     <InputError message={errors.position_type} />
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <InputLabel value='Department' />
+                                    <InputLabel value='Date of Employment' />
                                     <div className="relative">
                                         <Calendar 
                                             value={data.date_of_employment}
@@ -312,7 +312,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                     <InputError message={errors.date_of_employment} />
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <InputLabel value='Department' />
+                                    <InputLabel value='End Date (if applicable)' />
                                     <div className="relative">
                                         <Calendar 
                                             value={data.intern_end_date}

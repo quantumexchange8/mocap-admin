@@ -7,7 +7,7 @@ import TextInput from "@/Components/TextInput";
 import { router, useForm } from "@inertiajs/react";
 import { Radio } from "antd";
 import { Calendar } from "primereact/calendar";
-import React, { useState }  from "react";
+import React, { useEffect, useState }  from "react";
 import toast from "react-hot-toast";
 
 export default function MedicalInfo({
@@ -32,26 +32,63 @@ export default function MedicalInfo({
     const [isLoading, setIsLoading] = useState(false);
 
     const { data, setData, errors, post, reset } = useForm({
-        id: user_details.medicalinfo.id || '',
-        blood_type: user_details.medicalinfo.blood_type || '',
-        allergic_type: user_details.medicalinfo.allergic_type || '',
-        allergic_remark: user_details.medicalinfo.allergic_remark || '',
-        medical_type: user_details.medicalinfo.medical_type || '',
-        medical_remark: user_details.medicalinfo.medical_remark || '',
-        medication_type: user_details.medicalinfo.medication_type || '',
-        medication_remark: user_details.medicalinfo.medication_remark || '',
-        pregnant_type: user_details.medicalinfo.pregnant_type || '',
-        pregnant_remark: user_details.medicalinfo.pregnant_remark || '',
-        pregnant_delivery_date: user_details.medicalinfo.pregnant_delivery_date || '',
-        pregnancy_medication_type: user_details.medicalinfo.pregnancy_medication_type || '',
-        pregnancy_medication_remark: user_details.medicalinfo.pregnancy_medication_remark || '',
-        gynaescological_type: user_details.medicalinfo.gynaecological_type || '',
-        gynaecological_remark: user_details.medicalinfo.gynaecological_remark || '',
+        id: '',
+        blood_type: '',
+        allergic_type: 'No',
+        allergic_remark: '',
+        medical_type: 'No',
+        medical_remark: '',
+        medication_type: 'No',
+        medication_remark: '',
+        pregnant_type: 'No',
+        pregnant_remark: '',
+        pregnant_delivery_date: null,
+        pregnancy_medication_type: 'No',
+        pregnancy_medication_remark: '',
+        gynaescological_type: 'No',
+        gynaecological_remark: '',
     });
 
+    useEffect(() => {
+        setData({
+            id: user_details.medicalinfo.id || '',
+            blood_type: user_details.medicalinfo.blood_type || '',
+            allergic_type: user_details.medicalinfo.allergic_type || '',
+            allergic_remark: user_details.medicalinfo.allergic_remark || '',
+            medical_type: user_details.medicalinfo.medical_type || '',
+            medical_remark: user_details.medicalinfo.medical_remark || '',
+            medication_type: user_details.medicalinfo.medication_type || '',
+            medication_remark: user_details.medicalinfo.medication_type === 'Yes' ? user_details.medicalinfo.medication_remark : 'No',
+            pregnant_type: user_details.medicalinfo.pregnant_type || '',
+            pregnant_remark: user_details.medicalinfo.pregnant_remark || '',
+            pregnant_delivery_date: user_details.medicalinfo.pregnant_delivery_date ? new Date(user_details.medicalinfo.pregnant_delivery_date) : null,
+            pregnancy_medication_type: user_details.medicalinfo.pregnancy_medication_type || '',
+            pregnancy_medication_remark: user_details.medicalinfo.pregnancy_medication_type === 'Yes' ? user_details.medicalinfo.pregnancy_medication_remark : '',
+            gynaescological_type: user_details.medicalinfo.gynaecological_type || '',
+            gynaecological_remark: user_details.medicalinfo.gynaecological_type === 'Yes' ? user_details.medicalinfo.gynaecological_remark : '',
+        });
+    }, [user_details]);
 
     const closeMedicalInfoDialog = () => {
-        reset();
+        if (user_details) {
+            setData({
+                id: user_details.medicalinfo.id || '',
+                blood_type: user_details.medicalinfo.blood_type || '',
+                allergic_type: user_details.medicalinfo.allergic_type || '',
+                allergic_remark: user_details.medicalinfo.allergic_remark || '',
+                medical_type: user_details.medicalinfo.medical_type || '',
+                medical_remark: user_details.medicalinfo.medical_remark || '',
+                medication_type: user_details.medicalinfo.medication_type || '',
+                medication_remark: user_details.medicalinfo.medication_type === 'Yes' ? user_details.medicalinfo.medication_remark : 'No',
+                pregnant_type: user_details.medicalinfo.pregnant_type || '',
+                pregnant_remark: user_details.medicalinfo.pregnant_remark || '',
+                pregnant_delivery_date: user_details.medicalinfo.pregnant_delivery_date ? new Date(user_details.medicalinfo.pregnant_delivery_date) : null,
+                pregnancy_medication_type: user_details.medicalinfo.pregnancy_medication_type || '',
+                pregnancy_medication_remark: user_details.medicalinfo.pregnancy_medication_type === 'Yes' ? user_details.medicalinfo.pregnancy_medication_remark : '',
+                gynaescological_type: user_details.medicalinfo.gynaecological_type || '',
+                gynaecological_remark: user_details.medicalinfo.gynaecological_type === 'Yes' ? user_details.medicalinfo.gynaecological_remark : '',
+            })
+        }
         closeMedicalInfo();
     }
 
@@ -68,10 +105,11 @@ export default function MedicalInfo({
             onSuccess: () => {
                 setIsLoading(false);
                 closeMedicalInfoDialog();
-                reset();
 
                 // 🔁 Refresh only user_details prop from the backend
                 router.reload({ only: ['user_details'] });
+
+                reset();
 
                 toast.success(`Medical Information updated successfully for ${user_details.username}.`, {
                     title: `Medical Information updated successfully for ${user_details.username}.`,
@@ -250,7 +288,7 @@ export default function MedicalInfo({
                                         name="pregnant_remark"
                                         value={data.pregnant_remark}
                                         className="disabled:cursor-not-allowed"
-                                        placeholder="If yes, please specify"
+                                        placeholder="If yes, please specify the weeks of your pregnancy."
                                         autoComplete="pregnant_remark"
                                         disabled={data.pregnant_type === 'No'}
                                         onChange={(e) => setData('pregnant_remark', e.target.value)}

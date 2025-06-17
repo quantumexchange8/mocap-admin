@@ -200,7 +200,7 @@ export default function MedicalInfo({ data, setData, errors }) {
                                         name="pregnant_remark"
                                         value={data.pregnant_remark}
                                         className="disabled:cursor-not-allowed"
-                                        placeholder="If yes, please specify"
+                                        placeholder="If yes, please specify the weeks of your pregnancy."
                                         autoComplete="pregnant_remark"
                                         disabled={data.pregnant_type === 'No' || data.gender === 'male'}
                                         onChange={(e) => setData('pregnant_remark', e.target.value)}

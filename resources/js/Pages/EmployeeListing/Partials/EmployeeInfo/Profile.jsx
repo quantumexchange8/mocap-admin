@@ -261,7 +261,7 @@ export default function Profile({ user_details, id }) {
                             <div className="flex flex-col gap-3 p-5">
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Blood Type</div>
-                                    <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.blood_type === 'no' ? 'Not sure' : user_details.medicalinfo.blood_type}</div>
+                                    <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.blood_type === 'no' ? 'Unknown' : user_details.medicalinfo.blood_type}</div>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="text-gray-500 text-sm w-full">Food Allergic</div>
@@ -285,7 +285,7 @@ export default function Profile({ user_details, id }) {
                                                 user_details.medicalinfo.pregnant_type === 'Yes' && (
                                                     <div className="flex items-center">
                                                         <div className="text-gray-500 text-sm w-full">Expected Date of Delivery</div>
-                                                        <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.pregnant_type}</div>
+                                                        <div className="text-gray-950 text-sm w-full">{user_details.medicalinfo.pregnant_delivery_date}</div>
                                                     </div>
                                                 )
                                             }
@@ -519,7 +519,8 @@ export default function Profile({ user_details, id }) {
                             setIsEducationOpen={setIsEducationOpen}
                             closeEducation={closeEducation}
                             user_details={user_details}
-                            education={getEduBg.education}
+                            getEduBg={getEduBg}
+                            fetchEduBg={fetchEduBg}
                         />
                     </div>
                 ) : null

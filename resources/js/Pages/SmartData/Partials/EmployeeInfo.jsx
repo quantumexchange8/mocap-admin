@@ -703,6 +703,7 @@ export default function EmployeeInfo({employee, contentRef}) {
                                         disabled={employee.medicalinfo.pregnant_type === 'No' || employee.medicalinfo.gender === 'male'}
                                         onChange={(e) => setData('', e.target.value)}
                                         readOnly={true}
+                                        placeholder='If yes, please specify the weeks of your pregnancy.'
                                     />
                                 </div>
                             </div>

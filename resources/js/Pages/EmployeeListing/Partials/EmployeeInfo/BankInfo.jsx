@@ -10,15 +10,6 @@ import toast from "react-hot-toast";
 
 export default function BankInfo({isBankInfoOpen, setIsBankInfoOpen, closeBankInfo, user_details}) {
 
-    const { data, setData, errors, post, reset } = useForm({
-        id: user_details.employeebank.id || '',
-        bank_name: user_details.employeebank.bank_name || '',
-        acc_type: user_details.employeebank.acc_type || '',
-        acc_no: user_details.employeebank.acc_no || '',
-        income_tax_no: user_details.employeebank.income_tax_no || '',
-        epf_no: user_details.employeebank.epf_no || '',
-        socso_no: user_details.employeebank.socso_no || '',
-    });
 
     const [getBank, setGetBank] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -48,8 +39,40 @@ export default function BankInfo({isBankInfoOpen, setIsBankInfoOpen, closeBankIn
         fetchBank();
     }, []);
 
+    const { data, setData, errors, post, reset } = useForm({
+        id: '',
+        bank_name: '',
+        acc_type: '',
+        acc_no: '',
+        income_tax_no: '',
+        epf_no: '',
+        socso_no: '',
+    });
+
+    useEffect(() => {
+        if (user_details) {
+            setData('id', user_details.id)
+            setData('bank_name', user_details.employeebank.bank_name)
+            setData('acc_type', user_details.employeebank.acc_type)
+            setData('acc_no', user_details.employeebank.acc_no)
+            setData('income_tax_no', user_details.employeebank.income_tax_no)
+            setData('epf_no', user_details.employeebank.epf_no)
+            setData('socso_no', user_details.employeebank.socso_no)
+        }
+    }, [user_details]);
+
     const closeBankInfoDialog = () => {
-        reset();
+        if (user_details) {
+            setData({
+                id: user_details.employeebank.id || '',
+                bank_name: user_details.employeebank.bank_name || '',
+                acc_type: user_details.employeebank.acc_type || '',
+                acc_no: user_details.employeebank.acc_no || '',
+                income_tax_no: user_details.employeebank.income_tax_no || '',
+                epf_no: user_details.employeebank.epf_no || '',
+                socso_no: user_details.employeebank.socso_no || '',
+            });
+        }
         closeBankInfo();
     }
 

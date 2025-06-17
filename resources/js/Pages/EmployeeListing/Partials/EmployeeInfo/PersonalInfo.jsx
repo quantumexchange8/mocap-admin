@@ -90,6 +90,7 @@ export default function PersonalInfo({
         postcode: '',
         city: '',
         state: '',
+        address: '',
     });
 
     useEffect(() => {
@@ -105,6 +106,7 @@ export default function PersonalInfo({
             setData('postcode', user_details.postcode)
             setData('city', user_details.city)
             setData('state', user_details.state)
+            setData('address', user_details.address)
         }
     }, [user_details]);
 
@@ -133,6 +135,7 @@ export default function PersonalInfo({
                 postcode: user_details.postcode || '',
                 city: user_details.city || '',
                 state: user_details.state || '',
+                address: user_details.address || '',
             });
         }
         closePersonalInfo();
@@ -357,7 +360,8 @@ export default function PersonalInfo({
                             </div>
                             <div className="flex flex-col gap-2">
                                 <InputLabel htmlFor="postcode" value={<div className="flex items-center gap-1">
-                                    <span>Postcode </span><span className="text-gray-500 text-xs">(Current)</span>
+                                    <span>Postcode </span>
+                                    {/* <span className="text-gray-500 text-xs">(Current)</span> */}
                                 </div>} />
                                 <TextInput 
                                     id="postcode"
@@ -375,7 +379,7 @@ export default function PersonalInfo({
                             <div className="flex flex-col gap-2">
                                 <InputLabel htmlFor="city" value={<div className="flex items-center gap-1">
                                     <span>City</span>
-                                    <span className="text-gray-500 text-xs">(Current)</span>
+                                    {/* <span className="text-gray-500 text-xs">(Current)</span> */}
                                 </div>} />
                                 <TextInput 
                                     id="city"
@@ -393,7 +397,7 @@ export default function PersonalInfo({
                             <div className="flex flex-col gap-2">
                                 <InputLabel htmlFor="state" value={<div className="flex items-center gap-1">
                                     <span>State</span>
-                                    <span className="text-gray-500 text-xs">(Current)</span>
+                                    {/* <span className="text-gray-500 text-xs">(Current)</span> */}
                                 </div>} />
                                 <Dropdown 
                                     value={data.state} 
@@ -420,6 +424,24 @@ export default function PersonalInfo({
                                 />
                                 <InputError message={errors.state}  />
                             </div>
+                            {/* <div className=" col-span-2 flex flex-col gap-2">
+                                <InputLabel htmlFor="address" value={<div className="flex items-center gap-1">
+                                    <span>Address</span>
+                                    <span className="text-gray-500 text-xs">(Current)</span>
+                                </div>} />
+                                <TextInput 
+                                    id="address"
+                                    type="text"
+                                    name="address"
+                                    value={data.address}
+                                    className="w-full"
+                                    placeholder="House no./unit no., building name, street name/district, etc."
+                                    autoComplete="address"
+                                    onChange={(e) => setData('address', e.target.value)}
+                                    hasError={!!errors.address}
+                                />
+                                <InputError message={errors.address}  />
+                            </div> */}
                         </div>
                     )
                 }

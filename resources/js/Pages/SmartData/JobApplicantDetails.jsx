@@ -328,20 +328,6 @@ export default function JobApplicantDetails({ jobApplicant }) {
                             </div>
                         </div>
 
-                        {/* Special Skills */}
-                        <div className="flex flex-col border border-gray-200 shadow-smShadow ">
-                            <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
-                                Special Skills
-                            </div>
-                            <div className="p-5 ">
-                                <TextArea 
-                                    value={jobApplicant.special_skill}
-                                    rows={6}
-                                    readOnly
-                                />
-                            </div>
-                        </div>
-
                         {/* Education Background */}
                         <div className="flex flex-col border border-gray-200 shadow-smShadow ">
                             <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
@@ -453,6 +439,20 @@ export default function JobApplicantDetails({ jobApplicant }) {
                                     </div>
                                 )
                             }
+                        </div>
+
+                        {/* Special Skills */}
+                        <div className="flex flex-col border border-gray-200 shadow-smShadow ">
+                            <div className="py-4 px-5 text-gray-950 text-base font-semibold border-b border-gray-200">
+                                Special Skills
+                            </div>
+                            <div className="p-5 ">
+                                <TextArea 
+                                    value={jobApplicant.special_skill}
+                                    rows={6}
+                                    readOnly
+                                />
+                            </div>
                         </div>
 
                         {/* Work Experience */}
