@@ -347,7 +347,7 @@ class EmployeeController extends Controller
             'place_of_birth' => $request->place_of_birth,
             'maritial_status' => $request->marital_status,
             'department_position' => $request->position_type['position_name'],
-            'position' => $request->pos_type,
+            'position' => $request->pos_type['name'],
             'role' => 'employee',
             'employee_type' => $request->employment_type,
             'department_id' => $request->department_type['id'],
