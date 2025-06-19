@@ -66,7 +66,7 @@ const formatDMYTime = (utcDateString, includeTime = true) => {
         timeZone: 'Asia/Kuala_Lumpur',
         day: '2-digit',
         month: '2-digit',
-        year: 'numeric',
+        year: '2-digit', // 👈 change to 2-digit
         hour: includeTime ? '2-digit' : undefined,
         minute: includeTime ? '2-digit' : undefined,
         hour12: false,

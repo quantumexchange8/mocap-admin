@@ -125,12 +125,12 @@ export default function Department() {
                                         <div>
                                             {
                                                 viewType === 'list' && (
-                                                    <ListViewTable getDepartment={filteredDepartments} isLoading={isLoading} />
+                                                    <ListViewTable getDepartment={filteredDepartments} isLoading={isLoading} fetchDepartment={fetchDepartment} />
                                                 )
                                             }
                                             {
                                                 viewType === 'grid' && (
-                                                    <GridViewTable getDepartment={filteredDepartments} isLoading={isLoading} />
+                                                    <GridViewTable getDepartment={filteredDepartments} isLoading={isLoading} fetchDepartment={fetchDepartment} />
                                                 )
                                             }
                                         </div>

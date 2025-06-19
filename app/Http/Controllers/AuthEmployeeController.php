@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DeletedEmployee;
+use App\Models\EmploymentHistory;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Validated;
@@ -54,13 +55,13 @@ class AuthEmployeeController extends Controller
 
     public function updateEmployeeDetails(Request $request)
     {
-
         $validated = $request->validate([
             'employment_type'     => 'required|string|max:255',
             'department_type'     => 'required|integer|exists:departments,id',
             'position_type'       => 'required|string|max:255',
             'date_of_employment'  => 'required|date',
             'intern_end_date'     => 'nullable|date|after_or_equal:date_of_employment',
+            'position'            => 'required'
         ]);
 
         $employee = User::find($request->id);
@@ -68,9 +69,18 @@ class AuthEmployeeController extends Controller
         $employee->update([
             'employee_type' => $request->employment_type,
             'department_id' => $request->department_type,
-            'position' => $request->position_type,
+            'position' => $request->position,
+            'department_position' => $request->position_type,
             'employee_date' => Carbon::parse($request->date_of_employment)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
             'employee_end_date' => Carbon::parse($request->intern_end_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+        ]);
+
+        $employmentHistory = EmploymentHistory::create([
+            'user_id' => $employee->id,
+            'employment_type' => $request->employment_type,
+            'employment_start' => Carbon::parse($request->date_of_employment)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
+            'employment_end' => $request->intern_end_date ? Carbon::parse($request->intern_end_date)->setTimezone('Asia/Kuala_Lumpur')->endOfDay()->toDateTimeString() : null,
+            'position' => $request->position,
         ]);
 
         return redirect()->back();

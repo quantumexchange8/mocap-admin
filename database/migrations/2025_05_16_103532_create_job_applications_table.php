@@ -34,6 +34,7 @@ return new class extends Migration
             $table->longText('special_skill');
             $table->integer('test_mark');
             $table->string('status');
+            $table->string('remark')->nullable();
             $table->timestamps();
         });
     }

@@ -1,10 +1,38 @@
 import { DateJoinedIcon, EmailIcon, PhoneIcon, TagActiveIcon, TagDeletedIcon, TagInvitedIcon, TagSuspendedIcon } from "@/Components/Icon/Outline";
-import { Tag, Image } from "antd";
-import React from "react";
+import { Tag, Image, Timeline } from "antd";
+import React, { useEffect, useState } from "react";
 import { FemaleAvatar, MaleAvatar } from "@/Components/Icon/ProfilePhoto";
+import { formatDMYTime } from "@/Composables";
 
 
 export default function EmployeeEmployment({employee, contentRef}) {
+
+    const [getEmploymentHistory, setGetEmploymentHistory] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const fetchEmploymentHistory = async  () => {
+        setIsLoading(true);
+        try {
+
+            const response = await axios.get('/getEmploymentHistory', {
+                params: {
+                    id: employee.id,
+                }
+            });
+            
+            setGetEmploymentHistory(response.data);
+            
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchEmploymentHistory();
+    }, []);
+
 
     return(
     <div ref={contentRef} className="flex flex-col gap-5 items-center">
@@ -102,7 +130,28 @@ export default function EmployeeEmployment({employee, contentRef}) {
                 <div className="text-gray-950 text-base font-semibold">Employment History</div>
             </div>
             <div className="flex p-5 items-start gap-5 self-stretch">
-
+                {
+                    isLoading ? (
+                        <>
+                        
+                        </>
+                    ) : (
+                        <>
+                            <Timeline 
+                                items={getEmploymentHistory.map((item, index) => ({
+                                    key: index,
+                                    children: (
+                                        <div className="flex flex-col gap-1">
+                                            <div className="font-semibold text-gray-950 text-sm">{item.position}</div>
+                                            <div className="text-gray-700 text-sm">{item.employment_type }</div>
+                                            <div className="text-gray-500 text-xs">{item.employment_start ? formatDMYTime(item.employment_start) : 'N/A'} - {item.employment_end ? formatDMYTime(item.employment_end) : 'N/A'}</div>
+                                        </div>
+                                    )
+                                }))}
+                            />
+                        </>
+                    )
+                }
             </div>
         </div>
     </div>

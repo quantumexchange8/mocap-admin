@@ -148,11 +148,11 @@ export default function administrators() {
             dataIndex: 'permission',
             width: 177,
             render: (_, record) => {
-
+                
                 return (
                     <div>
                         {
-                            record.permissions.length === 21 || record.roles[0].name === 'superadmin' ? (
+                            record?.permissions?.length === 21 || record?.roles[0]?.name === 'superadmin' ? (
                                 <div>
                                     All permissions
                                 </div>

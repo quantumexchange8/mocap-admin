@@ -1,14 +1,22 @@
 import Button from "@/Components/Button";
-import { ClearIcon, ColumnIcon, DatePickerIcon, DefaultSortIcon, FilterIcon, SearchIcon, SortAsc, SortDesc, ViewIcon, XIcon } from "@/Components/Icon/Outline";
+import { ClearIcon, ColumnIcon, DatePickerIcon, DefaultSortIcon, EditIcon, FilterIcon, SearchIcon, SortAsc, SortDesc, ViewIcon, XIcon } from "@/Components/Icon/Outline";
 import SearchInput from "@/Components/SearchInput";
-import { Checkbox, DatePicker, Popover, Select, Table, Tag, Tooltip } from "antd";
+import { Checkbox, DatePicker, Popover, Radio, Select, Table, Tag, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { formatDate, formatAmount } from "@/Composables";
 import { NoRecordIllus } from "@/Components/Icon/Illustration";
 import { Calendar } from "primereact/calendar";
+import Modal from "@/Components/Modal";
+import { useForm } from "@inertiajs/react";
+import TextInput from "@/Components/TextInput";
+import InputLabel from "@/Components/InputLabel";
+import { Input } from 'antd';
+import toast from "react-hot-toast";
 
 export default function JobApplicants() {
 
+    const { TextArea } = Input;
+    
     const [searchFilter, setSearchFilter] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [getJobApplicant, setGetJobApplicant] = useState([]);
@@ -20,6 +28,8 @@ export default function JobApplicants() {
     const [filterSubmissionDate, setFilterSubmissionDate] = useState(null); 
     const [filterPosition, setFilterPosition] = useState(null); 
     const [filterStatus, setFilterStatus] = useState(null); 
+    const [statusDialogOpen, setStatusDialogOpen] = useState(false); 
+    const [selectedDialog, setSelectedDialog] = useState(null); 
     const [visibleColumns, setVisibleColumns] = useState([
         'applicant',
         'submission_date',
@@ -95,6 +105,25 @@ export default function JobApplicants() {
 
     const clearFilter = () => {
         setSearchFilter('');
+    }
+
+    const { data, setData, errors, post, reset } = useForm({
+        id: '',
+        status: '',
+        remark: '',
+    }) 
+
+    const statusDialog = (record) => {
+        setStatusDialogOpen(true);
+        setSelectedDialog(record);
+        setData('id', record.id)
+    }
+
+    const closeStatusDialog = () => {
+        setStatusDialogOpen(false);
+        setSelectedDialog(null);
+        setData('id', '');
+        reset();
     }
 
     const columns = [
@@ -330,6 +359,13 @@ export default function JobApplicants() {
                                 </Tag>
                             )
                         }
+                        {
+                            record.status === 'rejected_offer' && (
+                                <Tag bordered={false} color="others" className='ant-tag-others text-xs font-medium py-1 px-2 flex items-center gap-1 m-0'>
+                                    <span>Rejected Offer</span>
+                                </Tag>
+                            )
+                        }
                     </div>
                 )
             },
@@ -347,6 +383,13 @@ export default function JobApplicants() {
                     <div className="flex items-center justify-center gap-1"
                         onClick={(e) => e.stopPropagation()}
                     >
+                        <Tooltip placement="bottomRight" title='Change Status'>
+                            <div>
+                                <Button iconOnly variant="text" size="sm" disabled={record.status !== 'hired'} onClick={() => statusDialog(record)} >
+                                    <EditIcon />
+                                </Button>
+                            </div>
+                        </Tooltip>
                         <Tooltip placement="bottomRight" title='Evaluation Form'>
                             <div>
                                 <Button iconOnly variant="text" size="sm" onClick={() => window.location.href = `/jobApplicant-evaluation/${record.id}`} >
@@ -400,6 +443,28 @@ export default function JobApplicants() {
     
 
     const filteredColumns = columns.filter(col => col.key === 'action' || visibleColumns.includes(col.key));
+
+    const submit = (e) => {
+        e.preventDefault();
+        setIsLoading(true)
+
+        post('/update-applicant-status', {
+            preserveScroll: true,
+            onSuccess: () => {
+                setIsLoading(false);
+                reset();
+
+                toast.success(`Job Applicant ${selectedDialog.full_name} status updated.`, {
+                    title: `Job Applicant ${selectedDialog.full_name} status updated.`,
+                    duration: 3000,
+                    variant: 'variant1',
+                });
+
+                closeStatusDialog();
+                fetchJobApplicant();
+            },
+        })
+    }
 
     return (
         <div className="flex flex-col gap-5">
@@ -488,6 +553,7 @@ export default function JobApplicants() {
                                                 { label: 'Pending Review', value: 'pending_review' },
                                                 { label: 'Hired', value: 'hired' },
                                                 { label: 'Rejected', value: 'rejected' },
+                                                { label: 'Rejected Offer', value: 'rejected_offer' },
                                             ]}
                                             value={filterStatus}
                                             onChange={(checkedValues) => setFilterStatus(checkedValues)}
@@ -560,6 +626,61 @@ export default function JobApplicants() {
                     }}
                 />
             </div>
+
+            <Modal
+                show={statusDialogOpen}
+                maxWidth='sm'
+                title='Update Applicant status'
+                onClose={closeStatusDialog}
+                footer={
+                    <div className="flex items-center justify-end gap-4 w-full">
+                        <Button variant="outlined" size="sm" onClick={closeStatusDialog}>Cancel</Button>
+                        <Button size="sm" onClick={submit}>Save changes</Button>
+                    </div>
+                }
+            >
+                {
+                    selectedDialog && (
+                        <div className="py-3 px-6">
+                            {
+                                (selectedDialog.status === 'hired') && (
+                                    <div className="flex flex-col gap-6">
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex gap-1">
+                                                <InputLabel value="Status" /><div className="text-sm text-error-600">*</div>
+                                            </div>
+                                            <Radio.Group
+                                                value={data.status}
+                                                options={[
+                                                    { label: 'Rejected', value: 'rejected'},
+                                                    { label: 'Offer rejected', value: 'rejected_offer'},
+                                                ]}
+                                                onChange={(e) => setData('status', e.target.value)}
+                                            />
+                                        </div>
+                                        
+                                        <div className="flex flex-col gap-2">
+                                            <div className="flex gap-1">
+                                                <InputLabel value="Remark" /><div className="text-sm text-error-600">*</div>
+                                            </div>
+                                            <TextArea 
+                                                id="remark"
+                                                type="text"
+                                                name="remark"
+                                                value={data.remark}
+                                                autoSize={{ minRows: 4, maxRows: 6 }}
+                                                placeholder="Speicific rejected reason"
+                                                onChange={(e) => setData('remark', e.target.value)}
+                                            />
+                                        </div>
+                                        
+                                    </div>
+                                )
+                            }
+                        </div>
+                    )
+                }
+            </Modal>
         </div>
     )
 }

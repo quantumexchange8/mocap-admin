@@ -38,7 +38,8 @@ export default function EmployeeApplication() {
     const defaultViewDate = new Date();
     const today = new Date();
     const [getDepartment, setGetDepartment] = useState([]);
-    const [getPosition, setGetPosition] = useState([]);
+    const [getDeptPosition, setGetDeptPosition] = useState([]);
+    const [getPosition, setPosition] = useState([]);
     const [getAdmin, setGetAdmin] = useState([]);
     const [confirmationDialog, setConfirmationDialog] = useState(false);
     const [completedSteps, setCompletedSteps] = useState(false);
@@ -60,13 +61,28 @@ export default function EmployeeApplication() {
         }
     }
 
-    const fetchPosition = async  () => {
+    const fetchDeptPosition = async  () => {
         setIsLoading(true);
         try {
 
             const response = await axios.get('/getDepartmentposition');
             
-            setGetPosition(response.data);
+            setGetDeptPosition(response.data);
+            
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const fetchPosition = async  () => {
+        setIsLoading(true);
+        try {
+
+            const response = await axios.get('/getPosition');
+            
+            setPosition(response.data);
             
         } catch (error) {
             console.error('error', error);
@@ -107,9 +123,10 @@ export default function EmployeeApplication() {
 
     useEffect(() => {
         fetchDepartment();
-        fetchPosition();
+        fetchDeptPosition();
         fetchAdmin();
         fetchJobApplication();
+        fetchPosition();
     }, []);
 
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -208,6 +225,7 @@ export default function EmployeeApplication() {
 
         // submit employee info
         employment_type: '',
+        pos_type: '',
         department_type: '',
         position_type: '',
         date_of_employment: today,
@@ -366,7 +384,7 @@ export default function EmployeeApplication() {
         return new Blob([u8arr], { type: mime });
     }
 
-    const transformedOptions = getPosition.map(dept => ({
+    const transformedOptions = getDeptPosition.map(dept => ({
         label: dept.department_name,
         items: dept.positions.map(pos => ({
             label: pos.position_name,
@@ -663,7 +681,7 @@ export default function EmployeeApplication() {
                         Hold on! Before submitting, please allow the HR admin to complete the remaining fields. Thank you for your patience!
                     </div>
                     <div className="grid grid-cols-2 gap-5">
-                        <div className="col-span-2 flex flex-col gap-2">
+                        <div className="flex flex-col gap-2">
                             <InputLabel value='Employment Type' />
                             <Dropdown 
                                 value={data.employment_type} 
@@ -692,6 +710,31 @@ export default function EmployeeApplication() {
                             <InputError message={errors.employment_type} />
                         </div>
                         <div className="flex flex-col gap-2">
+                            <InputLabel value='Position' />
+                            <Dropdown 
+                                value={data.pos_type} 
+                                onChange={(e) => setData('pos_type', e.value)} 
+                                options={getPosition}
+                                optionLabel="name"
+                                placeholder="Select" 
+                                loading={isLoading}
+                                className="w-full text-sm"
+                                invalid={!!errors.pos_type}
+                                pt={{
+                                    root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                    panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                    item: ({ context }) => ({
+                                        className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                            context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                        }`
+                                    }),
+                                    filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                    filterContainer: { className: 'p-2'}
+                                }}
+                            />
+                            <InputError message={errors.pos_type} />
+                        </div>
+                        <div className="flex flex-col gap-2">
                             <InputLabel value='Department' />
                             <Dropdown 
                                 value={data.department_type} 
@@ -717,7 +760,7 @@ export default function EmployeeApplication() {
                             <InputError message={errors.department_type} />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <InputLabel value='Position' />
+                            <InputLabel value='Department Position' />
                             <Dropdown 
                                 value={data.position_type} 
                                 onChange={(e) => setData('position_type', e.value)} 
@@ -885,6 +928,7 @@ export default function EmployeeApplication() {
                                 }))}
                                 optionLabel="label"
                                 placeholder="Select"
+                                showClear
                                 loading={isLoading}
                                 className="w-full text-sm"
                                 invalid={!!errors.job_applicant}

@@ -21,6 +21,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
 
     const [isLoading, setIsLoading] = useState(false);
     const [getPosition, setGetPosition] = useState([]);
+    const [getDeptPosition, setGetDeptPosition] = useState([]);
     const [getDepartment, setGetDepartment] = useState([]);
     const [isConfirmDialog, setIsConfirmDialog] = useState(false);
 
@@ -43,9 +44,24 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
         setIsLoading(true);
         try {
 
-            const response = await axios.get('/getDepartmentposition');
+            const response = await axios.get('/getPosition');
             
             setGetPosition(response.data);
+            
+        } catch (error) {
+            console.error('error', error);
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const fetchDeptPosition = async  () => {
+        setIsLoading(true);
+        try {
+
+            const response = await axios.get('/getDepartmentposition');
+            
+            setGetDeptPosition(response.data);
             
         } catch (error) {
             console.error('error', error);
@@ -57,9 +73,10 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
     useEffect(() => {
         fetchPosition();
         fetchDepartment();
+        fetchDeptPosition();
     }, []);
 
-    const transformedOptions = getPosition.map(dept => ({
+    const transformedOptions = getDeptPosition.map(dept => ({
         label: dept.department_name,
         items: dept.positions.map(pos => ({
             label: pos.position_name,
@@ -70,6 +87,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
     const { data, setData, post, processing, errors, reset, isDirty } = useForm({
         id: '',
         employment_type: '',
+        position: '',
         department_type: '',
         position_type: null,
         date_of_employment: null,
@@ -80,8 +98,9 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
         if (employmentDetails) {
             setData('id', employmentDetails.id)
             setData('employment_type', employmentDetails.employee_type)
+            setData('position', employmentDetails.position)
             setData('department_type', employmentDetails.department_id)
-            setData('position_type', employmentDetails.position)
+            setData('position_type', employmentDetails.department_position)
             setData('date_of_employment', new Date(employmentDetails.employee_date))
             setData('intern_end_date', new Date(employmentDetails.employee_end_date))
         }
@@ -169,7 +188,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                 </div>
                             </div>
                             <div className="grid grid-cols-2 gap-5">
-                                <div className="col-span-2 flex flex-col gap-2">
+                                <div className="flex flex-col gap-2">
                                     <InputLabel value='Employment Type' />
                                     <Dropdown 
                                         value={data.employment_type} 
@@ -196,6 +215,34 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                         }}
                                     />
                                     <InputError message={errors.employment_type} />
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <InputLabel value='Position' />
+                                    <Dropdown 
+                                        value={data.position || ''} 
+                                        onChange={(e) => setData('position', e.value)} 
+                                        options={getPosition.map(position => ({
+                                            label: position.name,
+                                            value: position.name,
+                                        }))}
+                                        optionLabel="label"
+                                        placeholder="Select" 
+                                        loading={isLoading}
+                                        className="w-full text-sm"
+                                        invalid={!!errors.position}
+                                        pt={{
+                                            root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                            panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                            item: ({ context }) => ({
+                                                className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                                    context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                                }`
+                                            }),
+                                            filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                            filterContainer: { className: 'p-2'}
+                                        }}
+                                    />
+                                    <InputError message={errors.position} />
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <InputLabel value='Department' />
@@ -226,7 +273,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                     <InputError message={errors.department_type} />
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <InputLabel value='Position' />
+                                    <InputLabel value='Department Position' />
                                     <Dropdown 
                                         value={data.position_type} 
                                         onChange={(e) => setData('position_type', e.value)} 

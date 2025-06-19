@@ -260,7 +260,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/evaluation-job-applicant', [SmartDataController::class, 'evaluationJobApplicant'])->name('evaluation-job-applicant');
 
         Route::get('/getEmployeeInfo', [SmartDataController::class, 'getEmployeeInfo'])->name('getEmployeeInfo');
+        Route::get('/getEmploymentHistory', [SmartDataController::class, 'getEmploymentHistory'])->name('getEmploymentHistory');
+
         Route::get('/employee-info/{id}', [SmartDataController::class, 'employeeInfo'])->name('employeeInfo');
+        Route::post('/update-applicant-status', [SmartDataController::class, 'updateApplicantStatus'])->name('update-applicant-status');
         
     });
     

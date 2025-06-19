@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('religion')->nullable();
             $table->string('place_of_birth')->nullable();
             $table->string('maritial_status')->nullable();
+            $table->string('department_position')->nullable();
             $table->string('position')->nullable();
             $table->string('role');
             $table->string('employee_type')->nullable();

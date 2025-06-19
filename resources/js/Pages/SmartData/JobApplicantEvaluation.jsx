@@ -601,6 +601,7 @@ export default function JobApplicantEvaluation({ jobApplicant, checkEvaluated })
                                         options={[
                                             { label: 'Hire Applicant', value: 'hired' },
                                             { label: 'Reject Applicant', value: 'rejected' },
+                                            { label: 'Offer rejected', value: 'rejected_offer' },
                                         ]}
                                         className="py-3 flex gap-x-8"
                                     />

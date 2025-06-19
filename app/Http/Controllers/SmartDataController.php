@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\EmployeeAccount;
+use App\Models\EmploymentHistory;
 use App\Models\EvaluationForm;
 use App\Models\JobApplication;
 use App\Models\User;
@@ -187,6 +188,39 @@ class SmartDataController extends Controller
         return Inertia::render('SmartData/EmployeeDetails', [
             'employee' => $employee,
         ]);
+    }
+
+    public function updateApplicantStatus(Request $request)
+    {
+
+        // dd($request->all());
+
+        $validated = $request->validate([
+            'remark' => 'required',
+            'status' => 'required',
+        ]);
+
+        $jobApplicant = JobApplication::find($request->id);
+        $jobEvaluation = EvaluationForm::where('job_id', $request->id)->first();
+
+        $jobApplicant->update([
+            'status' => $request->status
+        ]);
+
+        $jobEvaluation->update([
+            'status' => $request->status,
+            'remark' => $request->remark,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function getEmploymentHistory(Request $request)
+    {
+
+        $histories = EmploymentHistory::where('user_id', $request->id)->get();
+
+        return response()->json($histories);
     }
 
 }

@@ -303,14 +303,16 @@ class EmployeeController extends Controller
             'position_type' => ['required'],
             'date_of_employment' => ['required'],
             'submitted_by' => ['required'],
+            'pos_type' => ['required'],
         ];
 
         $messages = [
-            'employment_type.required' => 'Investigation type is required.',
-            'department_type.required' => 'Investigation type is required.',
-            'position_type.required' => 'Investigation type is required.',
-            'date_of_employment.required' => 'Investigation type is required.',
-            'submitted_by.required' => 'Investigation type is required.',
+            'employment_type.required' => 'Employment type is required.',
+            'department_type.required' => 'Department is required.',
+            'position_type.required' => 'Department Position is required.',
+            'date_of_employment.required' => 'Date of Employment is required.',
+            'submitted_by.required' => 'Submitted by is required.',
+            'pos_type.required' => 'Position is required.',
         ];
 
         $validated = $request->validate($rules, $messages);
@@ -344,7 +346,8 @@ class EmployeeController extends Controller
             'religion' => $request->religion,
             'place_of_birth' => $request->place_of_birth,
             'maritial_status' => $request->marital_status,
-            'position' => $request->position_type['position_name'],
+            'department_position' => $request->position_type['position_name'],
+            'position' => $request->pos_type,
             'role' => 'employee',
             'employee_type' => $request->employment_type,
             'department_id' => $request->department_type['id'],

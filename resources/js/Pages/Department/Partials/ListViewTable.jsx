@@ -9,7 +9,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { motion } from 'framer-motion';
 
-export default function ListViewTable ({ getDepartment, isLoading }) {
+export default function ListViewTable ({ getDepartment, isLoading, fetchDepartment }) {
 
     const iconComponents = {
         icon1: DepartmentIcon1,
@@ -85,6 +85,7 @@ export default function ListViewTable ({ getDepartment, isLoading }) {
 
             if (response.status === 200) {
                 cancelDeleteDepartment();
+                fetchDepartment();
                 toast.success('Department has been deleted.', {
                     title: 'Department has been deleted.',
                     duration: 3000,

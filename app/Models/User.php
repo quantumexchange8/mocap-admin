@@ -52,6 +52,7 @@ class User extends Authenticatable implements HasMedia
         'status',
         'remarks',
         'last_active',
+        'department_position',
     ];
 
     /**

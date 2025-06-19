@@ -664,6 +664,10 @@ select:focus,
   line-height: 16px;
 }
 
+.ant-table-wrapper .ant-table-tbody .ant-table-row >.ant-table-cell-row-hover {
+  cursor: pointer;
+}
+
 .ant-table-wrapper .ant-table-tbody >tr >th, .ant-table-wrapper .ant-table-tbody >tr >td {
   padding: 12px;
   color: #030712;

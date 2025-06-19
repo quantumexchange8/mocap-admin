@@ -7,7 +7,7 @@ import Modal from "@/Components/Modal";
 import { DeleteIllus } from "@/Components/Icon/Illustration";
 import ConfirmDialog from "@/Components/ConfirmDialog";
 
-export default function GridViewTable ({ getDepartment, isLoading }) {
+export default function GridViewTable ({ getDepartment, isLoading, fetchDepartment }) {
 
     const iconComponents = {
         icon1: DepartmentIcon1,
@@ -82,6 +82,8 @@ export default function GridViewTable ({ getDepartment, isLoading }) {
             const response = await axios.post('/delete-department', delVal);
 
             if (response.status === 200) {
+                cancelDeleteDepartment();
+                fetchDepartment();
                 toast.success('Department has been deleted.', {
                     title: 'Department has been deleted.',
                     duration: 3000,
