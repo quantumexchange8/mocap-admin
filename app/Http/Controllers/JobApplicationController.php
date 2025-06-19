@@ -130,7 +130,7 @@ class JobApplicationController extends Controller
         $rules = [
             'experience' => ['required'],
             'job1_title' => ['required_if:experience,yes'],
-            'job1_period' => ['required_if:experience,yes', 'array', 'size:2'],
+            'job1_period' => ['required_if:experience,yes'],
             'job1_company' => ['required_if:experience,yes'],
             'job1_address' => ['required_if:experience,yes'],
             'job1_supervisor' => ['required_if:experience,yes'],
