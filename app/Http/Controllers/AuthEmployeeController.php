@@ -221,7 +221,6 @@ class AuthEmployeeController extends Controller
                 'required',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
-            'address' => 'required',
         ]);
 
         $user->update([
@@ -231,7 +230,6 @@ class AuthEmployeeController extends Controller
             'dial_code' => $request->dial_code,
             'phone_no' => $request->phone_no,
             'email' => $request->email,
-            'address' => $request->address,
         ]);
 
         if ($request->hasFile('image')) {
@@ -247,10 +245,14 @@ class AuthEmployeeController extends Controller
         $user_details = User::with([
             'job_application',
             'job_application.education',
-            'job_application.experience'
+            'job_application.experience',
+            'employee_education',
         ])->find($request->id);
 
-        return response()->json($user_details->job_application);
+        return response()->json([
+            'job_application' => $user_details->job_application,
+            'employee_education' => $user_details->employee_education,
+        ]);
 
     }
 }

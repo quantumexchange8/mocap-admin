@@ -16,6 +16,9 @@ export default function UrgentInfo({ data, setData, errors }) {
         {name: 'Brother'},
         {name: 'Sister'},
         {name: 'Guardian'},
+        {name: 'Relatives'},
+        {name: 'Boyfriend/Girlfriend'},
+        {name: 'Aunty/Uncle'},
     ];
 
     const [getPhoneCode, setGetPhoneCode] = useState([]);

@@ -17,9 +17,13 @@ return new class extends Migration
             $table->string('bank_name');
             $table->string('acc_type');
             $table->string('acc_no');
-            $table->string('income_tax_no');
-            $table->string('epf_no');
-            $table->string('socso_no');
+            $table->string('income_tax_no')->nullable();
+            $table->string('epf_no')->nullable();
+            $table->string('socso_no')->nullable();
+            $table->string('spouse_name')->nullable();
+            $table->string('spouse_ic')->nullable();
+            $table->string('spouse_dial_code')->nullable();
+            $table->string('spouse_phone')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

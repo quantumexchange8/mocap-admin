@@ -355,6 +355,7 @@ export default function DraftAnnouncementDetails({ announcements, totalVote }) {
                                 onChange={(e) => setData('schedule_date', e.value)} 
                                 className="w-full text-sm"
                                 placeholder="dd/mm/yyyy"
+                                dateFormat="dd/mm/yy"
                                 invalid={!!errors.schedule_date}
                                 minDate={minDate}
                                 pt={{

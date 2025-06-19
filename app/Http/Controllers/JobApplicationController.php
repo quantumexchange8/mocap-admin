@@ -390,6 +390,7 @@ class JobApplicationController extends Controller
             'position' => $request->position,
             'expected_salary' => $request->expected_salary,
             'start_date' => Carbon::parse($request->start_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
+            'notice_period' => $request->notice_period,
             'full_name' => $request->full_name,
             'identity_no' => $request->identity_no,
             'nationality' => $request->nationality,
@@ -464,47 +465,49 @@ class JobApplicationController extends Controller
                 'ending_salary' => $request->job1_endsalary,
             ]);
 
+            if ($request->job2_title) {
+                $period2 = $request->job2_period;
+                $experience2 = JobExperience::create([
+                    'job_apply_id' => $application->id,
+                    'title' => $request->job2_title ?? null,
+                    'period_from' => (is_array($period2) && isset($period2[0]) && $period2[0])
+                        ? Carbon::parse($period2[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'period_to' => (is_array($period2) && isset($period2[1]) && $period2[1])
+                        ? Carbon::parse($period2[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'company_name' => $request->job2_company ?? null,
+                    'address' => $request->job2_address ?? null,
+                    'supervisor_name' => $request->job2_supervisor ?? null,
+                    'dial_code' => $request->job2_dailcode ?? null,
+                    'phone_no' => $request->job2_phonecode ?? null,
+                    'reason_leaving' => $request->job2_reason ?? null,
+                    'starting_salary' => $request->job2_startsalary ?? null,
+                    'ending_salary' => $request->job2_endsalary ?? null,
+                ]);
+            }
 
-            $period2 = $request->job2_period;
-            $experience2 = JobExperience::create([
-                'job_apply_id' => $application->id,
-                'title' => $request->job2_title ?? null,
-                'period_from' => (is_array($period2) && isset($period2[0]) && $period2[0])
-                    ? Carbon::parse($period2[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
-                    : null,
-                'period_to' => (is_array($period2) && isset($period2[1]) && $period2[1])
-                    ? Carbon::parse($period2[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
-                    : null,
-                'company_name' => $request->job2_company ?? null,
-                'address' => $request->job2_address ?? null,
-                'supervisor_name' => $request->job2_supervisor ?? null,
-                'dial_code' => $request->job2_dailcode ?? null,
-                'phone_no' => $request->job2_phonecode ?? null,
-                'reason_leaving' => $request->job2_reason ?? null,
-                'starting_salary' => $request->job2_startsalary ?? null,
-                'ending_salary' => $request->job2_endsalary ?? null,
-            ]);
-
-            $period3 = $request->job3_period;
-            $experience3 = JobExperience::create([
-                'job_apply_id' => $application->id,
-                'title' => $request->job3_title ?? null,
-                'period_from' => (is_array($period3) && isset($period3[0]) && $period3[0])
-                    ? Carbon::parse($period3[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
-                    : null,
-                'period_to' => (is_array($period3) && isset($period3[1]) && $period3[1])
-                    ? Carbon::parse($period3[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
-                    : null,
-                'company_name' => $request->job3_company ?? null,
-                'address' => $request->job3_address ?? null,
-                'supervisor_name' => $request->job3_supervisor ?? null,
-                'dial_code' => $request->job3_dailcode ?? null,
-                'phone_no' => $request->job3_phonecode ?? null,
-                'reason_leaving' => $request->job3_reason ?? null,
-                'starting_salary' => $request->job3_startsalary ?? null,
-                'ending_salary' => $request->job3_endsalary ?? null,
-            ]);
-
+            if ($request->job3_title) {
+                $period3 = $request->job3_period;
+                $experience3 = JobExperience::create([
+                    'job_apply_id' => $application->id,
+                    'title' => $request->job3_title ?? null,
+                    'period_from' => (is_array($period3) && isset($period3[0]) && $period3[0])
+                        ? Carbon::parse($period3[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'period_to' => (is_array($period3) && isset($period3[1]) && $period3[1])
+                        ? Carbon::parse($period3[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'company_name' => $request->job3_company ?? null,
+                    'address' => $request->job3_address ?? null,
+                    'supervisor_name' => $request->job3_supervisor ?? null,
+                    'dial_code' => $request->job3_dailcode ?? null,
+                    'phone_no' => $request->job3_phonecode ?? null,
+                    'reason_leaving' => $request->job3_reason ?? null,
+                    'starting_salary' => $request->job3_startsalary ?? null,
+                    'ending_salary' => $request->job3_endsalary ?? null,
+                ]);
+            }
         }
 
 

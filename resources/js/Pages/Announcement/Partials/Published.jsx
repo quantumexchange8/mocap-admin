@@ -155,6 +155,7 @@ export default function Published() {
                                                 value={filterDate}
                                                 onChange={(e) => setFilterDate(e.value)} 
                                                 className="w-full text-sm"
+                                                dateFormat="dd/mm/yy"
                                                 placeholder="Filter by published date"
                                                 pt={{
                                                     input: {

@@ -17,7 +17,7 @@ import { Popover } from "antd";
 
 export default function JobApplication() {
 
-    const [current, setCurrent] = useState(0);
+    const [current, setCurrent] = useState(2);
     const sigCanvas = useRef(null);
     const [isOpen, setIsOpen] = useState(false);
     const [sign, setSign] = useState(null);
@@ -31,6 +31,7 @@ export default function JobApplication() {
         position: '',
         expected_salary: '',
         start_date: null,
+        notice_period: '',
         full_name: '',
         identity_no: '',
         nationality: 'Malaysian',

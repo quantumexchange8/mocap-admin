@@ -31,6 +31,9 @@ export default function BeneficiaryInfo({isBeneficiaryInfoOpen, setIsBeneficiary
         {name: 'Brother'},
         {name: 'Sister'},
         {name: 'Guardian'},
+        {name: 'Relatives'},
+        {name: 'Boyfriend/Girlfriend'},
+        {name: 'Aunty/Uncle'},
     ];
 
     const insurance  = [

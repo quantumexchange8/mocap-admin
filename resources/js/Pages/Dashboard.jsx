@@ -4,7 +4,7 @@ import { ArrowIcon, CalendarCheckIcon, ChevronDown, ClockIcon, DatePickerIcon, U
 import Modal from '@/Components/Modal';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { Calendar, Select, Tag, theme } from 'antd';
+import { Calendar, Select, Skeleton, Tag, theme } from 'antd';
 import { useEffect, useState } from 'react';
 import DailyAttendance from './DashboardPartials/DailyAttendance';
 import { Dayjs } from 'dayjs';
@@ -81,12 +81,18 @@ export default function Dashboard() {
                             </div>
                             <div className='text-gray-300 text-sm'>Total Employee</div>
                             <div className='text-white text-xxl font-medium'>
-                                <NumberAnimate value={isLoading ? 0 : getTotalEmployee} />
+                                {
+                                    isLoading ? <div className='h-[42px] flex items-center'><Skeleton active title={{ rows: 1 }} paragraph={false}  /></div> : getTotalEmployee
+                                }
                             </div>
                             <div className='flex flex-col gap-1'>
                                 <div className='flex items-center gap-1'>
                                     <div><ArrowIcon /></div>
-                                    <div className='text-gray-300 text-sm font-medium'>0 new</div>
+                                    <div className='text-gray-300 text-sm font-medium'>
+                                        {
+                                            isLoading ? <div className='h-[20px] flex items-center'><Skeleton active title={{ rows: 1, width: 48 }} paragraph={false}  /></div> : <span>{0} new</span>
+                                        }
+                                    </div>
                                 </div>
                                 <div className='text-gray-400 text-xs'>vs last month</div>
                             </div>
@@ -103,11 +109,19 @@ export default function Dashboard() {
                                 </div>
                             </div>
                             <div className='text-gray-300 text-sm'>Attendance Rate</div>
-                            <div className='text-white text-xxl font-medium'>0%</div>
+                            <div className='text-white text-xxl font-medium'>
+                                {
+                                    isLoading ? <div className='h-[42px] flex items-center'><Skeleton active title={{ rows: 1 }} paragraph={false}  /></div> : <span>{0}%</span>
+                                }
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <div className='flex items-center gap-1'>
                                     <div><ArrowIcon /></div>
-                                    <div className='text-gray-300 text-sm font-medium'>2.6%</div>
+                                    <div className='text-gray-300 text-sm font-medium'>
+                                        {
+                                            isLoading ? <div className='h-[20px] flex items-center'><Skeleton active title={{ rows: 1, width: 48 }} paragraph={false}  /></div> : <span>{2.6} %</span>
+                                        }
+                                    </div>
                                 </div>
                                 <div className='text-gray-400 text-xs'>vs last month</div>
                             </div>
@@ -124,11 +138,19 @@ export default function Dashboard() {
                                 </div>
                             </div>
                             <div className='text-gray-300 text-sm'>Overtime Hours</div>
-                            <div className='text-white text-xxl font-medium'>0</div>
+                            <div className='text-white text-xxl font-medium'>
+                                {
+                                    isLoading ? <div className='h-[42px] flex items-center'><Skeleton active title={{ rows: 1 }} paragraph={false}  /></div> : <span>{0}</span>
+                                }
+                            </div>
                             <div className='flex flex-col gap-1'>
                                 <div className='flex items-center gap-1'>
                                     <div><ArrowIcon /></div>
-                                    <div className='text-gray-300 text-sm font-medium'>2.6%</div>
+                                    <div className='text-gray-300 text-sm font-medium'>
+                                        {
+                                            isLoading ? <div className='h-[20px] flex items-center'><Skeleton active title={{ rows: 1, width: 48 }} paragraph={false}  /></div> : <span>{2.6} %</span>
+                                        }
+                                    </div>
                                 </div>
                                 <div className='text-gray-400 text-xs'>vs last month</div>
                             </div>

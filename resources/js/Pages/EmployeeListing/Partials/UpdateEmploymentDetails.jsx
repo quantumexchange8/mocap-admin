@@ -262,6 +262,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                             onChange={(e) => setData('date_of_employment', e.value)} 
                                             className="w-full text-sm"
                                             placeholder="dd/mm/yyyy"
+                                            dateFormat="dd/mm/yy"
                                             pt={{
                                                 input: {
                                                     className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'
@@ -319,6 +320,7 @@ export default function UpdateEmploymentDetails({ fetchEmployee, employmentDetai
                                             onChange={(e) => setData('intern_end_date', e.value)} 
                                             className="w-full text-sm"
                                             placeholder="dd/mm/yyyy"
+                                            dateFormat="dd/mm/yy"
                                             pt={{
                                                 input: {
                                                     className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'

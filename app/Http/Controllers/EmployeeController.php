@@ -7,6 +7,7 @@ use App\Models\AdditionalInfo;
 use App\Models\BeneficiaryInfo;
 use App\Models\EmergencyInfo;
 use App\Models\EmployeeBank;
+use App\Models\EmploymentHistory;
 use App\Models\MedicalInfo;
 use App\Models\Transport;
 use App\Models\User;
@@ -50,6 +51,10 @@ class EmployeeController extends Controller
             'bank_name' => ['required', 'string', 'max:255'],
             'acc_type' => ['required', 'string', 'max:255'],
             'acc_no' => ['required', 'string', 'max:255'],
+
+            'spouse_name' => ['required_if:marital_status,Married'],
+            'spouse_ic' => ['required_if:marital_status,Married'],
+            'spouse_phone' => ['required_if:marital_status,Married'],
         ];
 
         $messages = [
@@ -77,11 +82,13 @@ class EmployeeController extends Controller
             'bank_name.required' => 'Bank is required.',
             'acc_type.required' => 'Bank account type is required.',
             'acc_no.required' => 'Account number is required.',
-            'income_tax_no.required' => 'Income tax number is required.',
-            'epf_no.required' => 'EPF number is required.',
-            'socso_no.required' => 'Socso number is required.',
 
+            'spouse_name.required_if' => 'Spouce Name is required.',
+            'spouse_ic.required_if' => 'Spouce IC is required.',
+            'spouse_phone.required_if' => 'Spouce Phone is required.',
         ];
+
+
 
         $validated = $request->validate($rules, $messages);
         return redirect()->back();
@@ -355,7 +362,11 @@ class EmployeeController extends Controller
             'acc_no' => $request->acc_no,
             'income_tax_no' => $request->income_tax_no ?? null,
             'epf_no' => $request->epf_no ?? null,
-            'socso_no' => $request->socso_no ?? null
+            'socso_no' => $request->socso_no ?? null,
+            'spouse_name' => $request->spouse_name ?? null,
+            'spouse_ic' => $request->spouse_ic ?? null,
+            'spouse_dial_code' => $request->spouse_dial_code ?? null,
+            'spouse_phone' => $request->spouse_phone ?? null,
         ]);
 
         $emergency1 = EmergencyInfo::create([
@@ -425,6 +436,13 @@ class EmployeeController extends Controller
             'directorship_remark' => $request->directorship_remark ?? null,
             'relative_type' => $request->relative_type,
             'relative_remark' => $request->relative_remark ?? null,
+        ]);
+        
+        $employment_history = EmploymentHistory::create([
+            'user_id' => $user->id,
+            'employment_type' => $request->employment_type,
+            'employment_start' => Carbon::now()->setTimezone('Asia/Kuala_Lumpur'),
+            'employment_end' => Carbon::parse($request->intern_end_date)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
         ]);
 
         if ($request->hasFile('digital_signature')) {

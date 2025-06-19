@@ -15,6 +15,10 @@ class EmployeeBank extends Model
         'income_tax_no',
         'epf_no',
         'socso_no',
+        'spouse_name',
+        'spouse_ic',
+        'spouse_dial_code',
+        'spouse_phone',
     ];
     
 }

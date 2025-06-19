@@ -42,6 +42,9 @@ export default function UrgentInfo({isUrgentInfoOpen, setIsUrgentInfoOpen, close
         {name: 'Brother'},
         {name: 'Sister'},
         {name: 'Guardian'},
+        {name: 'Relatives'},
+        {name: 'Boyfriend/Girlfriend'},
+        {name: 'Aunty/Uncle'},
     ];
 
     const fetchPhoneCode = async  () => {

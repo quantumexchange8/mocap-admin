@@ -127,6 +127,7 @@ export default function DeleteEmployee({
                 setIsLoading(false);
                 fetchEmployee();
                 closeDeleteEmployee();
+                closeConfirmSubmit();
             },
             onError: () => {
                 setIsLoading(false);

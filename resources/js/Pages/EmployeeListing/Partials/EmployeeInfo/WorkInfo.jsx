@@ -19,7 +19,9 @@ export default function WorkInfo({isWorkInfoOpen, setIsWorkInfoOpen, closeWorkIn
             period_from: null,
             period_to: null,
             company_name: '',
-        }]
+        }],
+        // create new 
+        
     });
 
     useEffect(() => {
@@ -74,10 +76,10 @@ export default function WorkInfo({isWorkInfoOpen, setIsWorkInfoOpen, closeWorkIn
                 }
             >
                 {
-                    work_info && (
+                    work_info?.experience ? (
                         <div className="py-3 px-6 flex flex-col gap-8">
                             {
-                                work_info.map((experience, index) => (
+                                work_info?.experience?.map((experience, index) => (
                                     <div key={index} className="flex flex-col gap-5">
                                         <div className="flex flex-col col-span-2 text-gray-950 font-semibold">Experience {index + 1}</div>
                                         <div className="grid grid-cols-2 gap-5">
@@ -155,6 +157,27 @@ export default function WorkInfo({isWorkInfoOpen, setIsWorkInfoOpen, closeWorkIn
                                     </div>    
                                 ))
                             }
+                        </div>
+                    ) : (
+
+                        //create new
+                        <div className="py-3 px-6 flex flex-col gap-8">
+                            <div className="flex flex-col gap-2">
+                                <InputLabel value='Job Title' />
+                                <TextInput 
+                                    id="title"
+                                    type="text"
+                                    value={experience.title}
+                                    className="w-full"
+                                    placeholder=" "
+                                    onChange={(e) => {
+                                        const updated = [...data.work_info];
+                                        updated[index].title = e.target.value;
+                                        setData('work_info', updated);
+                                    }}                                                    
+                                    hasError={!!errors[`work_info.${index}.title`]}
+                                />
+                            </div>
                         </div>
                     )
                 }

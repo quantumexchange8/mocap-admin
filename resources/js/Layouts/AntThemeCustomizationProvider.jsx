@@ -82,6 +82,10 @@ function AntThemeCustomizationProvider({ children }) {
                     Progress: {
                         defaultColor: '#030712'
                     },
+                    Skeleton: {
+                        gradientFromColor: 'rgba(255,255,255,0.1)',
+                        gradientToColor: 'rgba(255,255,255,0.2)',
+                    }
                 }
             }}
         >

@@ -272,6 +272,7 @@ export default function PersonalInfo({ data, setData, errors }) {
                                 value={data.dob} 
                                 onChange={(e) => setData('dob', e.value)} 
                                 className="w-full text-sm"
+                                dateFormat="dd/mm/yy"
                                 minDate={new Date(1900, 0, 1)} // Minimum date allowed (e.g., year 1900)
                                 maxDate={tenYearsAgo} // Restricts to dates 10+ years ago
                                 viewDate={defaultViewDate}
@@ -607,6 +608,97 @@ export default function PersonalInfo({ data, setData, errors }) {
                 </div>
             </div>
 
+            {/* Married Info */}
+            {
+                data.marital_status === 'Married' && (
+                    <div className="flex flex-col border border-gray-200 bg-white rounded-sm">
+                        <div className="flex flex-col py-4 px-5 border-b border-gray-200">
+                            <div className="text-gray-950 text-base font-semibold">Spouse Information</div>
+                            <div className="text-gray-500 text-sm">Provide your spouse's details for taxation and identification purposes.</div>
+                        </div>
+                        <div className="p-5 grid grid-cols-2 gap-5">
+                            <div className="flex flex-col gap-2">
+                                <InputLabel htmlFor="spouse_name" value={<div className="flex gap-1">
+                                    <span>Full Name</span>
+                                    <span className="text-error-600">*</span>
+                                </div>} />
+                                <TextInput 
+                                    id="spouse_name"
+                                    type="text"
+                                    name="spouse_name"
+                                    value={data.spouse_name}
+                                    className="w-full"
+                                    placeholder="as per NRIC/Passport"
+                                    onChange={(e) => setData('spouse_name', e.target.value)}
+                                    hasError={!!errors.spouse_name}
+                                />
+                                <InputError message={errors.spouse_name}  />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <InputLabel htmlFor="spouse_ic" value={<div className="flex gap-1">
+                                    <span>NRIC/Passport No</span>
+                                    <span className="text-error-600">*</span>
+                                </div>} />
+                                <TextInput 
+                                    id="spouse_ic"
+                                    type="text"
+                                    name="spouse_ic"
+                                    value={data.spouse_ic}
+                                    className="w-full"
+                                    placeholder="901223145678 / A12345678"
+                                    onChange={(e) => setData('spouse_ic', e.target.value)}
+                                    hasError={!!errors.spouse_ic}
+                                />
+                                <InputError message={errors.spouse_ic}  />
+                            </div>
+                            <div className="flex flex-col gap-2">
+                        <InputLabel htmlFor="phone_no" value={<div className="flex gap-1">
+                            <span>Phone Number </span>
+                            <span className="text-error-600">*</span>
+                        </div>} />
+                        <div className="flex items-center gap-2">
+                            <Dropdown 
+                                value={data.spouse_dial_code} 
+                                onChange={(e) => setData('spouse_dial_code', e.value)} 
+                                options={getPhoneCode.map((item) => ({
+                                    label: item.phoneCode, // What user sees
+                                    value: `${item.phoneCode}`, // Ensures it prefixes with +
+                                }))}
+                                loading={isLoading}
+                                optionLabel="label"
+                                placeholder="Select "
+                                className="w-full max-w-[100px] text-sm"
+                                pt={{
+                                    root: { className: 'border border-gray-300 rounded-sm px-4 py-3 text-gray-950 focus-within:border-gray-950 transition-colors duration-200' }, // main box
+                                    panel: { className: 'p-dropdown-panel bg-white border border-gray-300 shadow-lg mt-0.5 rounded-sm' }, // dropdown list
+                                    item: ({ context }) => ({
+                                        className: `px-4 py-2 text-sm text-gray-950 hover:bg-gray-100 cursor-pointer ${
+                                            context.selected ? 'bg-gray-950 font-semibold text-white hover:bg-gray-800 ' : ''
+                                        }`
+                                    }),
+                                    filterInput: { className: 'px-4 py-2 text-sm border border-gray-300 rounded-sm ' },
+                                    filterContainer: { className: 'p-2'}
+                                }}
+                            />
+                            <TextInput 
+                                id="spouse_phone"
+                                type="number"
+                                name="spouse_phone"
+                                value={data.spouse_phone}
+                                className="w-full"
+                                placeholder="Phone Number"
+                                autoComplete="spouse_phone"
+                                onChange={(e) => setData('spouse_phone', e.target.value)}
+                                hasError={!!errors.spouse_phone}
+                            />
+                        </div>
+                        <InputError message={errors.spouse_phone}  />
+                    </div>
+                        </div>
+                    </div>
+                )
+            }
+
             {/* Bank Info */}
             <div className="flex flex-col border border-gray-200 bg-white rounded-sm">
                 <div className="flex flex-col py-4 px-5 border-b border-gray-200">
@@ -694,7 +786,6 @@ export default function PersonalInfo({ data, setData, errors }) {
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="income_tax_no" value={<div className="flex gap-1">
                             <span>Income Tax No. (PCB No.)</span>
-                            <span className="text-error-600">*</span>
                         </div>} />
                         <TextInput 
                             id="income_tax_no"
@@ -711,7 +802,6 @@ export default function PersonalInfo({ data, setData, errors }) {
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="epf_no" value={<div className="flex gap-1">
                             <span>EPF No.</span>
-                            <span className="text-error-600">*</span>
                         </div>} />
                         <TextInput 
                             id="epf_no"
@@ -728,7 +818,6 @@ export default function PersonalInfo({ data, setData, errors }) {
                     <div className="flex flex-col gap-2">
                         <InputLabel htmlFor="socso_no" value={<div className="flex gap-1">
                             <span>SOCSO No.</span>
-                            <span className="text-error-600">*</span>
                         </div>} />
                         <TextInput 
                             id="socso_no"

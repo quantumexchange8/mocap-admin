@@ -424,24 +424,27 @@ export default function PersonalInfo({
                                 />
                                 <InputError message={errors.state}  />
                             </div>
-                            {/* <div className=" col-span-2 flex flex-col gap-2">
-                                <InputLabel htmlFor="address" value={<div className="flex items-center gap-1">
-                                    <span>Address</span>
-                                    <span className="text-gray-500 text-xs">(Current)</span>
-                                </div>} />
+                            <div className=" col-span-2 flex flex-col gap-2">
+                                <InputLabel htmlFor="address" value='Current Address' />
                                 <TextInput 
                                     id="address"
                                     type="text"
                                     name="address"
                                     value={data.address}
                                     className="w-full"
-                                    placeholder="House no./unit no., building name, street name/district, etc."
+                                    placeholder="you@example.com"
                                     autoComplete="address"
                                     onChange={(e) => setData('address', e.target.value)}
                                     hasError={!!errors.address}
                                 />
-                                <InputError message={errors.address}  />
-                            </div> */}
+                                {
+                                    errors.address ? (
+                                        <InputError message={errors.address}  />
+                                    ) : (
+                                        <span className="text-gray-500 text-xs">Enter full address, including street name and unit number.</span>
+                                    )
+                                }
+                            </div>
                         </div>
                     )
                 }

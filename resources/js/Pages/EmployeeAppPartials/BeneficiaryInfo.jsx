@@ -18,6 +18,9 @@ export default function BeneficiaryInfo({ data, setData, errors}) {
         {name: 'Brother'},
         {name: 'Sister'},
         {name: 'Guardian'},
+        {name: 'Relatives'},
+        {name: 'Boyfriend/Girlfriend'},
+        {name: 'Aunty/Uncle'},
     ];
 
     const insurance  = [

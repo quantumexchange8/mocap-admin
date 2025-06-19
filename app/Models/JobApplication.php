@@ -36,6 +36,7 @@ class JobApplication extends Model implements HasMedia
         'state',
         'special_skill',
         'status',
+        'notice_period',
     ];
 
     public function education(): \Illuminate\Database\Eloquent\Relations\hasMany

@@ -132,6 +132,12 @@ export default function EmployeeApplication() {
         city: '',
         state: '',
 
+        // spouse
+        spouse_name: '',
+        spouse_ic: '',
+        spouse_dial_code: '+60',
+        spouse_phone: '',
+
         // bank
         bank_name: '',
         acc_type: '',
@@ -747,6 +753,7 @@ export default function EmployeeApplication() {
                                     onChange={(e) => setData('date_of_employment', e.value)} 
                                     className="w-full text-sm"
                                     viewDate={defaultViewDate}
+                                    dateFormat="dd/mm/yy"
                                     placeholder="dd/mm/yyyy"
                                     invalid={!!errors.date_of_employment}
                                     pt={{
@@ -818,6 +825,7 @@ export default function EmployeeApplication() {
                                     onChange={(e) => setData('intern_end_date', e.value)} 
                                     className="w-full text-sm"
                                     placeholder="dd/mm/yyyy"
+                                    dateFormat="dd/mm/yy"
                                     pt={{
                                         input: {
                                             className: 'w-full py-3 px-4 text-sm text-gray-950 border border-gray-300 rounded-sm hover:border-gray-400 focus:border-gray-950 focus:ring-0 focus:outline-none'

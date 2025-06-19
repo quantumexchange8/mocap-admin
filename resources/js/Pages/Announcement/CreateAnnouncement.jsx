@@ -803,6 +803,7 @@ export default function CreateAnnouncement() {
                                                                 onChange={(e) => setData('end_date', e.value)} 
                                                                 className="w-full text-sm"
                                                                 placeholder="dd/mm/yyyy"
+                                                                dateFormat="dd/mm/yy"
                                                                 invalid={!!errors.end_date}
                                                                 minDate={minDate}
                                                                 pt={{
@@ -921,6 +922,7 @@ export default function CreateAnnouncement() {
                                 onChange={(e) => setData('schedule_date', e.value)} 
                                 className="w-full text-sm"
                                 placeholder="dd/mm/yyyy"
+                                dateFormat="dd/mm/yy"
                                 invalid={!!errors.schedule_date}
                                 minDate={minDate}
                                 pt={{

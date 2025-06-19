@@ -84,6 +84,7 @@ export default function ListViewTable ({ getDepartment, isLoading }) {
             const response = await axios.post('/delete-department', delVal);
 
             if (response.status === 200) {
+                cancelDeleteDepartment();
                 toast.success('Department has been deleted.', {
                     title: 'Department has been deleted.',
                     duration: 3000,
@@ -93,6 +94,7 @@ export default function ListViewTable ({ getDepartment, isLoading }) {
 
         } catch (error) {
             console.error('error', error);
+            cancelDeleteDepartment();
         }
     }
 

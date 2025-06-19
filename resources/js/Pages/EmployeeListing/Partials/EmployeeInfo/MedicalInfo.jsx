@@ -310,6 +310,7 @@ export default function MedicalInfo({
                                 onChange={(e) => setData('pregnant_delivery_date', e.value)} 
                                 className="text-sm w-full"
                                 placeholder="dd/mm/yyyy"
+                                dateFormat="dd/mm/yy"
                                 invalid={!!errors.pregnant_delivery_date}
                                 disabled={data.pregnant_type === 'No' || data.gender === 'male'}
                                 pt={{

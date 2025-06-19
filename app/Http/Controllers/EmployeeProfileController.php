@@ -35,6 +35,7 @@ class EmployeeProfileController extends Controller
             'postcode' => 'required',
             'city' => 'required',
             'state' => 'required',
+            'address' => 'required'
         ]);
 
         $user->update([
@@ -48,6 +49,7 @@ class EmployeeProfileController extends Controller
             'postcode' => $request->postcode,
             'city' => $request->city,
             'state' => $request->state,
+            'address' => $request->address,
         ]);
 
         return redirect()->back();
@@ -165,7 +167,7 @@ class EmployeeProfileController extends Controller
         ]);
         
         foreach ($request->emergency_infos as $info) {
-            $emergencyInfo = EmergencyInfo::where('user_id', $info['id']);
+            $emergencyInfo = EmergencyInfo::find($info['id']);
             $emergencyInfo->update([
                 'full_name' => $info['full_name'],
                 'relationship' =>$info['relationship'],
@@ -179,28 +181,117 @@ class EmployeeProfileController extends Controller
 
     public function updateEducation(Request $request){
 
-        $validated = $request->validate([
-            'education' => 'required',
-            'education.*.id' => 'required',
-            'education.*.from_date' => 'required',
-            'education.*.to_date' => 'required',
-            'education.*.school_name' => 'required',
-            'education.*.course_name' => 'required',
-        ], [
-            'education.*.from_date.required' => 'Date field is required.',
-            'education.*.to_date' => 'Date field is required.',
-            'education.*.school_name' => 'School Name field is required.',
-            'education.*.course_name' => 'Course Name field is required',
-        ]); 
+        if ($request->type === 'create') {
+            $rules = [
+                'edu1_start' => ['required'],
+                'edu1_end' => ['required'],
+                'edu1_school' => ['required', 'string', 'max:255'],
+                'edu1_address' => ['required', 'string', 'max:255'],
+                'edu1_qualification' => ['required', 'string', 'max:255'],
+                'edu1_course' => ['required', 'string', 'max:255'],
+    
+                'edu2_start' => ['required_with:edu2_end,edu2_school,edu2_address,edu2_qualification,edu2_course'],
+                'edu2_end' => ['required_with:edu2_start,edu2_school,edu2_address,edu2_qualification,edu2_course'],
+                'edu2_school' => ['required_with:edu2_start,edu2_end,edu2_address,edu2_qualification,edu2_course'],
+                'edu2_address' => ['required_with:edu2_start,edu2_end,edu2_school,edu2_qualification,edu2_course'],
+                'edu2_qualification' => ['required_with:edu2_start,edu2_end,edu2_school,edu2_address,edu2_course'],
+                'edu2_course' => ['required_with:edu2_start,edu2_end,edu2_school,edu2_address,edu2_qualification'],
+            
+                'edu3_start' => ['required_with:edu3_end,edu3_school,edu3_address,edu3_qualification,edu3_course'],
+                'edu3_end' => ['required_with:edu3_start,edu3_school,edu3_address,edu3_qualification,edu3_course'],
+                'edu3_school' => ['required_with:edu3_start,edu3_end,edu3_address,edu3_qualification,edu3_course'],
+                'edu3_address' => ['required_with:edu3_start,edu3_end,edu3_school,edu3_qualification,edu3_course'],
+                'edu3_qualification' => ['required_with:edu3_start,edu3_end,edu3_school,edu3_address,edu3_course'],
+                'edu3_course' => ['required_with:edu3_start,edu3_end,edu3_school,edu3_address,edu3_qualification'],
+            ];
+    
+            $messages = [
+                'edu1_start.required' => 'From is required.',
+                'edu1_end.required' => 'To is required.',
+                'edu1_school.required' => 'School Name is required.',
+                'edu1_address.required' => 'Address is required.',
+                'edu1_qualification.required' => 'Qualification is required.',
+                'edu1_course.required' => 'Course Name is required.',
+                'skills.required' => 'Special Skills is required', 
+    
+                'edu2_start.required_with' => 'From is required.',
+                'edu2_end.required_with' => 'To is required.',
+                'edu2_school.required_with' => 'School Name is required.',
+                'edu2_address.required_with' => 'Address is required.',
+                'edu2_qualification.required_with' => 'Qualification is required.',
+                'edu2_course.required_with' => 'Course Name is required.',
+    
+                'edu3_start.required_with' => 'From is required.',
+                'edu3_end.required_with' => 'To is required.',
+                'edu3_school.required_with' => 'School Name is required.',
+                'edu3_address.required_with' => 'Address is required.',
+                'edu3_qualification.required_with' => 'Qualification is required.',
+                'edu3_course.required_with' => 'Course Name is required.',
+            ];
+    
+            $validated = $request->validate($rules, $messages);
 
-        foreach ($request->education as $edu){
-            $education = JobEducation::find($edu['id']);
-            $education->update([
-                'from_date'=> Carbon::parse($edu['from_date'])->format('Y-m-d'),
-                'to_date'=> Carbon::parse($edu['to_date'])->format('Y-m-d'),
-                'school_name'=> $edu['school_name'],
-                'course_name'=> $edu['course_name'],
+            $education1 = JobEducation::create([
+                'employee_id' => $request->id,
+                'from_date' => Carbon::parse($request->edu1_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
+                'to_date' => Carbon::parse($request->edu1_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString(),
+                'school_name' => $request->edu1_school,
+                'address' => $request->edu1_address,
+                'qualification' => $request->edu1_qualification,
+                'course_name' => $request->edu1_course,
             ]);
+
+            if ($request->edu2_school) {
+                $education2 = JobEducation::create([
+                    'employee_id' => $request->id,
+                    'from_date' => Carbon::parse($request->edu2_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                    'to_date' => Carbon::parse($request->edu2_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                    'school_name' => $request->edu2_school ?? null,
+                    'address' => $request->edu2_address ?? null,
+                    'qualification' => $request->edu2_qualification ?? null,
+                    'course_name' => $request->edu2_course ?? null,
+                ]);
+            }
+    
+            if ($request->edu3_school) {
+                $education3 = JobEducation::create([
+                    'employee_id' => $request->id,
+                    'from_date' => Carbon::parse($request->edu3_start)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                    'to_date' => Carbon::parse($request->edu3_end)->setTimezone('Asia/Kuala_Lumpur')->toDateString() ?? null,
+                    'school_name' => $request->edu3_school ?? null,
+                    'address' => $request->edu3_address ?? null,
+                    'qualification' => $request->edu3_qualification ?? null,
+                    'course_name' => $request->edu3_course ?? null,
+                ]);
+            }
+
+
+        }
+
+        if ($request->type === 'edit') {
+            $validated = $request->validate([
+                'education' => 'required',
+                'education.*.id' => 'required',
+                'education.*.from_date' => 'required',
+                'education.*.to_date' => 'required',
+                'education.*.school_name' => 'required',
+                'education.*.course_name' => 'required',
+            ], [
+                'education.*.from_date.required' => 'Date field is required.',
+                'education.*.to_date' => 'Date field is required.',
+                'education.*.school_name' => 'School Name field is required.',
+                'education.*.course_name' => 'Course Name field is required',
+            ]); 
+    
+            foreach ($request->education as $edu){
+                $education = JobEducation::find($edu['id']);
+                $education->update([
+                    'from_date'=> Carbon::parse($edu['from_date'])->format('Y-m-d'),
+                    'to_date'=> Carbon::parse($edu['to_date'])->format('Y-m-d'),
+                    'school_name'=> $edu['school_name'],
+                    'course_name'=> $edu['course_name'],
+                ]);
+            }
         }
 
         return redirect()->back();

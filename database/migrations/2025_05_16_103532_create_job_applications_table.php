@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('position');
             $table->decimal('expected_salary', 13, 2)->default(0.00);
             $table->date('start_date');
+            $table->string('notice_period')->nullable();
             $table->string('full_name');
             $table->string('identity_no');
             $table->string('nationality');

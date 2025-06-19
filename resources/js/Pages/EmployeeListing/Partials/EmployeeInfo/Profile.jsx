@@ -1,6 +1,6 @@
 import Button from "@/Components/Button";
 import { EditIcon } from "@/Components/Icon/Outline";
-import { Skeleton, Timeline } from "antd";
+import { Timeline } from "antd";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Modal from "@/Components/Modal";
@@ -12,11 +12,13 @@ import Education from "./Education";
 import WorkInfo from "./WorkInfo";
 import MedicalInfo from "./MedicalInfo";
 import TransportInfo from "./TransportInfo";
+import { Skeleton } from 'primereact/skeleton';
 
 export default function Profile({ user_details, id }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [getEduBg, setGetEduBg] = useState([]);
+    const [getEmployeeEdu, setGetEmployeeEdu] = useState([]);
     const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);
     const [isBankInfoOpen, setIsBankInfoOpen] = useState(false);
     const [isBeneficiaryInfoOpen, setIsBeneficiaryInfoOpen] = useState(false);
@@ -36,7 +38,8 @@ export default function Profile({ user_details, id }) {
                 }
             });
             
-            setGetEduBg(response.data);
+            setGetEduBg(response.data.job_application);
+            setGetEmployeeEdu(response.data.employee_education)
             
         } catch (error) {
             console.error('error', error);
@@ -337,15 +340,38 @@ export default function Profile({ user_details, id }) {
                             <div className="border-b border-gray-200 py-3 px-5 flex justify-between items-center">
                                 <div className="text-gray-950 text-base font-semibold">Education Background</div>
                                 <div>
-                                    <Button variant="text" size="sm" iconOnly onClick={openEducation}>
+                                    <Button variant="text" size="sm" iconOnly disabled={isLoading} onClick={openEducation}>
                                         <EditIcon />
                                     </Button>
                                 </div>
                             </div>
                             {
                                 isLoading ? (
-                                    <div className="p-5">
-                                        <Skeleton active />
+                                    <div className="p-5 flex flex-col gap-4">
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="200px" 
+                                            height="24px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="140px" 
+                                            height="16px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="140px" 
+                                            height="16px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
                                     </div>
                                 ) : (
                                     <>
@@ -354,6 +380,21 @@ export default function Profile({ user_details, id }) {
                                                 <div className="flex flex-col gap-3 p-5">
                                                     <Timeline 
                                                         items={getEduBg.education.map((item, index) => ({
+                                                            key: index,
+                                                            children: (
+                                                                <div className="flex flex-col gap-1">
+                                                                    <div className="font-semibold text-gray-950 text-sm">{item.school_name}</div>
+                                                                    <div className="text-gray-700 text-sm">{item.course_name}</div>
+                                                                    <div className="text-gray-500 text-xs">{formatToMonthYear(item.from_date)} - {formatToMonthYear(item.to_date)}</div>
+                                                                </div>
+                                                            )
+                                                        }))}
+                                                    />
+                                                </div>
+                                            ) : getEmployeeEdu?.length > 0 ? (
+                                                <div className="flex flex-col gap-3 p-5">
+                                                    <Timeline 
+                                                        items={getEmployeeEdu.map((item, index) => ({
                                                             key: index,
                                                             children: (
                                                                 <div className="flex flex-col gap-1">
@@ -386,8 +427,31 @@ export default function Profile({ user_details, id }) {
                             </div>
                             {
                                 isLoading ? (
-                                    <div className="p-5">
-                                        <Skeleton active />
+                                    <div className="p-5 flex flex-col gap-4">
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="200px" 
+                                            height="24px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="140px" 
+                                            height="16px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
+                                        <Skeleton
+                                            className="rounded bg-gray-300"
+                                            width="140px" 
+                                            height="16px"
+                                            style={{
+                                                background: 'linear-gradient(90deg, #D1D5DB 25%, #E5E7EB 37%, #D1D5DB 63%)'
+                                              }}
+                                        />
                                     </div>
                                 ) : (
                                     <>
@@ -520,6 +584,7 @@ export default function Profile({ user_details, id }) {
                             closeEducation={closeEducation}
                             user_details={user_details}
                             getEduBg={getEduBg}
+                            getEmployeeEdu={getEmployeeEdu}
                             fetchEduBg={fetchEduBg}
                         />
                     </div>
@@ -533,7 +598,7 @@ export default function Profile({ user_details, id }) {
                             setIsWorkInfoOpen={setIsWorkInfoOpen}
                             closeWorkInfo={closeWorkInfo}
                             user_details={user_details}
-                            work_info={getEduBg.experience}
+                            work_info={getEduBg}
                         />
                     </div>
                 ) : null

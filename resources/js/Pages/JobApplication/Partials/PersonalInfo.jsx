@@ -32,6 +32,15 @@ export default function PersonalInfo({ data, setData, errors }) {
         {name: 'Widowed'},
     ];
 
+    const noticePeriod = [
+        {name: '1 months', value: '1'},
+        {name: '2 months', value: '2'},
+        {name: '3 months', value: '3'},
+        {name: '4 months', value: '4'},
+        {name: '5 months', value: '5'},
+        {name: '6 months', value: '6'},
+    ];
+
     const [isLoading, setIsLoading] = useState(false);
     const [getNationality, setGetNationality] = useState([]);
     const [filterNationalityState, setFilterNationalityState] = useState([]);
@@ -237,6 +246,23 @@ export default function PersonalInfo({ data, setData, errors }) {
                             </div>
                         </div>
                         <InputError message={errors.start_date}  />
+                    </div>
+                    <div className="flex flex-col min-w-[300px] max-w-[334px] items-start gap-2 flex-[1_0_0]">
+                        <div className="flex gap-1">
+                            <InputLabel htmlFor="start_date" value="Notice Period" />
+                        </div>
+                        <div className="flex items-center self-stretch">
+                            <Select 
+                                value={data.notice_period}
+                                placeholder="Select"
+                                className="antd-select-custom focus:ring-offset-transparent"
+                                onChange={(value) => setData('notice_period', value)}
+                                options={noticePeriod.map(user => ({
+                                    label: user.name,
+                                    value: user.name,
+                                }))}
+                            />
+                        </div>
                     </div>
                 </form>
             </div>

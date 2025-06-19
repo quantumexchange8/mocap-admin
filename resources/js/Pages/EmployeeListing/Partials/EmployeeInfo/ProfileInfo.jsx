@@ -51,7 +51,6 @@ export default function ProfileInfo({
         dial_code: '',
         phone_no: '',
         email: '',
-        address: '',
         image: null,
     });
 
@@ -224,6 +223,7 @@ export default function ProfileInfo({
                                 onChange={(e) => setData('dob', e.value)} 
                                 className="w-full text-sm"
                                 placeholder="dd/mm/yyyy"
+                                dateFormat="dd/mm/yy"
                                 invalid={!!errors.dob}
                                 pt={{
                                     input: {
@@ -332,27 +332,6 @@ export default function ProfileInfo({
                                 <InputError message={errors.email}  />
                             ) : (
                                 <span className="text-gray-500 text-xs">This will update the email address and send a confirmation to the new address.</span>
-                            )
-                        }
-                    </div>
-                    <div className=" col-span-2 flex flex-col gap-2">
-                        <InputLabel htmlFor="address" value='Current Address' />
-                        <TextInput 
-                            id="address"
-                            type="text"
-                            name="address"
-                            value={data.address}
-                            className="w-full"
-                            placeholder="you@example.com"
-                            autoComplete="address"
-                            onChange={(e) => setData('address', e.target.value)}
-                            hasError={!!errors.address}
-                        />
-                        {
-                            errors.address ? (
-                                <InputError message={errors.address}  />
-                            ) : (
-                                <span className="text-gray-500 text-xs">Enter full address, including street name and unit number.</span>
                             )
                         }
                     </div>

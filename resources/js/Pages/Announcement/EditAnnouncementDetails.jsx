@@ -792,6 +792,7 @@ export default function EditAnnouncementDetails({ draftAnnouncements }) {
                                                         onChange={(e) => setData('end_date', e.value)} 
                                                         className="w-full text-sm"
                                                         placeholder="dd/mm/yyyy"
+                                                        dateFormat="dd/mm/yy"
                                                         invalid={!!errors.end_date}
                                                         minDate={minDate}
                                                         pt={{
