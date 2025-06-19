@@ -17,7 +17,7 @@ class AdministratorController extends Controller
     public function getAdministrator()
     {
 
-        $admins = User::whereNot('role', 'employee')
+        $admins = User::whereNotIn('role', ['employee', 'external_member'])
                 ->where('status', 'active')
                 ->with(['department'])
                 ->get();

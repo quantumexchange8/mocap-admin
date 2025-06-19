@@ -87,7 +87,7 @@ export default function NewAdministrator({
     );
 
     const groupedOptions = getEmployees.reduce((acc, employee) => {
-        const deptName = employee.department.name;
+        const deptName = employee?.department?.name;
 
         const existingGroup = acc.find(group => group.label === deptName);
         const employeeOption = {
