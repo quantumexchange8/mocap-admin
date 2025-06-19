@@ -247,11 +247,13 @@ class AuthEmployeeController extends Controller
             'job_application.education',
             'job_application.experience',
             'employee_education',
+            'employee_experience',
         ])->find($request->id);
 
         return response()->json([
             'job_application' => $user_details->job_application,
             'employee_education' => $user_details->employee_education,
+            'employee_experience' => $user_details->employee_experience,
         ]);
 
     }

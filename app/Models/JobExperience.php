@@ -19,5 +19,6 @@ class JobExperience extends Model
         'reason_leaving',
         'starting_salary',
         'ending_salary',
+        'employee_id'
     ];
 }

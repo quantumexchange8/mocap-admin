@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class EmployeeProfileController extends Controller
 {
@@ -298,28 +299,178 @@ class EmployeeProfileController extends Controller
     }
 
     public function updateWorkInfo(Request $request){
-        $validated = $request->validate([
-            'work_info' => 'required',
-            'work_info.*.id' => 'required',
-            'work_info.*.title' => 'required',
-            'work_info.*.period_from' => 'required',
-            'work_info.*.period_to' => 'required',
-            'work_info.*.company_name' => 'required',
-        ], [
-            'work_info.*.title' => 'Job Title field is required',
-            'work_info.*.period_from' => 'Date field is required',
-            'work_info.*.period_to' => 'Date field is required',
-            'work_info.*.company_name' => 'Company Name field is required',
-        ]); 
 
-        foreach ($request->work_info as $work){
-            $work_info = JobExperience::find($work['id']);
-            $work_info->update([
-                'title'=> $work['title'],
-                'period_from'=> Carbon::parse($work['period_from'])->format('Y-m-d'),
-                'period_to'=> Carbon::parse($work['period_to'])->format('Y-m-d'),
-                'company_name'=> $work['company_name'],
+        if ($request->type === 'create') {
+            $rules = [
+                'job1_title' => ['required'],
+                'job1_period' => ['required', 'array', 'size:2'],
+                'job1_company' => ['required'],
+                'job1_address' => ['required'],
+                'job1_supervisor' => ['required'],
+                'job1_dailcode' => ['required'],
+                'job1_phonecode' => ['required'],
+                'job1_reason' => ['required'],
+                'job1_startsalary' => ['required'],
+                'job1_endsalary' => ['required'],
+    
+                'job2_title' => ['required_with:job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_period' => ['required_with:job2_title,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_company' => ['required_with:job2_title,job2_period,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_address' => ['required_with:job2_title,job2_period,job2_company,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_supervisor' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_phonecode,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_phonecode' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_reason,job2_startsalary,job2_endsalary'],
+                'job2_reason' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_startsalary,job2_endsalary'],
+                'job2_startsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_endsalary'],
+                'job2_endsalary' => ['required_with:job2_title,job2_period,job2_company,job2_address,job2_supervisor,job2_phonecode,job2_reason,job2_startsalary'],
+                
+                'job3_title' => ['required_with:job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_period' => ['required_with:job3_title,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_company' => ['required_with:job3_title,job3_period,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_address' => ['required_with:job3_title,job3_period,job3_company,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_supervisor' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_phonecode,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_phonecode' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_reason,job3_startsalary,job3_endsalary'],
+                'job3_reason' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_startsalary,job3_endsalary'],
+                'job3_startsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_endsalary'],
+                'job3_endsalary' => ['required_with:job3_title,job3_period,job3_company,job3_address,job3_supervisor,job3_phonecode,job3_reason,job3_startsalary'],
+            ];
+
+            $messages = [
+                'job1_title.required_if' => 'Job Title is required',
+                'job1_period.required_if' => 'Period is required',
+                'job1_period.size' => 'The job1_period must contain a start and end date.',
+                'job1_company.required_if' => 'Company Name is required',
+                'job1_address.required_if' => 'Address is required',
+                'job1_supervisor.required_if' => 'Supervisor Name is required',
+                'job1_dailcode.required_if' => 'Dail Code is required',
+                'job1_phonecode.required_if' => 'Phone Number is required',
+                'job1_reason.required_if' => 'Reason for Leaving is required',
+                'job1_startsalary.required_if' => 'Starting Salary is required',
+                'job1_endsalary.required_if' => 'Ending Salary is required',
+    
+                'job2_title.required_with' => 'Job Title is required',
+                'job2_period.required_with' => 'Period is required',
+                'job2_company.required_with' => 'Company Name is required',
+                'job2_address.required_with' => 'Address is required',
+                'job2_supervisor.required_with' => 'Supervisor Name is required',
+                'job2_dailcode.required_with' => 'Dail Code is required',
+                'job2_phonecode.required_with' => 'Phone Number is required',
+                'job2_reason.required_with' => 'Reason for Leaving is required',
+                'job2_startsalary.required_with' => 'Starting Salary is required',
+                'job2_endsalary.required_with' => 'Ending Salary is required',
+    
+                'job3_title.required_with' => 'Job Title is required',
+                'job3_period.required_with' => 'Period is required',
+                'job3_company.required_with' => 'Company Name is required',
+                'job3_address.required_with' => 'Address is required',
+                'job3_supervisor.required_with' => 'Supervisor Name is required',
+                'job3_dailcode.required_with' => 'Dail Code is required',
+                'job3_phonecode.required_with' => 'Phone Number is required',
+                'job3_reason.required_with' => 'Reason for Leaving is required',
+                'job3_startsalary.required_with' => 'Starting Salary is required',
+                'job3_endsalary.required_with' => 'Ending Salary is required',
+            ];
+    
+            $validator = Validator::make($request->all(), $rules, $messages);
+        
+            $validator->after(function ($validator) use ($request) {
+                $job1Period = $request->input('job1_period');
+        
+                if (empty($job1Period[1])) {
+                    $validator->errors()->add('job1_period', 'End date is required.');
+                }
+            });
+
+            $validator->validate();
+
+            $period1 = $request->job1_period;
+            $experience1 = JobExperience::create([
+                'employee_id' => $request->id,
+                'title' => $request->job1_title,
+                'period_from' => (is_array($period1) && isset($period1[0]) && $period1[0])
+                    ? Carbon::parse($period1[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                    : null,
+                'period_to' => (is_array($period1) && isset($period1[1]) && $period1[1])
+                    ? Carbon::parse($period1[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                    : null,
+                'company_name' => $request->job1_company,
+                'address' => $request->job1_address,
+                'supervisor_name' => $request->job1_supervisor,
+                'dial_code' => $request->job1_dailcode,
+                'phone_no' => $request->job1_phonecode,
+                'reason_leaving' => $request->job1_reason,
+                'starting_salary' => $request->job1_startsalary,
+                'ending_salary' => $request->job1_endsalary,
             ]);
+
+            if ($request->job2_title) {
+                $period2 = $request->job2_period;
+                $experience2 = JobExperience::create([
+                    'employee_id' => $request->id,
+                    'title' => $request->job2_title ?? null,
+                    'period_from' => (is_array($period2) && isset($period2[0]) && $period2[0])
+                        ? Carbon::parse($period2[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'period_to' => (is_array($period2) && isset($period2[1]) && $period2[1])
+                        ? Carbon::parse($period2[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'company_name' => $request->job2_company ?? null,
+                    'address' => $request->job2_address ?? null,
+                    'supervisor_name' => $request->job2_supervisor ?? null,
+                    'dial_code' => $request->job2_dailcode ?? null,
+                    'phone_no' => $request->job2_phonecode ?? null,
+                    'reason_leaving' => $request->job2_reason ?? null,
+                    'starting_salary' => $request->job2_startsalary ?? null,
+                    'ending_salary' => $request->job2_endsalary ?? null,
+                ]);
+            }
+
+            if ($request->job3_title) {
+                $period3 = $request->job3_period;
+                $experience3 = JobExperience::create([
+                    'employee_id' => $request->id,
+                    'title' => $request->job3_title ?? null,
+                    'period_from' => (is_array($period3) && isset($period3[0]) && $period3[0])
+                        ? Carbon::parse($period3[0])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'period_to' => (is_array($period3) && isset($period3[1]) && $period3[1])
+                        ? Carbon::parse($period3[1])->setTimezone('Asia/Kuala_Lumpur')->toDateString()
+                        : null,
+                    'company_name' => $request->job3_company ?? null,
+                    'address' => $request->job3_address ?? null,
+                    'supervisor_name' => $request->job3_supervisor ?? null,
+                    'dial_code' => $request->job3_dailcode ?? null,
+                    'phone_no' => $request->job3_phonecode ?? null,
+                    'reason_leaving' => $request->job3_reason ?? null,
+                    'starting_salary' => $request->job3_startsalary ?? null,
+                    'ending_salary' => $request->job3_endsalary ?? null,
+                ]);
+            }
+        }
+
+        if ($request->type === 'edit') {
+            $validated = $request->validate([
+                'work_info' => 'required',
+                'work_info.*.id' => 'required',
+                'work_info.*.title' => 'required',
+                'work_info.*.period_from' => 'required',
+                'work_info.*.period_to' => 'required',
+                'work_info.*.company_name' => 'required',
+            ], [
+                'work_info.*.title' => 'Job Title field is required',
+                'work_info.*.period_from' => 'Date field is required',
+                'work_info.*.period_to' => 'Date field is required',
+                'work_info.*.company_name' => 'Company Name field is required',
+            ]); 
+
+            foreach ($request->work_info as $work){
+                $work_info = JobExperience::find($work['id']);
+                $work_info->update([
+                    'title'=> $work['title'],
+                    'period_from'=> Carbon::parse($work['period_from'])->format('Y-m-d'),
+                    'period_to'=> Carbon::parse($work['period_to'])->format('Y-m-d'),
+                    'company_name'=> $work['company_name'],
+                ]);
+            }
         }
 
         return redirect()->back();

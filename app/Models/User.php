@@ -118,4 +118,8 @@ class User extends Authenticatable implements HasMedia
     {
         return $this->hasMany(JobEducation::class, 'employee_id', 'id');
     }
+    public function employee_experience()
+    {
+        return $this->hasMany(JobExperience::class, 'employee_id', 'id');
+    }
 }

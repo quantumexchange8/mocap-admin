@@ -19,6 +19,7 @@ export default function Profile({ user_details, id }) {
     const [isLoading, setIsLoading] = useState(false);
     const [getEduBg, setGetEduBg] = useState([]);
     const [getEmployeeEdu, setGetEmployeeEdu] = useState([]);
+    const [getEmployeeExp, setGetEmployeeExp] = useState([]);
     const [isPersonalInfoOpen, setIsPersonalInfoOpen] = useState(false);
     const [isBankInfoOpen, setIsBankInfoOpen] = useState(false);
     const [isBeneficiaryInfoOpen, setIsBeneficiaryInfoOpen] = useState(false);
@@ -39,7 +40,8 @@ export default function Profile({ user_details, id }) {
             });
             
             setGetEduBg(response.data.job_application);
-            setGetEmployeeEdu(response.data.employee_education)
+            setGetEmployeeEdu(response.data.employee_education);
+            setGetEmployeeExp(response.data.employee_experience);
             
         } catch (error) {
             console.error('error', error);
@@ -376,7 +378,7 @@ export default function Profile({ user_details, id }) {
                                 ) : (
                                     <>
                                         {
-                                            getEduBg?.education?.length > 0  ? (
+                                            getEduBg?.education?.length > 0 ? (
                                                 <div className="flex flex-col gap-3 p-5">
                                                     <Timeline 
                                                         items={getEduBg.education.map((item, index) => ({
@@ -464,7 +466,22 @@ export default function Profile({ user_details, id }) {
                                                             children: (
                                                                 <div className="flex flex-col gap-1">
                                                                     <div className="font-semibold text-gray-950 text-sm">{item.company_name}</div>
-                                                                    <div className="text-gray-700 text-sm">{item.title}</div>
+                                                                    <div className="text-gray-700 text-sm">{item.company_name}</div>
+                                                                    <div className="text-gray-500 text-xs">{item.period_from} - {item.period_to}</div>
+                                                                </div>
+                                                            )
+                                                        }))}
+                                                    />
+                                                </div>
+                                            ) : getEmployeeExp?.length > 0 ? (
+                                                <div className="flex flex-col gap-3 p-5">
+                                                    <Timeline 
+                                                        items={getEmployeeExp.map((item, index) => ({
+                                                            key: index,
+                                                            children: (
+                                                                <div className="flex flex-col gap-1">
+                                                                    <div className="font-semibold text-gray-950 text-sm">{item.company_name}</div>
+                                                                    <div className="text-gray-700 text-sm">{item.company_name}</div>
                                                                     <div className="text-gray-500 text-xs">{item.period_from} - {item.period_to}</div>
                                                                 </div>
                                                             )
